@@ -1,0 +1,33 @@
+﻿.inputTable
+{
+	width: 100%;
+	
+	border-style: solid;
+	border-width:thin;
+	border-color: #C3D9FF;
+	background-color: #FFFFFF;
+}
+.inputFirstCol
+{
+	width: 25%;
+}
+.inputSecondCol
+{
+	width: 25%;
+}
+.inputThirdCol
+{
+	width: 10%;
+}
+.inputForthCol
+{
+	width: 40%;
+}
+.inputWCListButton
+{
+	font-family: Arial;
+	font-size: small;
+	font-weight: bold;
+	height: 80px;
+	width: 80px;
+}

@@ -1,0 +1,26 @@
+﻿.registrationTable
+{
+	width: 100%;
+	
+	border-style: solid;
+	border-width:thin;
+	border-color: #C3D9FF;
+	background-color: #FFFFFF;
+}
+
+.registrationFirstCol 
+{
+	width: 25%;
+}
+.registrationSecondCol
+{
+	width: 25%;
+}
+.registrationThirdCol
+{
+	width: 10%;
+}
+.registrationForthCol
+{
+	width: 40%;
+}

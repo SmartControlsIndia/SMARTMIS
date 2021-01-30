@@ -1,0 +1,300 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="smartMISMaster.master.cs" Inherits="SmartMIS.smartMISMaster" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<link rel="stylesheet" href="../Style/masterPage.css" type="text/css" charset="utf-8" />
+<link rel="stylesheet" href="../Style/CalendarControl.css"  type="text/css" charset="utf-8" />
+<link rel="SHORTCUT ICON" href="../Images/favicon.ico" />
+    
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head id="masterPageHead" runat="server">
+    <title>Smart MIS</title>
+    
+    <script type="text/javascript" src="../Script/jquery.min.js"></script>
+    <script type="text/javascript" src="../Script/SearchSuggest.js"></script>
+    <script type="text/javascript" src="../Script/CalendarControl.js"></script>
+
+ <script language="javascript" type="text/javascript" src="../Script/jquery-1.4.1.js"></script>    
+    <script type="text/javascript" language="javascript" src="../Script/ddaccordion.js">
+
+        /***********************************************
+        * Accordion Content script
+        ***********************************************/
+
+    </script>
+    
+      
+    <script type="text/javascript" language="javascript">
+
+
+        ddaccordion.init({
+            headerclass: "submenuheader", //Shared CSS class name of headers group
+            contentclass: "submenu", //Shared CSS class name of contents group
+            revealtype: "click", //Reveal content when user clicks or onmouseover the header? Valid value: "click", "clickgo", or "mouseover"
+            mouseoverdelay: 200, //if revealtype="mouseover", set delay in milliseconds before header expands onMouseover
+            collapseprev: true, //Collapse previous content (so only one open at any time)? true/false 
+            defaultexpanded: [], //index of content(s) open by default [index1, index2, etc] [] denotes no content
+            onemustopen: false, //Specify whether at least one header should be open always (so never all headers closed)
+            animatedefault: false, //Should contents open by default be animated into view?
+            persiststate: true, //persist state of opened contents within browser session?
+            toggleclass: ["", ""], //Two CSS classes to be applied to the header when it's collapsed and expanded, respectively ["class1", "class2"]
+            togglehtml: ["suffix", "<img src='../Images/plus.gif' class='statusicon' />", "<img src='../Images/minus.gif' class='statusicon' />"], //Additional HTML added to the header when it's collapsed and expanded, respectively  ["position", "html1", "html2"] (see docs)
+            animatespeed: "fast", //speed of animation: integer in milliseconds (ie: 200), or keywords "fast", "normal", or "slow"
+            oninit: function(headers, expandedindices) { //custom code to run when headers have initalized
+                //do nothing
+            },
+            onopenclose: function(header, index, state, isuseractivated) { //custom code to run whenever a header is opened or closed
+                //do nothing
+            }
+        })
+
+    </script>
+    
+    <script language="javascript" type="text/javascript">
+        function revealModal(divID)
+        {
+            window.onscroll = function() { document.getElementById(divID).style.top = document.body.scrollTop; };
+            document.getElementById(divID).style.display = "block";
+            document.getElementById(divID).style.top = document.body.scrollTop;
+        }
+        function hideModal(divID) {
+            document.getElementById(divID).style.display = "none";
+        }
+        function getKeyCode(e)
+        {
+            if (window.event)
+                return window.event.keyCode;
+            else if (e)
+                return e.which;
+            else
+                return null;
+        }
+        function keyRestrict(e, validchars)
+        {
+            var key = '', keychar = '';
+            key = getKeyCode(e);
+            if (key == null) return true;
+            keychar = String.fromCharCode(key);
+            keychar = keychar.toLowerCase();
+            validchars = validchars.toLowerCase();
+            if (validchars.indexOf(keychar) != -1)
+                return true;
+            if (key == null || key == 0 || key == 8 || key == 9 || key == 13 || key == 27)
+                return true;
+            return false;
+        }
+        function validateTextBox(textBoxID) 
+        {
+            if (textBoxID.value == '') 
+            {
+                textBoxID.value = "0";
+            }
+        }
+            
+    </script>
+
+</head>
+<body>
+    <form id="masterPageForm" runat="server">
+     
+    <table align="center" class="masterPageTable">
+        <tr>
+            <td class="masterPageFirstCol" rowspan="2">
+               <img alt="Smart MIS" src="../Images/logo.png" class="logoImage" />
+            </td>
+            <td class="masterPageSecondCol" colspan="4">
+                <div style="height: 50px; text-align: right">                    
+                <img alt="JK Tyres" class="ceatImg" src="../Images/logo_jk.jpg" /></div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <div class="masterHeader" style="height: 25px; vertical-align: bottom">
+                 </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" width="50%">
+                <asp:SiteMapPath ID="masterSiteMapPath" runat="server" Font-Names="Verdana" 
+                    Font-Size="0.8em" PathSeparator=" : ">
+                    <PathSeparatorStyle Font-Bold="True" ForeColor="#507CD1" />
+                    <CurrentNodeStyle ForeColor="#333333" />
+                    <NodeStyle Font-Bold="True" ForeColor="#284E98" />
+                    <RootNodeStyle Font-Bold="True" ForeColor="#507CD1" />
+                </asp:SiteMapPath>
+            </td>
+            <td  width="20%">
+                <div id="modalPageForAuthentication">
+                    <div class="modalBackground">
+                        </div>
+                            <div class="modalContainer">
+                               <div class="modal">
+                                   <div class="modalTop"><a href="javascript:hideModal('modalPageForAuthentication')"><img alt="Close" src="../Images/cancel.png" class="closeImg" /></a></div>
+                                   <div class="modalBody">
+                                       <table class="innerTable" cellspacing="0">
+                                           <tr>
+                                               <td style="width: 20%"></td>
+                                               <td style="width: 80%"></td>
+                                           </tr>
+                                           <tr>
+                                               <td class="masterLabel">
+                                                   <img alt="Information" src="../Images/exclamation.png" />
+                                               </td>
+                                               <td>
+                                                   <span class="masterWelcomeLabel">You have insufficient rights.</span>
+                                               </td>
+                                           </tr>
+                                           <tr>
+                                               <td colspan="2">
+                                                   <asp:Button ID="exclamationOKButton" runat="server" CssClass="masterButton" OnClientClick="javascript:hideModal('modalPageForAuthentication'); return false" Text="OK" CausesValidation="false" />&nbsp;
+                                               </td>
+                                           </tr>
+                                       </table>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+            </td>
+             
+            <td align="right" width="33%">
+                <div>
+                    <asp:Label ID="masterWelcomeLabel" runat="server" CssClass="masterWelcomeLabel" Text="Welcome Guest"></asp:Label>&nbsp;
+                    <a href="/SmartMIS/Home/home.aspx" class="navigation">[Home]</a>
+                    <a href="/SmartMIS/validateUser.aspx?action=1" class="navigation">[Log out]</a>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">
+                <div class="glossymenu">
+                <a class="menuitem submenuheader" href="#" >Masters</a>
+                <div class="submenu">
+	                <ul>
+	                    
+	                    <li><a href="/SmartMIS/Master/workCenter.aspx">Workcenter</a></li>
+	                    <li><a href="/SmartMIS/Master/unit.aspx">Unit of Measure</a></li>
+	                    <li><a href="/SmartMIS/Master/department.aspx">Department</a></li>
+	                    <li><a href="/SmartMIS/Master/manning.aspx">Manning</a></li>               
+	                    <li><a href="/SmartMIS/Master/role.aspx">User Roles</a></li>
+	                    <li><a href="/SmartMIS/Master/recipe.aspx">Recipe</a></li>
+	                    <li><a href="/SmartMIS/Master/recipeLookUp.aspx">Recipe LookUp</a></li>
+	                    <li><a href="/SmartMIS/Master/reason.aspx">Reason</a></li>	 
+	                    <li><a href="/SmartMIS/Master/oem.aspx">OemMaster</a></li>
+                  
+	                </ul>
+                 </div>
+                <a class="menuitem submenuheader" href="#" >Inputs</a>
+                <div class="submenu">
+	                <ul>
+	                	<li><a href="/SmartMIS/Input/newCuringOperatorPlanning.aspx">New Curing Operator Planning</a></li>
+	                    <li><a href="/SmartMIS/Input/curingOperatorPlanning.aspx">Curing Operator Planning</a></li>
+	                    <li><a href="/SmartMIS/Input/uniformityBalancing.aspx">Uniformity and Balancing</a></li>
+	                    <li><a href="/SmartMIS/Input/visualInspection.aspx">Visual Inspection</a></li>
+	                    <li><a href="/SmartMIS/Input/xRayHMI.aspx">X-ray</a></li>
+	                </ul>
+                 </div>
+                <a class="menuitem submenuheader" href="#" >Reports</a>
+                <div class="submenu">
+	                <ul>
+	                 <li>
+	                 <a href="/SmartMIS/Report/CuringProductionReport.aspx"> Curing Production </a></li>
+	                    <li><a href="/SmartMIS/Report/production.aspx">TBM Production </a></li>
+	                    <li><a href="/SmartMIS/Report/mould.aspx">Mould</a></li>
+	                    <li><a href="/SmartMIS/Report/Bladder.aspx">Bladder</a></li>
+	                    <li><a href="/SmartMIS/Report/SmartFinalFinish.aspx">Final Finish</a></li>
+	                    <li><a href="/SmartMIS/Report/tyreGeneaology.aspx">Tyre Genealogy</a></li>
+	                    <li><a href="/SmartMIS/Report/VISummaryReport.aspx">PCRVISummary </a></li>
+	                    <li><a href="/SmartMIS/Report/PCRVI2SummaryReport.aspx">PCRVI2Summary </a></li>
+	                    <li><a href="/SmartMIS/Report/PCRVI3SummaryReport.aspx">PCRVI3Summary </a></li>
+	                     <li><a href="/SmartMIS/Report/TBRVISummaryReport.aspx">TBRVISummary </a></li>
+	            	     <li><a href="/SmartMIS/Report/visualinspection2.aspx">TBRVI2Summary </a></li>        
+	            	     <li><a href="/SmartMIS/Report/classificationReport.aspx">TBRVIClassificationReport </a></li>
+	                     <li><a href="/SmartMIS/Report/xrayreport.aspx">Xray </a></li>	                    
+	                </ul>
+                 </div>
+           <%--      <a class="menuitem submenuheader" href="#" >TUO Reports</a>
+                <div class="submenu">
+	                <ul>
+	                 <li><a href="/SmartMIS/TUO/performanceReportTUOmachineWise.aspx">TUO MachineWise</a></li>	                   
+              <li><a href="/SmartMIS/TUO/performanceReportSizeWise.aspx">Performance Report TBM wise</a></li>	 
+                 	  <li><a href="/SmartMIS/TUO/PerformanceReportOAY.aspx" > Performance OAY Report </a></li>	                                     
+	                  <li><a href="/SmartMIS/TUO/performanceReport2SizeWise.aspx">Performance Report2 - Size wise</a></li>	
+	                    <li><a href="/SmartMIS/TUO/QualityPerformanceSpecReport.aspx" > Performance Spec Report </a></li>	                   
+	              <li><a href="/SmartMIS/TUO/performanceReportCuringWCWise.aspx">Performance Report Curing wise</a></li>
+	                  <li><a href="/SmartMIS/TUO/performanceReportWithRejectionDetail.aspx">Performance Report With Rejection Detail</a> </li>	  
+	                  <li><a href="/SmartMIS/TUO/AverageANDstdPerformanceReport.aspx">Performance Report with average Detail</a> </li>	                               	                 	 
+                 	  <li><a href="/SmartMIS/TUO/performanceReportSpacWise.aspx">Performance Report Spec Wise</a> </li>	                   
+                 	  <li><a href="/SmartMIS/TUO/performanceReportOAYGraf.aspx" > Performance OAY Graf Report </a></li>	                   
+	                </ul>
+                 </div>
+                 --%>
+                   <a class="menuitem submenuheader" href="#" >New TUO Reports</a>
+
+                <div class="submenu">
+	               <ul>
+	               	     <li><a href="/SmartMIS/TUO/TUOReport.aspx">TUO MachineWise</a></li>        
+	                    <li><a href="/SmartMIS/TUO/TUOReport1.aspx">Performance Report,Curing TBM, TUO wise</a></li>        
+	                    <li><a href="/SmartMIS/TUO/TUOReport2.aspx">Performance Report With Rejection Detail</a></li>    
+	                    <li><a href="/SmartMIS/TUO/TUOReport3.aspx">Performance Report with average Detail</a></li>                  
+              	        <li><a href="/SmartMIS/TUO/TUOReport4.aspx">Performance Report Spec Wise</a></li>                  
+              	        <li><a href="/SmartMIS/TUO/TUOReport5.aspx">Performance OAY Graf Report</a></li>                  
+
+          
+
+	                </ul>
+                </div>
+                 
+              <a class="menuitem submenuheader" href="#" >Dinamic Bal & RunOut Reports</a>
+
+                <div class="submenu">
+	               <ul>
+	                    <li><a href="/SmartMIS/TUO/DinamicBalPerformanceReport.aspx">Dinamic Bal Report</a></li>
+	                    <li><a href="/SmartMIS/TUO/DinamicBalPerformanceReportnew.aspx">Dinamic Balancing With Rejection</a></li>
+                        <li><a href="/SmartMIS/TUO/RunOutPerformanceReport.aspx">RunOut Report</a></li>	                   
+	                </ul>
+                </div>
+
+                 <a class="menuitem submenuheader" href="#" >Settings</a>
+                <div class="submenu">
+	               <ul>
+	                    <li><a href="/SmartMIS/UserManagement/userManagement.aspx">User Accounts</a></li>
+	                </ul>
+                </div>
+                <a class="menuitem submenuheader" href="#" >Recipe</a>
+                <div class="submenu">
+	               <ul>
+	                    <li><a href="/SmartMIS/Recipe/REC_NEW.aspx">Recipe New</a></li>
+	                </ul>
+                </div>
+<a class="menuitem submenuheader" href="#" >TBM Report</a>
+                <div class="submenu">
+	                <ul>
+	                 <li><a href="/SmartMIS/Report/newproduction.aspx>New TBM Production </a></li>
+	                </ul>
+	            </div>
+	            
+            </div>
+            </td>
+            
+            <td valign="top" colspan="4">
+                <asp:ContentPlaceHolder ID="masterContentPlaceHolder" runat="server">
+                </asp:ContentPlaceHolder>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5">
+                <div class="masterFooter">
+                    <p class="masterFooterTagline">© 2011 Developed By SmartControls India Ltd.</p>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                &nbsp;</td>
+            <td colspan="4">
+                &nbsp;</td>
+        </tr>
+    </table>
+    </form>
+</body>
+</html>

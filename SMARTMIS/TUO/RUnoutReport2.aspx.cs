@@ -1,0 +1,505 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.IO;
+using OfficeOpenXml;
+using System.Drawing;
+
+namespace SmartMIS.TUO
+{
+    public partial class RUnoutReport2 : System.Web.UI.Page
+    {
+       smartMISWebService myWebService = new smartMISWebService();
+        myConnection myConnection = new myConnection();
+        DataTable mainGVdt;
+        DataTable dynamicDB = new DataTable();
+        DataTable weightdt;
+
+        public string queryString, rType, rWCID, rChoice, rToDate, rFromDate, rToMonth, rToYear, rFromYear, option, workcentername, wcnamequery, wcIDQuery, machinenamequery, percent_sign = null;
+        public int totalcheckedcount = 0, okcount = 0, NotOkCount = 0, reworkcount = 0, scrapcount = 0, majorokcount = 0, minorbuffcount = 0, majorholdcount = 0, minorCount = 0, majorCount = 0, majorscrapcount = 0, totalokcount = 0, totalbuffcount = 0, totalscrapcount = 0, totalholdcount = 0, totalminorcount = 0, min_count = 0;
+        string sqlquery = "";
+        int status;
+        DateTime fromDate, toDate;  
+        string wherequery = "";
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            
+            if (Session["userID"].ToString().Trim() == "")
+            {
+                Response.Redirect("/SmartMIS/Default.aspx", true);
+            }
+
+        }
+      
+        private void createGridView(GridView gridview)
+        {
+            gridview.Columns.Clear();
+            //Iterate through the columns of the datatable to set the data bound field dynamically.
+            foreach (DataColumn col in gridview.Columns)
+            {
+                //Declare the bound field and allocate memory for the bound field.
+                BoundField bfield = new BoundField();
+
+                //Initalize the DataField value.
+                bfield.DataField = col.ColumnName;
+
+                //Initialize the HeaderText field value.
+                bfield.HeaderText = col.ColumnName;
+
+                //Add the newly created bound field to the GridView.
+                gridview.Columns.Add(bfield);
+
+            }
+
+        }
+        protected void GridView_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            try
+            {
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    if (e.Row.RowIndex == 0)
+                        e.Row.Style.Add("height", "50px");
+                }
+                if (e.Row.RowType == DataControlRowType.DataRow)
+                {
+                    for (int rowIndex = MainGridView.Rows.Count - 2; rowIndex >= 0; rowIndex--)
+                    {
+                        GridViewRow gvRow = MainGridView.Rows[rowIndex];
+                        GridViewRow gvPreviousRow = MainGridView.Rows[rowIndex + 1];
+                        for (int cellCount = 0; cellCount < 1 /*gvRow.Cells.Count*/; cellCount++)
+                        {
+                            if (gvRow.Cells[cellCount].Text == gvPreviousRow.Cells[cellCount].Text)
+                            {
+                                if (gvPreviousRow.Cells[cellCount].RowSpan < 2)
+                                {
+                                    gvRow.Cells[cellCount].RowSpan = 2;
+                                }
+                                else
+                                {
+                                    gvRow.Cells[cellCount].RowSpan = gvPreviousRow.Cells[cellCount].RowSpan + 1;
+                                }
+                                gvPreviousRow.Cells[cellCount].Visible = false;
+                            }
+                        }
+                    }
+                    //MainGridView.Rows[MainGridView.Rows.Count - 1].BackColor = Color.Aqua;
+                }
+            }
+            catch (Exception exp)
+            {
+                myWebService.writeLogs(exp.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+            }
+        }
+        protected void ViewButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string getMonth = DropDownListMonth.SelectedValue;
+                string getYear = DropDownListYear.SelectedItem.Text;
+                string getyearwise = DropDownList2.SelectedItem.Text;
+                string recipe = "";
+                string tyredesign = "";
+                string duration = "";
+                var datetimebt = "";
+                string getfromdate = reportMasterFromDateTextBox.Text; ;
+
+                switch (DropDownListDuration.SelectedItem.Value)
+                {
+                    case "Date":
+                        fromDate = DateTime.Parse(formatDate(getfromdate));
+                        toDate = fromDate.AddDays(1);
+
+                        string nfromDate = formatDate(reportMasterFromDateTextBox.Text);//fromDate.ToString("dd/MMM/yyyy") + " 07:00:00";
+                        toDate = DateTime.Parse(nfromDate);
+                        string ntoDate = toDate.AddDays(1).ToString();
+                        //string ntoDate = toDate.AddDays(1).ToString("yyyy-MM-dd") + " 07:00:00";
+                        //string ntoDate = toDate.ToString("dd/MMM/yyyy") + " 07:00:00";
+                        showReportDateMonthWise(nfromDate, ntoDate, recipe, tyredesign);
+                        break;
+                        
+
+                    case "Month":
+                        nfromDate = getYear.ToString() + "-" + getMonth + "-01 07:00:00";
+                        if (Convert.ToInt32(getMonth) < 12)
+                        {
+                            datetimebt = getYear.ToString() + "-" + (Convert.ToInt32(getMonth) + 1) + "-01 07:00:00";
+                        }
+                        else
+                        { datetimebt = getYear.ToString() + "-" + (getMonth) + "-31 07:00:00"; }
+
+                        ntoDate = datetimebt;
+                        showReportDateMonthWise(nfromDate, ntoDate, recipe, tyredesign);
+
+                        break;
+
+                    case "DateFrom":
+
+                        nfromDate = formatDate(tuoReportMasterFromDateTextBox.Text);
+
+                        toDate = DateTime.Parse(formatDate(tuoReportMasterToDateTextBox.Text));
+                        ntoDate = toDate.AddDays(1).ToString();
+                        TimeSpan ts = DateTime.Parse(ntoDate) - DateTime.Parse(nfromDate);
+                        int result = (int)ts.TotalDays;
+                        if ((int)ts.TotalDays > 7)
+                        {
+                            ShowWarning.Visible = true;
+                            ShowWarning.Text = "<table style=\"padding:4px;\"><tr><td width=20%><img src='../images/exclamation.png' height=\"30\" /></td><td width=80%><strong> <font color=#9F6000>You cannot select more than 7 days!!!</font></strong></td></tr></table>";
+                        }
+
+                        else 
+                        {
+                            showReportDateMonthWise(nfromDate, ntoDate, recipe, tyredesign); ; 
+                        }
+                        break;
+
+                }
+               // Button clickedbutton = sender as Button;
+               // int totalrank = 0;
+               //createGridView(MainGridView);
+               // loadData(); 
+
+            }
+            catch (Exception exp)
+            {
+                myWebService.writeLogs(exp.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+            }
+        }
+
+        public string formatDate(String date)
+        {
+            string flag = "";
+
+            string day, month, year;
+            if (date != null)
+            {
+                string[] tempDate = date.Split(new char[] { '-' });
+                try
+                {
+                    day = tempDate[1].ToString().Trim();
+                    month = tempDate[0].ToString().Trim();
+                    year = tempDate[2].ToString().Trim();
+                    flag = day + "-" + month + "-" + year + " " + "07" + ":" + "00" + ":" + "00";
+                      //flag = year + "-" + month + "-" + day + " " + "07" + ":" + "00" + ":" + "00";
+
+                }
+                catch (Exception exp)
+                {
+                    myWebService.writeLogs(exp.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+                }
+            }
+            return flag;
+        }
+        protected void showReportDateMonthWise(string nfromDate, string ntoDate, string recipe, string tyredesign)
+        {
+           
+            try
+            {
+                #region add new datatable
+                DataTable dtTUO = new DataTable();
+                DataTable curdt = new DataTable();
+                DataTable tbmdt = new DataTable();
+                DataTable manndt = new DataTable();
+                DataTable wcdt = new DataTable();
+                DataTable maindt = new DataTable();
+                DataTable tro1dt = new DataTable();
+                #endregion
+
+                #region add column name
+
+                    maindt.Columns.Add("MACHINENAME", typeof(string));
+                    maindt.Columns.Add("DATE", typeof(string));
+                    maindt.Columns.Add("TIME", typeof(string));
+                    maindt.Columns.Add("RECIPENo", typeof(string));
+                    maindt.Columns.Add("RECIPECODE", typeof(string));
+                    maindt.Columns.Add("BARCODE", typeof(string));
+                    maindt.Columns.Add("TOTALRANK", typeof(string));
+                    maindt.Columns.Add("UPPERAMOUNT", typeof(Double));
+                    maindt.Columns.Add("UPPERANGLE", typeof(Double));
+                    maindt.Columns.Add("UPPERRANK", typeof(string));
+                    maindt.Columns.Add("LOWERAMOUNT", typeof(Double));
+                    maindt.Columns.Add("LOWERANGLE", typeof(Double));
+                    maindt.Columns.Add("LOWERRANK", typeof(string));
+                    maindt.Columns.Add("UPLOAMOUNT", typeof(Double));
+                    maindt.Columns.Add("UPLORANK", typeof(string));
+                    maindt.Columns.Add("STATICAMOUNT", typeof(Double));
+                    maindt.Columns.Add("STATICANGLE", typeof(Double));
+                    maindt.Columns.Add("STATICRANK", typeof(string));
+                    maindt.Columns.Add("COUPLEAMOUNT", typeof(Double));
+                    maindt.Columns.Add("COUPLEANGLE", typeof(Double));
+                    maindt.Columns.Add("COUPLERANK", typeof(string));
+                    maindt.Columns.Add("LROTOAAMOUNT", typeof(Double));
+                    maindt.Columns.Add("LROTOAANGLERANk", typeof(Double));
+                    maindt.Columns.Add("LROTOARANK", typeof(string));
+                    maindt.Columns.Add("LROBOAAMOUNT", typeof(Double));
+                    maindt.Columns.Add("LROBOAANGLE", typeof(Double));
+                    maindt.Columns.Add("LROBOARANK", typeof(string));
+                    maindt.Columns.Add("RRO1_OAAmount", typeof(Double));
+                    maindt.Columns.Add("RRO1_OAAngle", typeof(Double));
+                    maindt.Columns.Add("RRO1_OARank", typeof(string));
+                    maindt.Columns.Add("RRO2_OAAmount", typeof(Double));
+                    maindt.Columns.Add("RRO2_OAAngle", typeof(Double));
+                    maindt.Columns.Add("RRO2_OARank", typeof(string));
+                    maindt.Columns.Add("RRO_3OAAmount", typeof(Double));
+                    maindt.Columns.Add("RRO3_OAAngle", typeof(float));
+                    maindt.Columns.Add("RRO3_OARank", typeof(string));
+                    maindt.Columns.Add("LROT1AMOUNT", typeof(Double));
+                    maindt.Columns.Add("LROT1ANGLE", typeof(Double));
+                    maindt.Columns.Add("LROT1ARANK", typeof(string));
+                    maindt.Columns.Add("LROB1AMOUNT", typeof(Double));
+                    maindt.Columns.Add("LROB1ANGLE", typeof(Double));
+                    maindt.Columns.Add("LROB1ARANK", typeof(string));
+                    maindt.Columns.Add("RRO1AMOUNT", typeof(Double));
+                    maindt.Columns.Add("RRO1ANGLE", typeof(Double));
+                    maindt.Columns.Add("RRO1RANK", typeof(string));
+                    maindt.Columns.Add("RRO2_istAmount", typeof(string));
+                    maindt.Columns.Add("RRO2_istAngle", typeof(Double));
+                    maindt.Columns.Add("RRO2_1stRank", typeof(string));
+                    maindt.Columns.Add("RRO3_istAmount", typeof(Double));
+                    maindt.Columns.Add("RRO3_istAngle", typeof(Double));
+                    maindt.Columns.Add("RRO3_1stRank", typeof(string));
+                    maindt.Columns.Add("lroT2amount", typeof(Double));
+                    maindt.Columns.Add("lroT2angle", typeof(Double));
+                    maindt.Columns.Add("lroT2rank", typeof(string));
+                    maindt.Columns.Add("lroB2amount", typeof(Double));
+                    maindt.Columns.Add("lroB2angle", typeof(Double));
+                    maindt.Columns.Add("lroB2rank", typeof(string));
+                    maindt.Columns.Add("RRO1_IsTAmount", typeof(Double));
+                    maindt.Columns.Add("RRO1_IsTAngle", typeof(Double));
+                    maindt.Columns.Add("RRO1_IsTRank", typeof(string));
+                    maindt.Columns.Add("RRO2_2Amount", typeof(Double));
+                    maindt.Columns.Add("RRO2_2ndtangle", typeof(Double));
+                    maindt.Columns.Add("RRO2_2ndRank", typeof(string));
+                    maindt.Columns.Add("RRO3_2Amount", typeof(Double));
+                    maindt.Columns.Add("RRO3_2ndtangle", typeof(Double));
+                    maindt.Columns.Add("RRO3_2ndRank", typeof(string));
+                    maindt.Columns.Add("LROTBULGEAMOUNT", typeof(Double));
+                    maindt.Columns.Add("LROTBULGEANGLE", typeof(Double));
+                    maindt.Columns.Add("LROTBULGERANK", typeof(string));
+                    maindt.Columns.Add("LROBBULGEAMOUNT", typeof(Double));
+                    maindt.Columns.Add("LROBBULGEANGLE", typeof(Double));
+                    maindt.Columns.Add("LROBBULGERANK", typeof(string));
+                    maindt.Columns.Add("LROTDENTAmount", typeof(Double));
+                    maindt.Columns.Add("LROTDENTAngle", typeof(Double));
+                    maindt.Columns.Add("LROTDENTRank", typeof(string));
+                    maindt.Columns.Add("LROBDENTAMOUNT", typeof(Double));
+                    maindt.Columns.Add("LROBDENTANGLE", typeof(Double));
+                    maindt.Columns.Add("LROBDENTRANK", typeof(string));
+                    maindt.Columns.Add("OUTERDIAMETERVALUE", typeof(Double));
+                    maindt.Columns.Add("OUTERDIAMETERRANK", typeof(string));
+                    maindt.Columns.Add("OUTERDIAMETER2VALUE", typeof(string));
+                    maindt.Columns.Add("OUTERDIAMETER2RANK", typeof(string));
+                    maindt.Columns.Add("OUTERDIAMETER3VALUE", typeof(Double));
+                    maindt.Columns.Add("OUTERDIAMETER3RANK", typeof(string));
+                    maindt.Columns.Add("ROTOTALRANK", typeof(string));
+                    maindt.Columns.Add("MEASUREPRESSURE", typeof(Double));
+                    maindt.Columns.Add("TBMMACHINE", typeof(string));
+                    maindt.Columns.Add("TBMBUILDER", typeof(string));
+                    maindt.Columns.Add("TBM_TIme", typeof(string));
+                    maindt.Columns.Add("TBM_DATE", typeof(string));
+                    maindt.Columns.Add("Cur_Mchine", typeof(string));
+                    maindt.Columns.Add("CUR_DATE", typeof(string));
+                    maindt.Columns.Add("CUR_TIME", typeof(string));
+                    maindt.Columns.Add("CUR_OP", typeof(string));
+
+
+                    tro1dt.Columns.Add("MACHINENAME", typeof(string));
+                    tro1dt.Columns.Add("DATE", typeof(string));
+                    tro1dt.Columns.Add("TIME", typeof(string));
+                    tro1dt.Columns.Add("RECIPENo", typeof(string));
+                    tro1dt.Columns.Add("RECIPECODE", typeof(string));
+                    tro1dt.Columns.Add("BARCODE", typeof(string));
+                    tro1dt.Columns.Add("TOTALRANK", typeof(string));
+                    tro1dt.Columns.Add("UPPERAMOUNT", typeof(Double));
+                    tro1dt.Columns.Add("UPPERANGLE", typeof(Double));
+                    tro1dt.Columns.Add("UPPERRANK", typeof(string));
+                    tro1dt.Columns.Add("LOWERAMOUNT", typeof(Double));
+                    tro1dt.Columns.Add("LOWERANGLE", typeof(Double));
+                    tro1dt.Columns.Add("LOWERRANK", typeof(string));
+                    tro1dt.Columns.Add("UPLOAMOUNT", typeof(Double));
+                    tro1dt.Columns.Add("UPLORANK", typeof(string));
+                    tro1dt.Columns.Add("STATICAMOUNT", typeof(Double));
+                    tro1dt.Columns.Add("STATICANGLE", typeof(Double));
+                    tro1dt.Columns.Add("STATICRANK", typeof(string));
+                    tro1dt.Columns.Add("COUPLEAMOUNT", typeof(Double));
+                    tro1dt.Columns.Add("COUPLEANGLE", typeof(Double));
+                    tro1dt.Columns.Add("COUPLERANK", typeof(string));
+                    tro1dt.Columns.Add("LROTOAAMOUNT", typeof(Double));
+                    tro1dt.Columns.Add("LROTOAANGLE", typeof(Double));
+                    tro1dt.Columns.Add("LROTOARANK", typeof(string));
+                    tro1dt.Columns.Add("LROBOAAMOUNT", typeof(Double));
+                    tro1dt.Columns.Add("LROBOAANGLE", typeof(Double));
+                    tro1dt.Columns.Add("LROBOARANK", typeof(string));
+                    tro1dt.Columns.Add("RRO_OAAmount", typeof(Double));
+                    tro1dt.Columns.Add("RRO_OAAngle", typeof(Double));
+                    tro1dt.Columns.Add("RRO_OARank", typeof(string));
+                    tro1dt.Columns.Add("LROT1AMOUNT", typeof(Double));
+                    tro1dt.Columns.Add("LROT1ANGLE", typeof(Double));
+                    tro1dt.Columns.Add("LROT1ARANK", typeof(string));
+                    tro1dt.Columns.Add("LROB1AMOUNT", typeof(Double));
+                    tro1dt.Columns.Add("LROB1ANGLE", typeof(Double));
+                    tro1dt.Columns.Add("LROB1ARANK", typeof(string));
+                    tro1dt.Columns.Add("RRO1AMOUNT", typeof(Double));
+                    tro1dt.Columns.Add("RRO1ANGLE", typeof(Double));
+                    tro1dt.Columns.Add("RRO1RANK", typeof(string));
+                    tro1dt.Columns.Add("LROTBULGEAMOUNT", typeof(Double));
+                    tro1dt.Columns.Add("LROTBULGEANGLE", typeof(Double));
+                    tro1dt.Columns.Add("LROTBULGERANK", typeof(string));
+                    tro1dt.Columns.Add("LROBBULGEAMOUNT", typeof(Double));
+                    tro1dt.Columns.Add("LROBBULGEANGLE", typeof(Double));
+                    tro1dt.Columns.Add("LROBBULGERANK", typeof(string));
+                    tro1dt.Columns.Add("LROTDENTAmount", typeof(Double));
+                    tro1dt.Columns.Add("LROTDENTAngle", typeof(Double));
+                    tro1dt.Columns.Add("LROTDENTRank", typeof(string));
+                    tro1dt.Columns.Add("LROBDENTAMOUNT", typeof(Double));
+                    tro1dt.Columns.Add("LROBDENTANGLE", typeof(Double));
+                    tro1dt.Columns.Add("LROBDENTRANK", typeof(string));
+                    tro1dt.Columns.Add("ROTOTALRANK", typeof(string));
+                    tro1dt.Columns.Add("MEASUREPRESSURE", typeof(Double));
+                    tro1dt.Columns.Add("TBMMACHINE", typeof(string));
+                    tro1dt.Columns.Add("TBMBUILDER", typeof(string));
+                    tro1dt.Columns.Add("TBM_DATE", typeof(string));
+                    tro1dt.Columns.Add("TBM_TIME", typeof(string));
+                    tro1dt.Columns.Add("CUR_MACHINE", typeof(string));
+                    tro1dt.Columns.Add("CUR_OP", typeof(string)); 
+                    tro1dt.Columns.Add("CUR_DATE", typeof(string));
+                    tro1dt.Columns.Add("CUR_TIME", typeof(string));
+                #endregion
+
+                #region fill datatable 
+
+                   
+                    //get barcode weight 
+                        
+                         if (GradeDropDownList.SelectedItem.Text == "ALL")
+                         {
+                            try
+                            {
+                                myConnection.open(ConnectionOption.SQL);
+                                myConnection.comm = myConnection.conn.CreateCommand();
+                                myConnection.comm.CommandText = @"
+select  WCID, wc.name AS WCNAME, convert(char(10), dtandTime, 105) AS Date,CONVERT(VARCHAR(8) , dtandTime , 108) AS [Time],RECIPENO, RECIPECODE,tbm.BARCODE,TOTALRANK,UPPERAMOUNT,UPPERANGLE,UPPERRANK,LOWERAMOUNT,LOWERANGLE,LOWERRANK,UPLOAMOUNT,UPLORANK,STATICAMOUNT,STATICANGLE,STATICRANK,COUPLEAMOUNT,COUPLEANGLE,COUPLERANK,LROTOAAMOUNT,LROTOAANGLERANK,LROTOARANK,LROBOAAMOUNT,LROBOAANGLE,LROBOARANK,RROOAAMOUNT,RROOAANGLE,RROOARANK,RRO_2OAAMOUNT,RRO2_OAANGLE,RRO2_OARANK,RRO_3OAAMOUNT,RRO3_OAANGLE,RRO3_OARANK,LROT1AMOUNT,LROT1ANGLE,LROT1RANK,LROB1AMOUNT,LROB1ANGLE,LROB1RANK,RRO1AMOUNT,RRO1ANGLE,RRO1RANK,RRO2_ISTAMOUNT,RRO2_ISTANGLE,RRO2_1STRANK,RRO3_1STAMOUNT,RRO3_1STANGLE,RRO3_1STRANK,LROT2AMOUNT,LROT2ANGLE,LROT2RANK,LROB2AMOUNT,LROB2ANGLE,LROB2RANK,RRO12NDAMOUNT,RRO12NDANGLE,RRO12NDRANK,RRO3_2AMOUNT,RRO2_2NDTANGLE,RRO2_2NDRANK,RRO3_2NDAMOUNT,RRO3_2NDANGLE,RRO3_2NDRANK,LROTBULGEAMOUNT,LROTBULGEANGLE,LROTBULGERANK,LROBBULGEAMOUNT,LROBBULGEANGLE,LROBBULGERANK,LROTDENTAMOUNT,LROTDENTANGLE,LROTDENTRANK,LROBDENTAMOUNT,LROBDENTANGLE,LROBDENTRANK,
+OUTERDIAMETERVALUE,OUTERDIAMETERRANK,OUTERDIAMETER2VALUE,OUTERDIAMETER2RANK,OUTERDIAMETER3VALUE,OUTERDIAMETER3RANK,ROTOTALRANK,MEASPRESSURE
+ from tbrrunoutdata1 tbm inner join wcmaster wc on wc.iD= tbm.WCID  where wc.name in ('TRO2','TRO3','TRO4') and dtandtime>'" + nfromDate + "' AND dtandtime<'" + ntoDate + "'  order by wc.name,date,Time";
+                                myConnection.comm.CommandTimeout = 60;
+                                myConnection.reader = myConnection.comm.ExecuteReader();
+                                dtTUO.Load(myConnection.reader);
+                                myWebService.writeLogs(myConnection.comm.CommandText, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+                            }
+                            catch (Exception exc)
+                            {
+                                myWebService.writeLogs(myConnection.comm.CommandText, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+
+                            }
+                            finally
+                            {
+                                if (!myConnection.reader.IsClosed)
+                                    myConnection.reader.Close();
+                                myConnection.comm.Dispose();
+                            }
+                        }
+                         else
+                        {
+                            try
+                            {
+                                myConnection.open(ConnectionOption.SQL);
+                                myConnection.comm = myConnection.conn.CreateCommand();
+                                myConnection.comm.CommandText = @"select  WCID, wc.name AS WCNAME, convert(char(10), dtandTime, 105) AS Date,CONVERT(VARCHAR(8) , dtandTime , 108) AS [Time],RECIPENO, RECIPECODE,tbm.BARCODE,TOTALRANK,UPPERAMOUNT,UPPERANGLE,UPPERRANK,LOWERAMOUNT,LOWERANGLE,LOWERRANK,UPLOAMOUNT,UPLORANK,STATICAMOUNT,STATICANGLE,STATICRANK,COUPLEAMOUNT,COUPLEANGLE,COUPLERANK,LROTOAAMOUNT,LROTOAANGLERANK,LROTOARANK,LROBOAAMOUNT,LROBOAANGLE,LROBOARANK,RROOAAMOUNT,RROOAANGLE,RROOARANK,RRO_2OAAMOUNT,RRO2_OAANGLE,RRO2_OARANK,RRO_3OAAMOUNT,RRO3_OAANGLE,RRO3_OARANK,LROT1AMOUNT,LROT1ANGLE,LROT1RANK,LROB1AMOUNT,LROB1ANGLE,LROB1RANK,RRO1AMOUNT,RRO1ANGLE,RRO1RANK,RRO2_ISTAMOUNT,RRO2_ISTANGLE,RRO2_1STRANK,RRO3_1STAMOUNT,RRO3_1STANGLE,RRO3_1STRANK,LROT2AMOUNT,LROT2ANGLE,LROT2RANK,LROB2AMOUNT,LROB2ANGLE,LROB2RANK,RRO12NDAMOUNT,RRO12NDANGLE,RRO12NDRANK,RRO3_2AMOUNT,RRO2_2NDTANGLE,RRO2_2NDRANK,RRO3_2NDAMOUNT,RRO3_2NDANGLE,RRO3_2NDRANK,LROTBULGEAMOUNT,LROTBULGEANGLE,LROTBULGERANK,LROBBULGEAMOUNT,LROBBULGEANGLE,LROBBULGERANK,LROTDENTAMOUNT,LROTDENTANGLE,LROTDENTRANK,LROBDENTAMOUNT,LROBDENTANGLE,LROBDENTRANK,
+OUTERDIAMETERVALUE,OUTERDIAMETERRANK,OUTERDIAMETER2VALUE,OUTERDIAMETER2RANK,OUTERDIAMETER3VALUE,OUTERDIAMETER3RANK,ROTOTALRANK,MEASPRESSURE
+ from tbrrunoutdata1 tbm inner join wcmaster wc on wc.iD= tbm.WCID  where dtandtime>'" + nfromDate + "' AND dtandtime<'" + ntoDate + "' and  wc.name='" + GradeDropDownList.SelectedItem.Text + "' order by wcname,date,Time";
+                                myConnection.comm.CommandTimeout = 60;
+                                myConnection.reader = myConnection.comm.ExecuteReader();
+                                myWebService.writeLogs(myConnection.comm.CommandText, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+                                dtTUO.Load(myConnection.reader);
+                            }
+                            catch (Exception exc)
+                            {
+                                myWebService.writeLogs(exc.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+                            }
+                            finally
+                            {
+                                if (!myConnection.reader.IsClosed)
+                                    myConnection.reader.Close();
+                                myConnection.comm.Dispose();
+                            }
+                        }
+
+
+                         try
+                        {
+
+                            MainGridView.DataSource = dtTUO;
+                            MainGridView.DataBind();
+                            MainGridView.Visible = true;
+                            ViewState["xmldt"] = null;
+                            ViewState.Remove("xmldt");
+                            ViewState["xmldt"] = dtTUO;
+                        }
+                        catch(Exception exp)
+                        {
+                            myWebService.writeLogs(exp.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+                        }
+                    #endregion
+
+            }
+            catch (Exception exp)
+            {
+                myWebService.writeLogs(exp.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+            }
+        }
+        protected void expToExcel_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DataTable dt = (DataTable)ViewState["xmldt"];
+                Response.Clear();
+                Response.ClearHeaders();
+                Response.ClearContent();
+                Response.Buffer = true;
+                Response.AddHeader("content-disposition", "attachment;filename=RUNOUT2RAWDATA.xls");
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+                ExcelPackage pck = new ExcelPackage();
+                ExcelWorksheet ws = pck.Workbook.Worksheets.Add("RUNOUT2RAWDATA");
+                ws.Cells["A1"].Value = "RUNOUT2RAWDATA ";
+
+                using (ExcelRange r = ws.Cells["A1:AG1"])
+                {
+                    r.Merge = true;
+                    r.Style.Font.SetFromFont(new Font("Arial", 16, FontStyle.Italic));
+                    r.Style.Font.Color.SetColor(Color.White);
+                    r.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.CenterContinuous;
+                    r.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    r.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(23, 55, 93));
+                }
+
+
+                ws.Cells["A3"].LoadFromDataTable((DataTable)ViewState["xmldt"], true, OfficeOpenXml.Table.TableStyles.Light1);
+                ws.Cells.AutoFitColumns();
+
+
+                var ms = new MemoryStream();
+                pck.SaveAs(ms);
+                ms.WriteTo(Response.OutputStream);
+
+                Response.Flush();
+                Response.End();
+            }
+            catch (Exception exp)
+            {
+                myWebService.writeLogs(exp.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+            }
+            
+
+        }
+        public override void VerifyRenderingInServerForm(Control control)
+        {
+
+        }
+    }
+}

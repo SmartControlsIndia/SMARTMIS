@@ -1,0 +1,75 @@
+﻿.downTimeTable
+{
+	width: 100%;
+	
+	border-style: solid;
+	border-width:thin;
+	border-color: #C3D9FF;
+	background-color: #FFFFFF;
+}
+.downTimeFirstCol
+{
+	width: 25%;
+}
+.downTimeSecondCol
+{
+	width: 25%;
+}
+.downTimeThirdCol
+{
+	width: 10%;
+}
+.downTimeForthCol
+{
+	width: 40%;
+}
+
+.downTimeInnerTable
+{
+	width: 100%;
+	
+	border-style: solid;
+	border-width:thin;
+	border-color: #C3D9FF;
+	background-color: #FFFFFF;
+}
+.downTimeContentTable
+{
+	width: 100%;
+}
+.downTimeDiv
+{
+	width: 50%;
+	
+	border-style: solid;
+	border-width: thin;
+	border-color: #C3D9FF;
+	background-color: #FFFFFF;
+	
+	-moz-border-radius: 1em 1em 1em 1em;
+	border-radius: 1em 1em 1em 1em;
+}
+.downTimeGridImageButton
+{
+	width: 15px;
+	height: 15px;
+}
+.downTimeGridDropDownList
+{	
+	font-family:Verdana;
+	font-weight: bold;
+	font-size:11px;
+}
+.downTimeGridLabel
+{	
+	font-family:Verdana;
+	font-weight: bold;
+	font-size:11px;
+	text-align:left;
+}
+.downTimeGridTextBox
+{	
+	font-family:Verdana;
+	font-weight: bold;
+	font-size:11px;
+}

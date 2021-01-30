@@ -1,0 +1,98 @@
+/* CSS Document */
+*{
+	margin:0;
+	padding:0;
+}
+#menu{
+	width:94%;
+	margin:25px auto;
+	height: 53px;
+}
+#menu ul{
+	list-style:none;
+	width: 900px;
+	height: 56px;
+}
+#menu li{
+	display:block;
+	float:right;
+	width: 900px;
+}
+#menu li a{
+	background:#e4e8eb url(images/menu_bg.gif) repeat-x;
+	border:2px solid #bdc5cd;
+	
+	padding:15px 15px 15px 15px;
+	display:block;
+	float:left;
+	color:#2b61a1;
+	text-transform:uppercase;
+	text-decoration:none;
+	font-family:Geneva, Arial, Helvetica, sans-serif;
+	font-size:13px;
+	font-weight:bold;
+	height: 10px;
+}
+#menu li a span{
+	color:#636363;
+	font-size:10px;
+	text-transform:lowercase;
+	font-family:Geneva, Arial, Helvetica, sans-serif;
+	font-weight:normal;
+}
+#menu li a:hover{
+	background:#e46825 url(images/menu_hover.gif) repeat-x;
+    -moz-border-radius: 10px;      
+    color: Blue; text-decoration: none;
+    height:10px;
+    text-align:center;
+    border-style:ridge;
+              
+	
+}
+#menu li a:hover span{
+	color:#636363;
+}
+.button
+{
+	background:#74befd url(images/menu_hover.gif) repeat-x;
+	color:#2b61a1;
+	border:2px solid #4a88ce;
+	text-transform:uppercase;
+	font-family:Geneva, Arial, Helvetica, sans-serif;
+	font-size:13px;
+	font-weight:bold;
+	cursor:auto;
+
+}
+.current span{
+	color:#636363;
+	font-size:10px;
+	text-transform:lowercase;
+	font-family:Geneva, Arial, Helvetica, sans-serif;
+	font-weight:normal;
+
+}  .current  {
+    background:#74befd url(images/menu_hover.gif) repeat-x;
+    -moz-border-radius8: 5px;      
+    text-decoration: non font-family:Geneva, Arial, Helvetica, sans-serif;
+    border:2px solid #bdc5cd;	
+    color:#2b61a1;
+    float:left;
+	color:#2b61a1;
+	text-transform:uppercase;
+	text-decoration:none;
+	font-family:Geneva, Arial, Helvetica, sans-serif;
+	font-weight:bold;
+	font-size:13px;
+	height: 40px;
+	width: 200px;
+	}
+
+ .footer  {
+    background:#74befd url(images/menu_hover.gif) repeat-x;
+    -moz-border-radius8: 5px;      
+    text-decoration: non font-family:Geneva, Arial, Helvetica, sans-serif;
+    border:2px solid #bdc5cd;	
+    color:#2b61a1;
+	}

@@ -1,0 +1,311 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" MasterPageFile="~/smartMISMaster.Master" CodeBehind="userDecision.aspx.cs" Inherits="SmartMIS.Input.userDecision" %>
+
+
+<asp:Content ID="xRayContent" runat="server" ContentPlaceHolderID="masterContentPlaceHolder">
+    <link rel="stylesheet" href="../Style/input.css" type="text/css" charset="utf-8" />
+    <link rel="SHORTCUT ICON" href="../Images/favicon.ico" />
+<link rel="stylesheet" href="../Style/masterPage.css" type="text/css" charset="utf-8" />
+
+    <script language="javascript" type="text/javascript">
+
+        function setID(value)
+        {
+            document.getElementById('<%= xRayIDHidden.ClientID %>').value = value.toString();
+            document.getElementById('<%= xRayIDLabel.ClientID %>').innerHTML = value;
+        }
+        
+    </script>
+    
+    <asp:ScriptManager ID="xRayScriptManager" runat="server"></asp:ScriptManager>
+    <asp:UpdatePanel ID="xRayUpdatePanel" runat="server">
+        <ContentTemplate>
+            <table class="inputTable" align="center" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td class="inputFirstCol"></td>
+                    <td class="inputSecondCol"></td>
+                    <td class="inputThirdCol"></td>
+                    <td class="inputForthCol"></td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <div class="masterHeader">
+                            <p class="masterHeaderTagline">UserDecision Input</p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="masterLabel">Status :</td>
+                    <td class="masterTextBox">
+                        <asp:DropDownList ID="udStatus" CssClass="masterDropDownList"                             
+                            AutoPostBack="true" runat="server" Width="30%">
+                        </asp:DropDownList>
+                    </td>
+                    <td>
+                        <span class="errorSpan">*</span></td>
+                    <td>    
+                        <asp:RequiredFieldValidator ID="udStatusFieldValidator0" runat="server" 
+                            ControlToValidate="xRayStatusDropDownList" CssClass="reqFieldValidator" 
+                            ErrorMessage="Status is Required"></asp:RequiredFieldValidator>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td class="masterLabel">Reason Name :</td>
+                    <td class="masterTextBox">
+                        <asp:DropDownList ID="udReasonNameDropDownList" AutoPostBack="true"                            
+                            CssClass="masterDropDownList" runat="server" Width="82%">
+                        </asp:DropDownList>
+                        <asp:Label ID="xRayReasonIDLabel" runat="server" Text="0" CssClass="masterHiddenLabel"></asp:Label>
+                    </td>
+                    <td>
+                        <span class="errorSpan">*</span>
+                    </td>
+                    <td>
+                        <asp:RequiredFieldValidator ID="udReasonNameFieldValidator" runat="server" 
+                            ControlToValidate="xRayReasonNameDropDownList" CssClass="reqFieldValidator"
+                            ErrorMessage="Reason Name is Required"></asp:RequiredFieldValidator>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="masterLabel">&nbsp;</td>
+                    <td class="masterTextBox">
+                     <asp:Label ID="xRayIDLabel" runat="server" Text="0" CssClass="masterHiddenLabel"></asp:Label>
+                        &nbsp;</td>
+                    <td>
+                        &nbsp;</td>
+                    <td>
+                        &nbsp;</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <asp:Button ID="xRaySaveButton" runat="server" CssClass="masterButton" Text="Save"  />&nbsp;
+                        <asp:Button ID="xRayCancelButton" runat="server" CssClass="masterButton" Text="Cancel" CausesValidation="false" />
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                       <div id="modalPage">
+                           <div class="modalBackground">
+                           </div>
+                            <div class="modalContainer">
+                               <div class="modal">
+                                   <div class="modalTop"><a href="javascript:hideModal('modalPage')"><img alt="Close" src="../Images/cancel.png" class="closeImg" /></a></div>
+                                   <div class="modalBody">
+                                       <table class="innerTable" cellspacing="0">
+                                           <tr>
+                                               <td style="width: 20%"></td>
+                                               <td style="width: 80%"></td>
+                                           </tr>
+                                           <tr>
+                                               <td class="masterLabel">
+                                                   <img alt="Close" src="../Images/question.png" />
+                                               </td>
+                                               <td>
+                                                   <asp:Label ID="xRayMessageLabel" runat="server" CssClass="masterWelcomeLabel" Text="Do you want to delete X-Ray Record."></asp:Label>
+                                               </td>
+                                           </tr>
+                                           <tr>
+                                               <td colspan="2">
+                                                   <asp:Button ID="xRayDialogOKButton" runat="server" CssClass="masterButton" Text="OK" CausesValidation="false" />&nbsp;
+                                                   <asp:Button ID="xRayDialogCancelButton" runat="server" CssClass="masterButton" OnClientClick="javascript:hideModal('modalPage'); return false" Text="Cancel" />
+                                               </td>
+                                           </tr>
+                                       </table>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <asp:Timer ID="xRayNotifyTimer" runat="server" Interval="5000" Enabled="false"   >
+                        </asp:Timer>
+                        <asp:HiddenField ID="xRayIDHidden" runat="server" Value="0" />
+                    </td>
+                    <td align="center">
+                        <div id="xRayNotifyMessageDiv" runat="server" visible="false" class="notifyMessageDiv">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <img id="xRayNotifyImage" runat="server" alt="notify" class="notifyImg" src="../Images/notifyCircle.png" />
+                                    </td>
+                                    <td>
+                                        <asp:Label id="xRayNotifyLabel" runat="server" Text="X-Ray record saved successfully."></asp:Label>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <div class="masterHeader">
+                            <p class="masterHeaderTagline">UserDecision Detail</p>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                                 <div id="modalPage2">
+                    <div class="modalBackground">
+                        </div>
+                        <div class="modalContainer">
+                            <div class="modal">
+                                <div class="modalTop">
+                                    <caption>
+                                        <a href="javascript:hideModal('modalPage2')">
+                                        <img alt="Close" class="closeImg" src="../Images/cancel.png" /></a></caption>
+                                </div>
+                                <div class="modalBody">
+                                    <table class="innerTable" cellspacing="0">
+                                        <tr>
+                                            <td class="masterLabel">Old Password :</td>
+                                            <td class="masterTextBox">
+                                                <asp:DropDownList ID="DropDownList1" runat="server">
+                                                </asp:DropDownList>
+                                            </td>
+                                        </tr>
+                                  
+                                        <tr>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                          <tr>
+                                            <td colspan="2">
+                                                <asp:Button ID="userManagemetSavePasswordButton" runat="server" CssClass="masterButton" Text="Save" />&nbsp;
+                                                <asp:Button ID="userManagemetCancelPasswordButton" runat="server" CssClass="masterButton" Text="Cancel" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <asp:Label ID="userManagementMessageLabel" runat="server" CssClass="messageLabel" Text="####"></asp:Label>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>              
+
+                </tr>
+                <tr>
+                    <td colspan="4">
+                        <table class="innerTable" cellspacing="0">
+                            <tr>
+                                <td class="gridViewHeader" style="width:20%; padding:5px">Work center</td>
+                                <td class="gridViewHeader" style="width:20%; padding:5px">GT Barcode</td>
+                                <td class="gridViewHeader" style="width:15%; padding:5px">FaultStatus Code</td>
+                                <td class="gridViewHeader" style="width:15%; padding:5px">Reason Name</td>
+                                <td class="gridViewHeader" style="width:10%; padding:5px">Inspector Code</td>
+                                <td class="gridViewHeader" style="width:10%; padding:5px">Status</td>
+                                <td class="gridViewHeader" style="width:10%; padding:5px"></td>
+                        </tr>
+                        </table>
+                        <asp:Panel ID="xRayPanel" runat="server" ScrollBars="Vertical" Height="195px" CssClass="panel" >
+                            <asp:GridView ID="xRayGridView" runat="server" AutoGenerateColumns="False"
+                            Width="100%" CellPadding="3" ForeColor="#333333" GridLines="Horizontal" PageSize="5" ShowHeader="False" >
+                            <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
+                            <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />                                   
+                                <Columns>
+                                    <asp:TemplateField HeaderText="ID" HeaderStyle-CssClass="gridViewHeader" ItemStyle-HorizontalAlign="Left" ItemStyle-Width="10%" Visible="false">
+                                        <ItemTemplate>
+                                            <asp:Label ID="xRayGridIDLabel" runat="server" Text='<%# Eval("iD") %>' CssClass="gridViewItems"></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                                <Columns>
+                                    <asp:TemplateField HeaderText="Workcenter ID" HeaderStyle-CssClass="gridViewHeader" ItemStyle-HorizontalAlign="Left" ItemStyle-Width="20%" Visible="false">
+                                        <ItemTemplate>
+                                            <asp:Label ID="xRayGridWCIDLabel" runat="server" CssClass="gridViewItems" Text='<%# Eval("wcID") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                                <Columns>
+                                    <asp:TemplateField HeaderText="Workcenter Name" HeaderStyle-CssClass="gridViewHeader" ItemStyle-HorizontalAlign="Left" ItemStyle-Width="20%" Visible="false">
+                                        <ItemTemplate>
+                                            <asp:Label ID="xRayGridWCNameLabel" runat="server" CssClass="gridViewItems" Text='<%# Eval("workcenterName") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                                <Columns>
+                                    <asp:TemplateField HeaderText="GT Barcode" HeaderStyle-CssClass="gridViewHeader" ItemStyle-HorizontalAlign="Left" ItemStyle-Width="20%">
+                                        <ItemTemplate>
+                                            <asp:Label ID="xRayGridGTBarcodeLabel" runat="server" CssClass="gridViewItems" Text='<%# Eval("gtBarcode") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                                <Columns>
+                                    <asp:TemplateField HeaderText="Fault Status ID" HeaderStyle-CssClass="gridViewHeader" ItemStyle-HorizontalAlign="Left" ItemStyle-Width="20%" Visible="false">
+                                        <ItemTemplate>
+                                            <asp:Label ID="xRayGridFaultStatusIDLabel" runat="server" CssClass="gridViewItems" Text='<%# Eval("faultStatusID") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                                <Columns>
+                                    <asp:TemplateField HeaderText="Fault Status Code" HeaderStyle-CssClass="gridViewHeader" ItemStyle-HorizontalAlign="Left" ItemStyle-Width="15%">
+                                        <ItemTemplate>
+                                            <asp:Label ID="xRayGridFaultStatusCodeLabel" runat="server" CssClass="gridViewItems" Text='<%# Eval("faultStatusCode") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                                <Columns>
+                                    <asp:TemplateField HeaderText="Reason ID" HeaderStyle-CssClass="gridViewHeader" ItemStyle-HorizontalAlign="Left" ItemStyle-Width="20%" Visible="false">
+                                        <ItemTemplate>
+                                            <asp:Label ID="xRayGridReasonIDLabel" runat="server" CssClass="gridViewItems" Text='<%# Eval("reasonID") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                                <Columns>
+                                    <asp:TemplateField HeaderText="Reason Name" HeaderStyle-CssClass="gridViewHeader" ItemStyle-HorizontalAlign="Left" ItemStyle-Width="15%">
+                                        <ItemTemplate>
+                                            <asp:Label ID="xRayGridReasonNameLabel" runat="server" CssClass="gridViewItems" Text='<%# Eval("reasonName") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                                <Columns>
+                                    <asp:TemplateField HeaderText="Inspector Code" HeaderStyle-CssClass="gridViewHeader" ItemStyle-HorizontalAlign="Left" ItemStyle-Width="10%" Visible="false">
+                                        <ItemTemplate>
+                                            <asp:Label ID="xRayGridInspectorCodeLabel" runat="server" CssClass="gridViewItems" Text='<%# Eval("manningID") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                                <Columns>
+                                    <asp:TemplateField HeaderText="Status" HeaderStyle-CssClass="gridViewHeader" ItemStyle-HorizontalAlign="Left" ItemStyle-Width="10%">
+                                        <ItemTemplate>
+                                            <asp:Label ID="xRayStatusLabel" runat="server" CssClass="gridViewItems" Text='<%# Eval("status") %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                                <Columns>
+                                    <asp:TemplateField HeaderText="" HeaderStyle-CssClass="gridViewHeader" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="8%">
+                                        <ItemTemplate>
+                                            <asp:ImageButton ID="xRayGridEditImageButton" runat="server" Text="Edit" CausesValidation="false" ToolTip="Edit" CssClass="gridImageButton" ImageUrl="~/Images/Edit.gif"  />
+                                            <asp:ImageButton ID="xRayGridDeleteImageButton" runat="server" Text="Delete" ToolTip="Delete" CausesValidation="false" CssClass="gridImageButton" ImageUrl="~/Images/Delete.gif" Value='<%# Eval("iD") %>' OnClientClick="javascript:revealModal('modalPage'); javascript:setID(this.value); return false;" />
+                                            <asp:ImageButton ID="udGridImageButton" runat="server" Text="Edit" CausesValidation="false" ToolTip="Decision" onclick="javascript:revealModal('modalPage2')" CssClass="gridImageButton" ImageUrl="~/Images/Plussign.gif" />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                            <PagerStyle BackColor="#507CD1" ForeColor="White" 
+                            HorizontalAlign="Center" />
+                            <SelectedRowStyle BackColor="#E2DED6" ForeColor="#333333" Font-Bold="True" />
+                            <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                            <EditRowStyle BackColor="#999999" />
+                            <AlternatingRowStyle BackColor="#FFFFFF" />
+                        </asp:GridView>
+                        </asp:Panel>
+                    </td>
+                </tr>
+                </table>
+                
+        </ContentTemplate>
+        <Triggers>
+        </Triggers>
+    </asp:UpdatePanel>
+</asp:Content>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               

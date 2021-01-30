@@ -1,0 +1,65 @@
+﻿.reportTable
+{
+	width: 100%;
+	
+	border-style: solid;
+	border-width:thin;
+	border-color: #C3D9FF;
+	background-color: #FFFFFF;
+}
+.reportFirstCol
+{
+	width: 5%;
+}
+.reportSecondCol
+{
+	width: 15%;
+}
+.reportThirdCol
+{
+	width: 85%;
+}
+
+.reportMainHeader
+{
+	border-top-style: solid;
+	border-bottom-style:solid;
+	border-width:medium;
+	border-color: #336600;
+	background-color: #FFFFFF;
+	text-align: left;
+	
+	font-family: Arial;
+	font-size: large;
+	font-weight: bold;
+	
+	color: #000000;
+	padding: 5px;
+}
+
+.reportHeader
+{
+	border-color: #000000;
+	background-color: #FFFFFF;
+	text-align: left;
+	font-family: Arial;
+	font-size: medium;
+	font-weight: bold;
+	color: #000066;
+	padding: 5px;
+}
+
+.reportHeading
+{
+	background:#b5cfd2 url(../Images/tableHeaderBlue.jpg);
+	color: #000000;
+	font-family: Arial;
+	font-size: small;
+	font-weight: bold;
+	text-align: left;
+	padding: 3px;
+	
+	border-width: 1px;
+	border-style: solid;
+	border-color: #FFFFFF;
+}

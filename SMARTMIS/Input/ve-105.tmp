@@ -1,0 +1,495 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace SmartMIS.Input
+{
+    public partial class uniformityBalancing : System.Web.UI.Page
+    {
+        int l;
+        string[] status = new string[] { "OK", "Not OK" };
+        string[] userDecision = new string[] { "N/A", "Scrap", "Rework" };
+        smartMISWebService myWebService = new smartMISWebService();
+
+        #region System Defined Function
+
+            protected void Page_Load(object sender, EventArgs e)
+            {
+                if (!Page.IsPostBack)
+                {                 
+                    fillStatusSearch();
+                    fillGridView();
+                }
+            }
+
+            protected void DropDownList_SelectedIndexChanged(object sender, EventArgs e)
+            {
+                ((DropDownList)sender).Items.Remove("".Trim());
+
+                if (((DropDownList)sender).ID == "uniBalReviewDialogReasonNameDropDownList")
+                {
+                    myConnection.open();
+                    myConnection.comm = myConnection.conn.CreateCommand();
+
+                    myConnection.comm.CommandText = "Select * from reasonMaster Where name = @name AND wcID = @wcID";
+                    myConnection.comm.Parameters.AddWithValue("@name", uniBalReviewDialogReasonNameDropDownList.SelectedItem.ToString().Trim());
+                    myConnection.comm.Parameters.AddWithValue("@wcID", uniBalWCIDLabel.Text.Trim());
+
+                    myConnection.reader = myConnection.comm.ExecuteReader();
+                    while (myConnection.reader.Read())
+                    {
+                        uniBalReviewDialogReasonIDLabel.Text = myConnection.reader[0].ToString();
+                    }
+
+                    myConnection.reader.Close();
+                    myConnection.comm.Dispose();
+                    myConnection.close();
+                }
+                else if (((DropDownList)sender).ID == "uniBalStatusSearchDropDownList")
+                {
+                    uniBalGridView.DataSource = myWebService.fillGridView("Select iD, wcID, wcName, gtbarCode, recipeCode, csvFileData, testResult, reasonID, reasonName, status, manningID, userDecision from vUniBalTBR WHERE status = " + (((DropDownList)sender).SelectedIndex) + "");
+                    uniBalGridView.DataBind();
+                }
+            }
+
+            protected void Button_Click(object sender, EventArgs e)
+            {
+                if (((Button)sender).ID == "uniBalSaveButton")
+                {
+
+                }
+                else if (((Button)sender).ID == "uniBalCancelButton")
+                {
+
+                }
+                else if (((Button)sender).ID == "uniBalDialogOKButton")
+                {
+                    uniBalIDLabel.Text = uniBalIDHidden.Value; //Passing value to viIDLabel because on postback hidden field retains its value
+                    delete();
+                    fillGridView();
+                    clearPage();
+                }
+                else if (((Button)sender).ID == "uniBalReviewDialogSaveButton")
+                {
+
+                    //*************************Calling the Event Programtically**************************************//
+
+                    EventArgs viDropDownListEventArgs = new EventArgs();
+                    DropDownList_SelectedIndexChanged(uniBalReviewDialogReasonNameDropDownList, viDropDownListEventArgs);
+
+                    //***********************************************************************************************//
+
+                    review();
+                    fillGridView();
+                    clearPage();
+                }
+            }
+
+            protected void ImageButton_Click(object sender, ImageClickEventArgs e)
+            {
+                if (((ImageButton)sender).ID == "uniBalGridReviewImageButton")
+                {
+                    //Code for Reviewing
+                    GridViewRow gridViewRow = (GridViewRow)((DataControlFieldCell)((ImageButton)sender).Parent).Parent;
+
+                    uniBalReviewDialogGTBarcodeLabel.Text = (((Label)gridViewRow.Cells[1].FindControl("uniBalGridGTBarcodeLabel")).Text);
+
+                    uniBalHiddenRecipeCode.Value = (((Label)gridViewRow.Cells[1].FindControl("uniBalGridRecipeCodeLabel")).Text);
+                    uniBalHiddenFaultStatusID.Value = (((Label)gridViewRow.Cells[1].FindControl("uniBalGridFaultStatusIDLabel")).Text);
+                    uniBalTestResultHidden.Value = (((Label)gridViewRow.Cells[1].FindControl("uniBalGridFaultStatusCodeLabel")).Text);
+                                   
+                    fillReasonName("86");
+                    fillUserDecision();
+
+                    ScriptManager.RegisterClientScriptBlock(uniBalMagicButton, this.GetType(), "BlockName", "javascript:revealModal('modalPageForReview');", true);
+                }
+
+                else if (((ImageButton)sender).ID == "uniBalGridEditImageButton")
+                {
+                    //Code for editing gridview row
+                    GridViewRow gridViewRow = (GridViewRow)((DataControlFieldCell)((ImageButton)sender).Parent).Parent;
+                }
+                    
+                else if (((ImageButton)sender).ID == "uniBalGridDeleteImageButton")
+                {
+                    //Code for deleting gridview row
+                }
+
+                else
+                { }
+            }
+
+            protected void NotifyTimer_Tick(object sender, EventArgs e)
+            {
+                uniBalNotifyMessageDiv.Visible = false;
+                uniBalNotifyTimer.Enabled = false;
+            }
+
+        #endregion
+
+        #region User Defined Function
+
+
+            /// <summary>
+            /// Function for retriving Reason Name according to a particular workcenter
+            /// </summary>
+            /// <param name="wcID">
+            /// ID of workcenter
+            /// </param>
+
+            private void fillReasonName(string wcID)
+            {
+                //Description   : Function for filling uniBalReviewDialogReasonNameDropDownList with Reason Name Workcenter wise
+                //Author        :
+                //Date Created  : 07 April 2011 
+                //Date Updated  : 07 April 2011
+                //Revision No.  : 01
+                //Revision Desc :
+
+                uniBalReviewDialogReasonNameDropDownList.Items.Clear();
+                uniBalReviewDialogReasonNameDropDownList.Items.Add("");
+
+                uniBalReviewDialogReasonNameDropDownList.DataSource = myWebService.FillDropDownList("reasonMaster", "name", "WHERE wcID = " + wcID + "");
+                uniBalReviewDialogReasonNameDropDownList.DataBind();
+            }
+
+
+            private void fillStatusSearch()
+            {
+
+                //Description   : Function for filling tyreXRay with Status Name
+                //Author        : Rohit Singh
+                //Date Created  : 07 April 2011
+                //Date Updated  : 07 April 2011
+                //Revision No.  : 01
+
+                uniBalStatusSearchDropDownList.Items.Clear();
+                uniBalStatusSearchDropDownList.Items.Add("");
+
+                foreach (string item in status)
+                {
+                    uniBalStatusSearchDropDownList.Items.Add(item);
+                }
+            }
+
+            public bool displayNotReqd(Object gtbarcodeObj)
+            {
+
+                //Description   : Function for displaying review option in xRayGridView
+                //Author        : Rohit Singh
+                //Date Created  : 07 April 2011
+                //Date Updated  : 07 April 2011
+                //Revision No.  : 01
+                //Revision Desc : 
+
+                bool flag = false;
+
+                myConnection.open();
+                myConnection.comm = myConnection.conn.CreateCommand();
+
+                myConnection.comm.CommandText = "Select count(gtbarcode) from vTyreXray WHERE gtbarCode = @gtbarCode";
+                myConnection.comm.Parameters.AddWithValue("@gtbarCode", gtbarcodeObj.ToString());
+
+                int db = Convert.ToInt32(myConnection.comm.ExecuteScalar());
+
+                myConnection.reader.Close();
+                myConnection.comm.Dispose();
+
+                if (db == 1)
+                {
+                    myConnection.comm.CommandText = "Select status from vTyreXray WHERE gtbarCode = @gtBarCode2";
+                    myConnection.comm.Parameters.AddWithValue("@gtBarCode2", gtbarcodeObj.ToString());
+                    myConnection.reader = myConnection.comm.ExecuteReader();
+                    while (myConnection.reader.Read())
+                    {
+                        string val = myConnection.reader[0].ToString();
+                        if (val.Equals("0"))
+                        {
+                            flag = true;
+                        }
+                    }
+                }
+
+                myConnection.reader.Close();
+                myConnection.comm.Dispose();
+                myConnection.close();
+
+                return flag;
+            }
+
+            private void fillUserDecision()
+            {
+
+                //Description   : Function for filling uniBalUserDecisionDropDownList with User Decision
+                //Author        : Rohit Singh
+                //Date Created  : 07 March 2011
+                //Date Updated  : 07 March 2011
+                //Revision No.  : 01
+
+                uniBalReviewDialogUserDecisionDropDownList.Items.Clear();
+                uniBalReviewDialogUserDecisionDropDownList.Items.Add("");
+
+                foreach (string item in userDecision)
+                {
+                    uniBalReviewDialogUserDecisionDropDownList.Items.Add(item);
+                }
+            }
+
+            private void fillGridView()
+            {
+
+                //Description   : Function for filling uniBalGridView
+                //Author        : Rohit Singh   || Rohit Singh
+                //Date Created  : 28 March 2011
+                //Date Updated  : 28 March 2011 || 29 March 2011                || 07 April 2011
+                //Revision No.  : 01            || 02                           || 03
+                //Revision Desc :               || change the logic for row[9]  || change the logic for filling the uniBalGridView by webservice
+
+                uniBalGridView.DataSource = myWebService.fillGridView("Select iD, wcID, wcName, gtbarCode, recipeCode, csvFileData, testResult, reasonID, reasonName, status, manningID, userDecision, dtandTime from vUniBalTBR");
+                uniBalGridView.DataBind();
+            }
+
+            public string displayStatus(Object obj)
+            {
+
+                //Description   : Function for making a decision status of viGridView
+                //Author        : Rohit Singh
+                //Date Created  : 04 April 2011
+                //Date Updated  : 04 April 2011
+                //Revision No.  : 01
+                //Revision Desc : 
+
+                string flag = string.Empty;
+
+                if (!string.IsNullOrEmpty(obj.ToString()))
+                {
+                    flag = status[Convert.ToInt32(obj)];
+                }
+
+                return flag;
+            }
+           
+
+            /// <summary>
+            /// Function for displaying review option in uniBalGridView
+            /// </summary>
+            /// <param name="obj">Object for enabling review option</param>
+            /// <returns></returns>
+
+            public bool displayReview(Object gtbarcodeObj, Object statusObj)
+            {
+
+                //Description   : Function for displaying review option in uniBalGridView
+                //Author        : Rohit Singh
+                //Date Created  : 07 April 2011
+                //Date Updated  : 07 April 2011
+                //Revision No.  : 01
+                //Revision Desc : 
+
+                bool flag = true;
+
+                if (!string.IsNullOrEmpty(statusObj.ToString()))
+                {
+                    myConnection.open();
+                    myConnection.comm = myConnection.conn.CreateCommand();
+
+                    myConnection.comm.CommandText = "Select * from vUniBalTBR WHERE gtbarCode = @gtbarCode AND Status = @Status";
+                    myConnection.comm.Parameters.AddWithValue("@gtbarCode", gtbarcodeObj.ToString());
+                    myConnection.comm.Parameters.AddWithValue("@Status", Convert.ToInt32("0"));
+
+                    myConnection.reader = myConnection.comm.ExecuteReader();
+                    while (myConnection.reader.Read())
+                    {
+                        flag = false;
+                    }
+                    myConnection.reader.Close();
+                    myConnection.comm.Dispose();
+                    myConnection.close();
+
+                }
+
+                return flag;
+            }
+
+            public string displayUserDecision(Object obj)
+            {
+
+                //Description   : Function for displaying user decision in viGridView
+                //Author        : Rohit Singh
+                //Date Created  : 07 April 2011
+                //Date Updated  : 07 April 2011
+                //Revision No.  : 01
+                //Revision Desc : 
+
+                string flag = "";
+
+                if (!string.IsNullOrEmpty(obj.ToString()))
+                {
+                    flag = userDecision[Convert.ToInt32(obj)];
+                }
+
+                return flag;
+            }
+
+            private int delete()
+            {
+
+                //Description   : Function for deleting record in tyreXray Table
+                //Author        : Rohit Singh
+                //Date Created  : 07 April 2011
+                //Date Updated  : 07 April 2011
+                //Revision No.  : 01
+
+                int flag = 0;
+
+                if (uniBalIDLabel.Text.Trim() != "0")
+                {
+                    myConnection.open();
+                    myConnection.comm = myConnection.conn.CreateCommand();
+
+                    myConnection.comm.CommandText = "Delete From unibalrunouttbr WHERE (iD = @iD)";
+                    myConnection.comm.Parameters.AddWithValue("@iD", uniBalIDLabel.Text.Trim());
+
+                    flag = myConnection.comm.ExecuteNonQuery();
+
+                    myConnection.comm.Dispose();
+                    myConnection.close();
+
+                    Notify(1, "Uniformity record deleted successfully");
+                }
+
+                return flag;
+            }
+
+            private int review()
+            {
+                //Description   : Function for saving reviewed record in vInspectiontbr Table
+                //Author        : Rohit Singh
+                //Date Created  : 06 April 2011
+                //Date Updated  : 06 April 2011
+                //Revision No.  : 01           
+                //Revision Desc :              
+
+                int flag = 0;
+
+                if (uniBalIDLabel.Text.Trim() == "0")
+                {
+                    if (validationForReview() <= 0)
+                    {
+                        int statusID = getStatus(uniBalTestResultHidden.Value);
+                        myConnection.open();
+                        myConnection.comm = myConnection.conn.CreateCommand();
+                        myConnection.comm.CommandText = "Insert into unibalrunouttbr (wcID, gtbarCode,testResult, recipeCode, manningID, status, reasonID,  dtandTime, userDecision) values (@wcID, @gtbarCode, @testResult, @recipeCode, @manningID, @status, @reasonID, @dtandTime, @userDecision)";
+                        myConnection.comm.Parameters.AddWithValue("@wcID", uniBalWCIDLabel.Text.Trim());
+                        myConnection.comm.Parameters.AddWithValue("@gtbarCode", uniBalReviewDialogGTBarcodeLabel.Text.Trim());
+                        myConnection.comm.Parameters.AddWithValue("@recipeCode", uniBalHiddenRecipeCode.Value.Trim());                      
+                        myConnection.comm.Parameters.AddWithValue("@manningID", Session["ID"].ToString());
+                        myConnection.comm.Parameters.AddWithValue("@status", statusID.ToString());
+                        myConnection.comm.Parameters.AddWithValue("@reasonID", uniBalReviewDialogReasonIDLabel.Text.Trim());
+                        myConnection.comm.Parameters.AddWithValue("@userDecision", uniBalReviewDialogUserDecisionDropDownList.SelectedIndex - 1);
+                        myConnection.comm.Parameters.AddWithValue("@dtandTime", Convert.ToDateTime(DateTime.Now.ToLongDateString()));
+                        myConnection.comm.Parameters.AddWithValue("@testResult", uniBalTestResultHidden.Value.Trim());
+                 
+                        flag = myConnection.comm.ExecuteNonQuery();
+
+                        myConnection.comm.Dispose();
+                        myConnection.close();
+
+                        Notify(1, "Uniformity record saved successfully");
+                    }
+                }
+
+                return flag;
+            }
+
+            private int getStatus(string val)
+            {
+                
+                for (int i = 0; i < status.Length; i++)
+                {
+                    if (val.Equals(status[i]))
+                    {
+                        l = i;
+                    }
+                }
+                return l;
+            }
+
+            private int validationForReview()
+            {
+
+                //Description   : Function for validation for review of data for inserting and deleting record in tyreXRay Table
+                //Author        : Rohit Singh
+                //Date Created  : 07 April 2011
+                //Date Updated  : 07 April 2011
+                //Revision No.  : 01
+                //Revision Desc : 
+
+                int flag = 0;
+
+                if (uniBalWCIDLabel.Text.Trim() == "0")
+                {
+                    flag = 1;
+                }
+
+                if (uniBalReviewDialogReasonIDLabel.Text.Trim() == "0")
+                {
+                    flag = 1;
+                }
+
+                if (uniBalReviewDialogUserDecisionDropDownList.SelectedValue.Trim() == "")
+                {
+                    flag = 1;
+                }
+                return flag;
+            }           
+
+            private void clearPage()
+            {
+
+                //Description   : Function for clearing controls and variables of Page
+                //Author        : Rohit Singh
+                //Date Created  : 30 March 2011
+                //Date Updated  : 30 March 2011
+                //Revision No.  : 01
+                //Revision Desc : 
+
+                uniBalIDLabel.Text = "0";
+            }
+
+            private void Notify(int notifyIcon, string notifyMessage)
+            {
+
+                //Description   : Function for showing notify information in uniBalMessageDiv
+                //Author        : Rohit Singh
+                //Date Created  : 28 March 2011
+                //Date Updated  : 28 March 2011
+                //Revision No.  : 01
+
+                //Condition 0   : Nothing
+                //Condition 1   : Insertion
+                //Condition 2   : Updation
+                //Condition 3   : Deletion
+                //Condition 3   : Error
+
+                if (notifyIcon == 0)
+                {
+                    uniBalNotifyImage.Src = "../Images/notifyCircle.png";
+                }
+                else if (notifyIcon == 1)
+                {
+                    uniBalNotifyImage.Src = "../Images/tick.png";
+                }
+                uniBalNotifyLabel.Text = notifyMessage;
+
+                uniBalNotifyMessageDiv.Visible = true;
+                uniBalNotifyTimer.Enabled = true;
+            }
+
+        #endregion
+    }
+}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             

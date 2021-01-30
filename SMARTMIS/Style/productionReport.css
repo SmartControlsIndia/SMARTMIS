@@ -1,0 +1,168 @@
+﻿.productionReportTable
+{
+	width: 100%;
+	
+	border-style: solid;
+	border-width:thin;
+	border-color: #C3D9FF;
+	background-color: #FFFFFF;
+}
+.productionReportDailyFirstCol
+{
+	width: 15%;
+}
+.productionReportDailySecondCol
+{
+	width: 6%;
+}
+.productionReportDailyThirdCol
+{
+	width: 6%;
+}
+.productionReportDailyForthCol
+{
+	width: 8%;
+}
+.productionReportDailyFifthCol
+{
+	width: 6%;
+}
+.productionReportDailySixthCol
+{
+	width: 6%;
+}
+.productionReportDailySeventhCol
+{
+	width: 8%;
+}
+.productionReportDailyEighthCol
+{
+	width: 6%;
+}
+.productionReportDailyNinthCol
+{
+	width: 6%;
+}
+.productionReportDailyTenthCol
+{
+	width: 8%;
+}
+.productionReportDailyEleventhCol
+{
+	width: 6%;
+}
+.productionReportDailyTwelvethCol
+{
+	width: 6%;
+}
+.productionReportDailyThirteenthCol
+{
+	width: 8%;
+}
+
+
+.productionReportMonthlyFirstCol
+{
+	width: 4%;
+}
+.productionReportMonthlySecondCol
+{
+	width: 15%;
+}
+.productionReportMonthlyThirdCol
+{
+	width: 15%;
+}
+.productionReportMonthlyForthCol
+{
+	width: 18%;
+}
+.productionReportMonthlyFifthCol
+{
+	width: 15%;
+}
+.productionReportMonthlySixthCol
+{
+	width: 15%;
+}
+.productionReportMonthlySeventhCol
+{
+	width: 18%;
+}
+
+.productionReportYearlyFirstCol
+{
+	width: 10%;
+}
+.productionReportYearlySecondCol
+{
+	width: 15%;
+}
+.productionReportYearlyThirdCol
+{
+	width: 15%;
+}
+.productionReportYearlyForthCol
+{
+	width: 15%;
+}
+.productionReportYearlyFifthCol
+{
+	width: 15%;
+}
+.productionReportYearlySixthCol
+{
+	width: 15%;
+}
+.productionReportYearlySeventhCol
+{
+	width: 15%;
+}
+
+.productionReportHeader
+{
+	background-color: #C3D9FF;
+	
+	font-family: Arial;
+	font-size: medium;
+	font-weight: bold;
+	
+	padding: 5px;
+}
+
+.productionReportShiftHeader
+{
+	background-color: #5D90E7;
+	
+	color : #FFFFFF;
+	
+	font-family: Arial;
+	font-size: 12px;
+	font-weight: bold;
+	text-align: center;
+	padding: 5px;
+}
+
+.productionReportActualPlanHeader
+{
+	background-color: #FF9933;
+	color: #FFFFFF;
+	font-family: Arial;
+	font-size: 12px;
+	font-weight: bold;
+	text-align: center;
+	padding: 5px;
+}
+
+.productionReportHeaderLabel
+{
+	text-align: center;
+	
+	font-family: Arial;
+	font-size: small;
+	font-weight: bold;
+	
+	padding-right: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}

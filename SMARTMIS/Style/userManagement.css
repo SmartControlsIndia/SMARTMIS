@@ -1,0 +1,63 @@
+﻿.managementTable
+{
+	width: 100%;
+	
+	border-style: solid;
+	border-width:thin;
+	border-color: #C3D9FF;
+	background-color: #FFFFFF;
+}
+.managementFirstCol
+{
+	width: 25%;
+}
+.managementSecondCol
+{
+	width: 25%;
+}
+
+.managementThirdCol
+{
+	width: 10%;
+}
+.managementForthCol
+{
+	width: 40%;
+}
+
+ul.list
+{
+	font-family: Arial;
+	font-size: small;
+	color: #000000;
+	list-style-type: none;
+	margin: 0;
+	padding: 0px;
+}
+a.task:link, a.task:visited
+{
+	display: block;
+	font-family: Arial;
+	font-size: small;
+	color: #000000;
+	padding: 4px;
+	width: 55%;
+	text-decoration: none;
+	background-color: #F0F0F0;
+	border-style: solid;
+	border-color: #FFFFFF;
+	border-width: thin;
+}
+a.task:hover
+{
+	color: #FFFFFF;
+	background-color: #999999;
+}
+
+.userImg
+{
+	height: 60px;
+	width: 60px;
+}
+
+

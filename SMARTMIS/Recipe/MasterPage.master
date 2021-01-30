@@ -1,0 +1,183 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="MasterPage.master.cs" Inherits="MasterPage" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    	<title>Smart Controls</title>
+		<meta http-equiv="content-type" content="text/html;charset=utf-8">
+		<link rel="stylesheet" type="text/css" href="css/superfish.css" media="screen">
+		<script type="text/javascript" src="js/jquery-1.2.6.min.js"></script>
+
+        <link href="css/menu.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="~/Recipe/js/hoverIntent.js"></script>
+		<script type="text/javascript" src="js/superfish.js"></script>
+		<script type="text/javascript">
+        
+		// initialise plugins
+		jQuery(function(){
+			jQuery('ul.sf-menu').superfish();
+		});
+            
+ 
+        </script>
+		
+		
+    <asp:ContentPlaceHolder id="head" runat="server">
+    </asp:ContentPlaceHolder>
+        <style type="text/css">
+
+        .style3
+        {
+            width: 287px;
+        }
+        </style>
+</head>
+<body >
+    <form id="form1" runat="server">
+    
+        <asp:Panel ID="Panel2" runat="server" BackImageUrl="~/Recipe/images/Picture1.png">
+    
+        <table style="width: 100%;" align="center">
+       
+            <tr align="center" class="footer " valign="middle">
+             
+                <td align="center">
+                     <%--<asp:Panel ID="Panel1" runat="server" >--%>
+                            <ul class="sf-menu" >
+			    <li class="current">
+				    <a href="#a"> Recipe </a>
+				    <ul>
+    					
+					    <li class="current">
+						    <a href="REC_NEW.aspx">New</a>
+    						
+					    </li>
+					    <li>
+						    <a href="REC_EDIT.aspx">Edit</a>
+    						
+					    </li>
+					    <li>
+						    <a href="REC_VIEW.aspx">View</a>
+    						
+					    </li>
+					    <li>
+						    <a href="REC_DELETE.aspx" >Delete</a>
+    						
+					    </li>
+				    </ul>
+			    </li>
+			    <li class="current">
+				    <a href="#a"> Recipe Structure </a>
+				    <ul>
+    					
+					    <li class="current">
+						    <a href="REC_STA_NEW.aspx" >New </a>
+    						
+					    </li>
+					    <li>
+						    <a href="REC_STA_EDIT.aspx" >Edit </a>
+    						
+					    </li>
+					    <li>
+						    <a href="REC_STA_VIEW.aspx" >View </a>
+    						
+					    </li>
+					    <li>
+						    <a href="REC_STA_DELETE.aspx" > Delete </a>
+    						
+					    </li>
+				    </ul>
+			    </li>
+			    <li class="current">
+				    <a href="#a"> Valves </a>
+				    <ul>
+    					
+					    <li class="current">
+						    <a href="VAL_VIEW.aspx" >New </a>
+    						
+					    </li>
+					    <li>
+						    <a href="VAL_EDIT.aspx" >Edit </a>
+    						
+					    </li>
+    					
+					    <li>
+						    <a href="VAL_NEW.aspx" >View </a>
+    						
+					    </li>
+					    <li>
+						    <a href="VAL_DELETE.aspx" > Delete </a>
+    						
+					    </li>
+				    </ul>
+			    </li>
+			    <li class="current">
+				    <a href="#a"> Press </a>
+				    <ul>
+    					
+					    <li class="current">
+						    <a href="PRE_NEW.aspx" >New </a>
+    						
+					    </li>
+					    <li>
+						    <a href="PRE_EDIT.aspx"  >Edit </a>
+    						
+					    </li>
+					    <li>
+						    <a href="PRE_VIEW.aspx" >View </a>
+    						
+					    </li>
+					    <li>
+						    <a href="PRE_DELETE.aspx" > Delete </a>
+    						
+					    </li>
+    					
+				    </ul>
+			    </li>
+    			
+    			
+            
+			    </ul>
+    		                    
+                    <%-- </asp:Panel>--%>
+			    </td>
+           </tr>
+           <tr align="center" class="footer " valign="middle">            
+              <td><a href="/SmartMIS/Home/home.aspx" class="navigation">[Home]</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/SmartMIS/validateUser.aspx?action=1" class="sf-menu">[Log out]</a></td>
+           </tr>
+            <tr align="center" style="width: 60%">
+                <td align="left" class="style3">
+                    <asp:ContentPlaceHolder id="ContentPlaceHolder1" runat="server"></asp:ContentPlaceHolder>
+             </td>
+               
+                
+           </tr>
+           <tr align="center" class="footer">
+                <td>
+                     <asp:ScriptManager ID="ScriptManager1" runat="server">
+                        </asp:ScriptManager>
+                        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                        <ContentTemplate>
+                         <asp:Timer ID="Timer1" runat="server" Interval="500" ontick="Timer1_Tick" 
+                                Enabled="False">
+                        </asp:Timer>
+                        <asp:Label ID="Label1" runat="server" 
+                        Font-Bold="True" ForeColor="Blue"></asp:Label>
+                        </ContentTemplate>
+                        </asp:UpdatePanel>       
+                </td>
+           </tr>
+           
+        </table>
+        </asp:Panel>
+        &nbsp;<a class="sf-menu" href="/SmartMIS/validateUser.aspx?action=1"></a><tr align="center"
+            style="width: 60%">
+        </tr>
+            <td align="left" class="style3">
+            </td>
+    
+    
+    </form>
+</body>
+</html>

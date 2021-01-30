@@ -1,0 +1,70 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="NewTUOReportMaster.master.cs" MasterPageFile="~/smartMISMaster.Master" Inherits="SmartMIS.NewTUOReportMaster" %>
+ 
+<asp:Content ID="NewtuoReportMasterContent" runat="server" ContentPlaceHolderID="masterContentPlaceHolder">
+    
+   <link rel="stylesheet" href="../Style/reportMaster.css" type="text/css" charset="utf-8" />
+<link rel="SHORTCUT ICON" href="../Images/favicon.ico" />
+    
+    <script type="text/javascript" language="javascript">
+        function showPrintPreview(id)
+        {
+
+            var el = document.getElementById('printArea');
+            var backEl = document.getElementById('BackImage');
+            var printPreviewEl = document.getElementById('PrintPreviewImage');
+            var printEl = document.getElementById('PrintImage');
+
+            if (id == 'PrintPreviewImage') 
+            {
+                document.body.style.visibility = "hidden";
+
+                el.style.visibility = "visible";
+                el.style.position = "absolute";
+                el.style.top = "20px";
+                el.style.left = "30px";
+
+                backEl.style.display = "inline";
+                printPreviewEl.style.display = "none";
+                printEl.style.display = "inline";
+            }
+            else if (id == 'PrintImage') 
+            {
+                window.print();
+            }
+            else if (id == 'BackImage')
+             {
+                 location.reload(true);
+            }
+            
+        }
+    </script> 
+    
+    
+    
+    
+        
+    <input id="HdnValue" runat="server" type="hidden" value="" />
+    
+     <table align="center" class="reportMasterTable">
+         <tr>
+             <td colspan="3">
+                <div id="printArea">
+                    <div style="text-align:left;">
+                        <img id="BackImage" alt="Home" title="Back" src="../Images/back.png" class="masterToolBoxImage" onclick="javascript:showPrintPreview('BackImage')"  style="display: none" />
+                        <img id="PrintPreviewImage" alt="Print Preview" title="Print Preview" src="../Images/print Preview.png" class="masterToolBoxImage" onclick="javascript:showPrintPreview('PrintPreviewImage')"  />
+                        <img id="PrintImage" alt="Print" title="Print" src="../Images/print.png" class="masterToolBoxImage" onclick="javascript:showPrintPreview('PrintImage')" style="display: none" />
+                    </div>
+                    <div id="exportArea">
+                        <asp:ContentPlaceHolder ID="NewtuoReportMasterContentPalceHolder" runat="server">
+                        </asp:ContentPlaceHolder>
+                    </div>
+                 </div>
+             </td>
+         </tr>
+         <tr>
+             <td>&nbsp;</td>
+             <td>&nbsp;</td>
+             <td>&nbsp;</td>
+         </tr>
+     </table>
+</asp:Content>

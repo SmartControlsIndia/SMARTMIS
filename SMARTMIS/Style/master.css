@@ -1,0 +1,57 @@
+﻿.masterTable
+{
+	width: 100%;
+	
+	border-style: solid;
+	border-width:thin;
+	border-color: #C3D9FF;
+	background-color: #FFFFFF;
+}
+.masterFirstCol
+{
+	width: 25%;
+}
+.masterSecondCol
+{
+	width: 25%;
+}
+.masterThirdCol
+{
+	width: 10%;
+}
+.masterForthCol
+{
+	width: 40%;
+}
+
+.homemenu {
+    float: left;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+.homemenulink {
+    float: left;
+    width: 6em;
+    text-decoration: none;
+    color: white;
+    background-color: #165188;
+    padding: 0.2em 0.6em;
+    border-right: 1px solid white;
+}
+
+a.homemenulink:hover {
+    background-color: #15497C;
+}
+
+li.homemenulist {
+    display: inline;
+}
+.charttable
+{
+    border-collapse:collapse;
+    width:100%;
+}
+

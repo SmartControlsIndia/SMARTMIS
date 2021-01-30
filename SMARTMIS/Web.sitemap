@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  
+	<siteMapNode url="/SmartMIS/Home/home.aspx" title="Home"  description="">  
+   
+	<siteMapNode url="/SmartMIS/Master/workCenter.aspx" title="Workcenter"  description="" />
+	<siteMapNode url="/SmartMIS/Master/unit.aspx" title="Unit of Measure"  description="" />
+	<siteMapNode url="/SmartMIS/Master/department.aspx" title="Department"  description="" />
+	<siteMapNode url="/SmartMIS/Master/manning.aspx" title="Manning"  description="" />
+	<siteMapNode url="/SmartMIS/Master/category.aspx" title="Category"  description="" />
+    <siteMapNode url="/SmartMIS/Master/event.aspx" title="Event"  description="" />
+    <siteMapNode url="/SmartMIS/Master/area.aspx" title="Area"  description="" />
+    <siteMapNode url="/SmartMIS/Master/role.aspx" title="UserRoles"  description="" />
+    <siteMapNode url="/SmartMIS/Master/reason.aspx" title="Reason"  description="" />
+    <siteMapNode url="/SmartMIS/Master/MHE.aspx" title="MHE Details"  description="" />
+    <siteMapNode url="/SmartMIS/Master/processCheckParameter.aspx" title="Process Parameters"  description="" />
+    <siteMapNode url="/SmartMIS/Master/faultStatus.aspx" title="Fault Status"  description="" />
+    <siteMapNode url="/SmartMIS/Master/utility.aspx" title="Utility"  description="" />
+    <siteMapNode url="/SmartMIS/Master/rawMaterial.aspx" title="RawMaterial"  description="" />
+    <siteMapNode url="/SmartMIS/Master/productType.aspx" title="Product Type"  description="" />
+    <siteMapNode url="/SmartMIS/Master/oem.aspx" title="OemMaster"  description="" />
+
+
+    <siteMapNode url="/SmartMIS/Input/productionPlanning.aspx" title="Production Planning"  description="" />
+    <siteMapNode url="/SmartMIS/Input/heldUpMaterial.aspx" title="Held Up Material"  description="" />
+    <siteMapNode url="/SmartMIS/Input/uniformityBalancing.aspx" title="Uniformity/Balancing and Run Out"  description="" />
+    <siteMapNode url="/SmartMIS/Input/heldUpMaterialUserDecision.aspx" title="Held Up Material User Decision"  description="" />
+    <siteMapNode url="/SmartMIS/Input/processCheckParameter.aspx" title="Process Check Parameters"  description="" />
+    <siteMapNode url="/SmartMIS/Input/xray.aspx" title="X-Ray"  description="" />
+    <siteMapNode url="/SmartMIS/Input/downTime.aspx" title="Downtime Reason"  description="" />
+    <siteMapNode url="/SmartMIS/Input/visualInspection.aspx" title="Visual Inspection"  description="" />
+    <siteMapNode url="/SmartMIS/Input/leftOverMaterial.aspx" title="Material Left Over"  description="" />
+    <siteMapNode url="/SmartMIS/Input/manningInput.aspx" title="Manning Input"  description="" />
+    <siteMapNode url="/SmartMIS/Input/rawMatarialUsed.aspx" title="Raw Material Used"  description="" />
+
+
+    <siteMapNode url="/SmartMIS/Report/production.aspx" title="Production Report"  description="" />
+    <siteMapNode url="/SmartMIS/Report/matarialConsumption.aspx" title="Material Consumption Report"  description="" />
+    <siteMapNode url="/SmartMIS/Report/weighment.aspx" title="Weighment Report"  description="" />
+    <siteMapNode url="/SmartMIS/Report/rawMatarialUsed.aspx" title="Raw-Material"  description="" />
+    <siteMapNode url="/SmartMIS/Report/downTime.aspx" title="DownTime Report"  description="" />
+    <siteMapNode url="/SmartMIS/Report/quality.aspx" title="Quality Report"  description="" />
+    <siteMapNode url="/SmartMIS/Report/tyreGeneaology.aspx" title="Tyre Genealogy Report"  description="" />
+    <siteMapNode url="/SmartMIS/Report/SummaryProductionReport.aspx" title="Production Summary Report"  description="" />
+    <siteMapNode url="/SmartMIS/Report/oee.aspx" title="OEE Report"  description="" />
+    <siteMapNode url="/SmartMIS/Report/qualityAnalysis.aspx" title="Quality Analysis Report"  description="" />
+    <siteMapNode url="/SmartMIS/utilityReport.aspx" title="Utility"  description="" />
+
+    <siteMapNode url="/SmartMIS/UserManagement/UserManagement.aspx" title="User Management"  description="" >
+	<siteMapNode url="/SmartMIS/UserManagement/userRegistration.aspx" title="Create User"  description=""/>
+	<siteMapNode url="/SmartMIS/UserManagement/userUpdation.aspx" title="Edit User"  description="" />
+
+
+  
+    
+	</siteMapNode>
+	</siteMapNode>
+</siteMap>
+
+

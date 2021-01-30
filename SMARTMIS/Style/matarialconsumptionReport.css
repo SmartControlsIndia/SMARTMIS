@@ -1,0 +1,167 @@
+﻿.matarialReportTable
+{
+	width: 100%;
+	
+	border-style: solid;
+	border-width:thin;
+	border-color: #C3D9FF;
+	background-color: #FFFFFF;
+}
+.matarialReportDailyFirstCol
+{
+	width: 15%;
+}
+.matarialReportDailySecondCol
+{
+	width: 6%;
+}
+.matarialReportDailyThirdCol
+{
+	width: 6%;
+}
+.matarialReportDailyForthCol
+{
+	width: 8%;
+}
+.matarialReportDailyFifthCol
+{
+	width: 6%;
+}
+.matarialReportDailySixthCol
+{
+	width: 6%;
+}
+.matarialReportDailySeventhCol
+{
+	width: 8%;
+}
+.matarialReportDailyEighthCol
+{
+	width: 6%;
+}
+.matarialReportDailyNinthCol
+{
+	width: 6%;
+}
+.matarialReportDailyTenthCol
+{
+	width: 8%;
+}
+.matarialReportDailyEleventhCol
+{
+}
+.matarialReportDailyTwelvethCol
+{
+	width: 6%;
+}
+.matarialReportDailyThirteenthCol
+{
+	width: 8%;
+}
+
+
+.matarialReportMonthlyFirstCol
+{
+	width: 4%;
+}
+.matarialReportMonthlySecondCol
+{
+	width: 15%;
+}
+.matarialReportMonthlyThirdCol
+{
+	width: 15%;
+}
+.matarialReportMonthlyForthCol
+{
+	width: 18%;
+}
+.matarialReportMonthlyFifthCol
+{
+	width: 15%;
+}
+.matarialReportMonthlySixthCol
+{
+	width: 15%;
+}
+.matarialReportMonthlySeventhCol
+{
+	width: 18%;
+}
+
+.matarialReportYearlyFirstCol
+{
+	width: 10%;
+}
+.matarialReportYearlySecondCol
+{
+	width: 15%;
+}
+.matarialReportYearlyThirdCol
+{
+	width: 15%;
+}
+.matarialReportYearlyForthCol
+{
+	width: 15%;
+}
+.matarialReportYearlyFifthCol
+{
+	width: 15%;
+}
+.matarialReportYearlySixthCol
+{
+	width: 15%;
+}
+.matarialReportYearlySeventhCol
+{
+	width: 15%;
+}
+
+.matarialReportHeader
+{
+	background-color: #C3D9FF;
+	
+	font-family: Arial;
+	font-size: medium;
+	font-weight: bold;
+	
+	padding: 5px;
+}
+
+.matarialReportShiftHeader
+{
+	background-color: #5D90E7;
+	
+	color : #FFFFFF;
+	
+	font-family: Arial;
+	font-size: small;
+	font-weight: bold;
+	text-align: center;
+	padding: 5px;
+}
+
+.matarialReportActualPlanHeader
+{
+	background-color: #FF9933;
+	color: #FFFFFF;
+	font-family: Arial;
+	font-size: small;
+	font-weight: bold;
+	text-align: center;
+	padding: 5px;
+}
+
+.matarialReportHeaderLabel
+{
+	text-align: center;
+	
+	font-family: Arial;
+	font-size: small;
+	font-weight: bold;
+	
+	padding-right: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}

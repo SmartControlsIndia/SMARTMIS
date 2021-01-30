@@ -1,0 +1,57 @@
+﻿.reportMasterTable
+{
+	width: 100%;
+	
+	border-style: solid;
+	border-width:thin;
+	border-color: #C3D9FF;
+	background-color: #FFFFFF;
+}
+.reportContentTable
+{
+	width: 100%;
+}
+.reportMasterDiv
+{
+	width: 50%;
+	
+	border-style: solid;
+	border-width: thin;
+	border-color: #C3D9FF;
+	background-color: #FFFFFF;
+	
+	-moz-border-radius: 1em 1em 1em 1em;
+	border-radius: 1em 1em 1em 1em;
+}
+.reportMasterFirstCol
+{
+	width: 5%;
+}
+.reportMasterSecondCol
+{
+	width: 20%;
+}
+.reportMasterThirdCol
+{
+	width: 6%;
+}
+.reportMasterForthCol
+{
+	width: 35%;
+}
+.reportMasterFifthCol
+{
+	width: 5%;
+}
+.reportMasterSixthCol
+{
+	width: 5%;
+}
+.reportMasterSeventhCol
+{
+	width: 15%;
+}
+.reportMasterEighthCol
+{
+	width: 9%;
+}

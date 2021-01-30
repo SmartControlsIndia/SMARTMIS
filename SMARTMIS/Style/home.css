@@ -1,0 +1,82 @@
+﻿.homeTable
+{
+	width: 100%;
+	
+	border-style: solid;
+	border-width:thin;
+	border-color: #C3D9FF;
+	background-color: #FFFFFF;
+}
+.homeFirstCol
+{
+	width: 33%;
+}
+.homeSecondCol
+{
+	width: 33%;
+}
+.homeThirdCol
+{
+	width: 34%;
+}
+
+.homeHeader
+{
+	background-color: #C3D9FF;
+}
+.homeHeaderTagline
+{
+	font-family: Arial;
+	font-size: medium;
+	font-weight: bold;
+	
+	padding-top: 5px;
+	padding-left: 10px;
+	padding-bottom: 5px;
+}
+
+.homeDiv
+{
+	padding-top: 1em;
+	padding-bottom: 1em;
+	padding-left: 27%;
+}
+a.menu:link, a.menu:visited
+{
+	padding:10px;
+}
+
+ul.thumb {
+	float: left;
+	list-style: none;
+	margin: 0; padding: 10px;
+	width: 100%;
+}
+ul.thumb li {
+	margin: 0; padding: 5px;
+	float: left;
+	position: relative;  /* Set the absolute positioning base coordinate */
+	width: 110px;
+	height: 110px;
+}
+ul.thumb li img {
+	width: 100px; height: 100px; /* Set the small thumbnail size */
+	-ms-interpolation-mode: bicubic; /* IE Fix for Bicubic Scaling */
+	border: 1px solid #ddd;
+	padding: 5px;
+	background: #f0f0f0;
+	position: absolute;
+	left: 0; top: 0;
+}
+ul.thumb li img.hover {
+	background:url(thumb_bg.png) no-repeat center center;  /* Image used as background on hover effect
+	border: none; /* Get rid of border on hover */
+}
+
+.descriptionLabel
+{
+	text-align:center;
+	font-family:Verdana;
+	font-weight:bold;
+	font-size:18px;
+}

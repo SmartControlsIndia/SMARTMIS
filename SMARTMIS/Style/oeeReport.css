@@ -1,0 +1,168 @@
+﻿.oeeReportTable
+{
+	width: 100%;
+	
+	border-style: solid;
+	border-width:thin;
+	border-color: #C3D9FF;
+	background-color: #FFFFFF;
+}
+.oeeReportDailyFirstCol
+{
+	width: 15%;
+}
+.oeeReportDailySecondCol
+{
+	width: 6%;
+}
+.oeeReportDailyThirdCol
+{
+	width: 6%;
+}
+.oeeReportDailyForthCol
+{
+	width: 8%;
+}
+.oeeReportDailyFifthCol
+{
+	width: 6%;
+}
+.oeeReportDailySixthCol
+{
+	width: 6%;
+}
+.oeeReportDailySeventhCol
+{
+	width: 8%;
+}
+.oeeReportDailyEighthCol
+{
+	width: 6%;
+}
+.oeeReportDailyNinthCol
+{
+	width: 6%;
+}
+.oeeReportDailyTenthCol
+{
+	width: 8%;
+}
+.oeeReportDailyEleventhCol
+{
+	width: 6%;
+}
+.oeeReportDailyTwelvethCol
+{
+	width: 6%;
+}
+.oeeReportDailyThirteenthCol
+{
+	width: 8%;
+}
+
+
+.oeeReportMonthlyFirstCol
+{
+	width: 4%;
+}
+.oeeReportMonthlySecondCol
+{
+	width: 15%;
+}
+.oeeReportMonthlyThirdCol
+{
+	width: 15%;
+}
+.oeeReportMonthlyForthCol
+{
+	width: 18%;
+}
+.oeeReportMonthlyFifthCol
+{
+	width: 15%;
+}
+.oeeReportMonthlySixthCol
+{
+	width: 15%;
+}
+.oeeReportMonthlySeventhCol
+{
+	width: 18%;
+}
+
+.oeeReportYearlyFirstCol
+{
+	width: 10%;
+}
+.oeeReportYearlySecondCol
+{
+	width: 15%;
+}
+.oeeReportYearlyThirdCol
+{
+	width: 15%;
+}
+.oeeReportYearlyForthCol
+{
+	width: 15%;
+}
+.oeeReportYearlyFifthCol
+{
+	width: 15%;
+}
+.oeeReportYearlySixthCol
+{
+	width: 15%;
+}
+.oeeReportYearlySeventhCol
+{
+	width: 15%;
+}
+
+.oeeReportHeader
+{
+	background-color: #C3D9FF;
+	
+	font-family: Arial;
+	font-size: medium;
+	font-weight: bold;
+	
+	padding: 5px;
+}
+
+.oeeReportShiftHeader
+{
+	background-color: #5D90E7;
+	
+	color : #FFFFFF;
+	
+	font-family: Arial;
+	font-size: small;
+	font-weight: bold;
+	text-align: center;
+	padding: 5px;
+}
+
+.oeeReportActualPlanHeader
+{
+	background-color: #FF9933;
+	color: #FFFFFF;
+	font-family: Arial;
+	font-size: small;
+	font-weight: bold;
+	text-align: center;
+	padding: 5px;
+}
+
+.oeeReportHeaderLabel
+{
+	text-align: center;
+	
+	font-family: Arial;
+	font-size: small;
+	font-weight: bold;
+	
+	padding-right: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}

@@ -1,0 +1,61 @@
+﻿.dtReportTable
+{
+	width: 100%;
+	
+	border-style: solid;
+	border-width:thin;
+	border-color: #C3D9FF;
+	background-color: #FFFFFF;
+}
+.dtReportFirstCol
+{
+	width: 20%;
+}
+.dtReportSecondCol
+{
+	width: 20%;
+}
+.dtReportThirdCol
+{
+	width: 10%;
+}
+.dtReportForthCol
+{
+	width: 10%;
+}
+.dtReportFifthCol
+{
+	width: 20%;
+}
+.dtReportSixthCol
+{
+	width: 10%;
+}
+.dtReportSeventhCol
+{
+	width: 10%;
+}
+
+.dtReportHeader
+{
+	background-color: #5D90E7;
+	
+	color : #FFFFFF;
+	
+	font-family: Arial;
+	font-size: small;
+	font-weight: bold;
+	text-align: center;
+	padding: 5px;
+}
+
+
+a.anchor:link,a.anchor:visited
+{
+	font-family:Arial;
+	font-size:small;
+	font-weight:bold;
+	color:#3333CC;
+	padding:4px;
+	text-decoration:none;
+}

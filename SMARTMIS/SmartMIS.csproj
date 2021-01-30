@@ -1,0 +1,1770 @@
+﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D3E50907-736F-4512-86DD-DE1C453B0CFA}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SmartMIS</RootNamespace>
+    <AssemblyName>SmartMIS</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="CrystalDecisions.Enterprise.Framework, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="CrystalDecisions.Enterprise.InfoStore, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="CrystalDecisions.Shared, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="CrystalDecisions.Web, Version=10.5.3700.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Windows\assembly\GAC_MSIL\CrystalDecisions.Web\10.5.3700.0__692fbea5521e1304\CrystalDecisions.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus, Version=4.0.5.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL" />
+    <Reference Include="itextsharp, Version=5.1.0.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="SQL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.DataVisualization, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>C:\Program Files (x86)\Microsoft Chart Controls\Assemblies\System.Web.DataVisualization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DataVisualization.Design, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>C:\Program Files (x86)\Microsoft Chart Controls\Assemblies\System.Web.DataVisualization.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Default.aspx" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="autoComplete.aspx.cs">
+      <DependentUpon>autoComplete.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="autoComplete.aspx.designer.cs">
+      <DependentUpon>autoComplete.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Enum.cs" />
+    <Compile Include="Input\AddXRayOperator.aspx.cs">
+      <DependentUpon>AddXRayOperator.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Input\AddXRayOperator.aspx.designer.cs">
+      <DependentUpon>AddXRayOperator.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Input\Input.aspx.cs">
+      <DependentUpon>Input.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Input\Input.aspx.designer.cs">
+      <DependentUpon>Input.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\ReceipeFileName.aspx.cs">
+      <DependentUpon>ReceipeFileName.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\ReceipeFileName.aspx.designer.cs">
+      <DependentUpon>ReceipeFileName.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\RecipeDetails.aspx.cs">
+      <DependentUpon>RecipeDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\RecipeDetails.aspx.designer.cs">
+      <DependentUpon>RecipeDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\recipeNew.aspx.cs">
+      <DependentUpon>recipeNew.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\recipeNew.aspx.designer.cs">
+      <DependentUpon>recipeNew.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\TrimmingFileName.aspx.cs">
+      <DependentUpon>TrimmingFileName.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\TrimmingFileName.aspx.designer.cs">
+      <DependentUpon>TrimmingFileName.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\Unloadbarcode.aspx.cs">
+      <DependentUpon>Unloadbarcode.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\Unloadbarcode.aspx.designer.cs">
+      <DependentUpon>Unloadbarcode.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\AreaWisedetail.aspx.cs">
+      <DependentUpon>AreaWisedetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\AreaWisedetail.aspx.designer.cs">
+      <DependentUpon>AreaWisedetail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\BarcodewiseWeighmentReport.aspx.cs">
+      <DependentUpon>BarcodewiseWeighmentReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\BarcodewiseWeighmentReport.aspx.designer.cs">
+      <DependentUpon>BarcodewiseWeighmentReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\BudhayTyreScanningReport.aspx.cs">
+      <DependentUpon>BudhayTyreScanningReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\BudhayTyreScanningReport.aspx.designer.cs">
+      <DependentUpon>BudhayTyreScanningReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\BudhayTyreScanningReportNew.aspx.cs">
+      <DependentUpon>BudhayTyreScanningReportNew.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\BudhayTyreScanningReportNew.aspx.designer.cs">
+      <DependentUpon>BudhayTyreScanningReportNew.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\CuringBarcodeDetails.aspx.cs">
+      <DependentUpon>CuringBarcodeDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\CuringBarcodeDetails.aspx.designer.cs">
+      <DependentUpon>CuringBarcodeDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\CuringProductionReportNew.aspx.cs">
+      <DependentUpon>CuringProductionReportNew.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\CuringProductionReportNew.aspx.designer.cs">
+      <DependentUpon>CuringProductionReportNew.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\ManualProductionReport.aspx.cs">
+      <DependentUpon>ManualProductionReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\ManualProductionReport.aspx.designer.cs">
+      <DependentUpon>ManualProductionReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\NewoperatorReport.aspx.cs">
+      <DependentUpon>NewoperatorReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\NewoperatorReport.aspx.designer.cs">
+      <DependentUpon>NewoperatorReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\PCR2ndLiveVI.aspx.cs">
+      <DependentUpon>PCR2ndLiveVI.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\PCR2ndLiveVI.aspx.designer.cs">
+      <DependentUpon>PCR2ndLiveVI.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\PCRinspectionDefectwise.aspx.cs">
+      <DependentUpon>PCRinspectionDefectwise.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\PCRinspectionDefectwise.aspx.designer.cs">
+      <DependentUpon>PCRinspectionDefectwise.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\PCRInspectionsummaryReport.aspx.cs">
+      <DependentUpon>PCRInspectionsummaryReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\PCRInspectionsummaryReport.aspx.designer.cs">
+      <DependentUpon>PCRInspectionsummaryReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\PCRpaintingReport.aspx.cs">
+      <DependentUpon>PCRpaintingReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\PCRpaintingReport.aspx.designer.cs">
+      <DependentUpon>PCRpaintingReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\ProductionDetails.aspx.cs">
+      <DependentUpon>ProductionDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\ProductionDetails.aspx.designer.cs">
+      <DependentUpon>ProductionDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\ReceipeExportReport.aspx.cs">
+      <DependentUpon>ReceipeExportReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\ReceipeExportReport.aspx.designer.cs">
+      <DependentUpon>ReceipeExportReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\Resetbarcode.aspx.cs">
+      <DependentUpon>Resetbarcode.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\Resetbarcode.aspx.designer.cs">
+      <DependentUpon>Resetbarcode.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\ShearographyReport.aspx.cs">
+      <DependentUpon>ShearographyReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\ShearographyReport.aspx.designer.cs">
+      <DependentUpon>ShearographyReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\ShreoDefectReport.aspx.cs">
+      <DependentUpon>ShreoDefectReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\ShreoDefectReport.aspx.designer.cs">
+      <DependentUpon>ShreoDefectReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\SLI_PCRVISummaryReport.aspx.cs">
+      <DependentUpon>SLI_PCRVISummaryReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\SLI_PCRVISummaryReport.aspx.designer.cs">
+      <DependentUpon>SLI_PCRVISummaryReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\TBRVISecondline.aspx.cs">
+      <DependentUpon>TBRVISecondline.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\TBRVISecondline.aspx.designer.cs">
+      <DependentUpon>TBRVISecondline.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\test.aspx.cs">
+      <DependentUpon>test.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\test.aspx.designer.cs">
+      <DependentUpon>test.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\UniformityReport.aspx.cs">
+      <DependentUpon>UniformityReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\UniformityReport.aspx.designer.cs">
+      <DependentUpon>UniformityReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\waveformReport.aspx.cs">
+      <DependentUpon>waveformReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\waveformReport.aspx.designer.cs">
+      <DependentUpon>waveformReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\WebForm2.aspx.cs">
+      <DependentUpon>WebForm2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\WebForm2.aspx.designer.cs">
+      <DependentUpon>WebForm2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\WeighingReport.aspx.cs">
+      <DependentUpon>WeighingReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\WeighingReport.aspx.designer.cs">
+      <DependentUpon>WeighingReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SmartMISCURReportMasterNew.Master.cs">
+      <DependentUpon>SmartMISCURReportMasterNew.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SmartMISCURReportMasterNew.Master.designer.cs">
+      <DependentUpon>SmartMISCURReportMasterNew.Master</DependentUpon>
+    </Compile>
+    <Compile Include="smartMISDownTimeReportMaster.Master.cs">
+      <DependentUpon>smartMISDownTimeReportMaster.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="smartMISDownTimeReportMaster.Master.designer.cs">
+      <DependentUpon>smartMISDownTimeReportMaster.Master</DependentUpon>
+    </Compile>
+    <Compile Include="crystalreport\DataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="crystalreport\gtrejectioncrpt.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>gtrejectioncrpt.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="DMYOptionMaster.Master.cs">
+      <DependentUpon>DMYOptionMaster.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DMYOptionMaster.Master.designer.cs">
+      <DependentUpon>DMYOptionMaster.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Error.aspx.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Error.aspx.designer.cs">
+      <DependentUpon>Error.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="getdestination.aspx.cs">
+      <DependentUpon>getdestination.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="getdestination.aspx.designer.cs">
+      <DependentUpon>getdestination.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Input\newCuringOperatorPlanning2.aspx.cs">
+      <DependentUpon>newCuringOperatorPlanning2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Input\newCuringOperatorPlanning2.aspx.designer.cs">
+      <DependentUpon>newCuringOperatorPlanning2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\classificationReport2.aspx.cs">
+      <DependentUpon>classificationReport2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\classificationReport2.aspx.designer.cs">
+      <DependentUpon>classificationReport2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\DownTimeReport.aspx.cs">
+      <DependentUpon>DownTimeReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\DownTimeReport.aspx.designer.cs">
+      <DependentUpon>DownTimeReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\PCRVISummaryReport.aspx.cs">
+      <DependentUpon>PCRVISummaryReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\PCRVISummaryReport.aspx.designer.cs">
+      <DependentUpon>PCRVISummaryReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\PCRVISummaryReport2.aspx.cs">
+      <DependentUpon>PCRVISummaryReport2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\PCRVISummaryReport2.aspx.designer.cs">
+      <DependentUpon>PCRVISummaryReport2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\PCRVISummaryReport3.aspx.cs">
+      <DependentUpon>PCRVISummaryReport3.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\PCRVISummaryReport3.aspx.designer.cs">
+      <DependentUpon>PCRVISummaryReport3.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\newCuringProductionReport.aspx.cs">
+      <DependentUpon>newCuringProductionReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\newCuringProductionReport.aspx.designer.cs">
+      <DependentUpon>newCuringProductionReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\newproduction.aspx.cs">
+      <DependentUpon>newproduction.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\newproduction.aspx.designer.cs">
+      <DependentUpon>newproduction.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\TBMProductionReport.aspx.cs">
+      <DependentUpon>TBMProductionReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\TBMProductionReport.aspx.designer.cs">
+      <DependentUpon>TBMProductionReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Input\newCuringOperatorPlanning.aspx.cs">
+      <DependentUpon>newCuringOperatorPlanning.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Input\newCuringOperatorPlanning.aspx.designer.cs">
+      <DependentUpon>newCuringOperatorPlanning.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Input\xRayHMI.aspx.cs">
+      <DependentUpon>xRayHMI.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Input\xRayHMI.aspx.designer.cs">
+      <DependentUpon>xRayHMI.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\oem.aspx.cs">
+      <DependentUpon>oem.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\oem.aspx.designer.cs">
+      <DependentUpon>oem.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\RecipeLookUp.aspx.cs">
+      <DependentUpon>RecipeLookUp.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\RecipeLookUp.aspx.designer.cs">
+      <DependentUpon>RecipeLookUp.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="NewTUOReportMaster.Master.cs">
+      <DependentUpon>NewTUOReportMaster.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="NewTUOReportMaster.Master.designer.cs">
+      <DependentUpon>NewTUOReportMaster.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Report\Bladder.aspx.cs">
+      <DependentUpon>Bladder.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\Bladder.aspx.designer.cs">
+      <DependentUpon>Bladder.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\classificationReport.aspx.cs">
+      <DependentUpon>classificationReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\classificationReport.aspx.designer.cs">
+      <DependentUpon>classificationReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\Mould.aspx.cs">
+      <DependentUpon>Mould.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\Mould.aspx.designer.cs">
+      <DependentUpon>Mould.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\CuringProductionReport.aspx.cs">
+      <DependentUpon>CuringProductionReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\CuringProductionReport.aspx.designer.cs">
+      <DependentUpon>CuringProductionReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\info.aspx.cs">
+      <DependentUpon>info.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\info.aspx.designer.cs">
+      <DependentUpon>info.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\PCRVI2SummaryReport.aspx.cs">
+      <DependentUpon>PCRVI2SummaryReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\PCRVI2SummaryReport.aspx.designer.cs">
+      <DependentUpon>PCRVI2SummaryReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\PCRVI3SummaryReport.aspx.cs">
+      <DependentUpon>PCRVI3SummaryReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\PCRVI3SummaryReport.aspx.designer.cs">
+      <DependentUpon>PCRVI3SummaryReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\SmartFinalFinish.aspx.cs">
+      <DependentUpon>SmartFinalFinish.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\SmartFinalFinish.aspx.designer.cs">
+      <DependentUpon>SmartFinalFinish.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\TBRvisualinspection2.aspx.cs">
+      <DependentUpon>TBRvisualinspection2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\TBRvisualinspection2.aspx.designer.cs">
+      <DependentUpon>TBRvisualinspection2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\TBRVISummaryReport.aspx.cs">
+      <DependentUpon>TBRVISummaryReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\TBRVISummaryReport.aspx.designer.cs">
+      <DependentUpon>TBRVISummaryReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\TBRVISummaryReport2.aspx.cs">
+      <DependentUpon>TBRVISummaryReport2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\TBRVISummaryReport2.aspx.designer.cs">
+      <DependentUpon>TBRVISummaryReport2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\TyreWeighmentReport.aspx.cs">
+      <DependentUpon>TyreWeighmentReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\TyreWeighmentReport.aspx.designer.cs">
+      <DependentUpon>TyreWeighmentReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\VIProductionReport.aspx.cs">
+      <DependentUpon>VIProductionReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\VIProductionReport.aspx.designer.cs">
+      <DependentUpon>VIProductionReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\visualinspection2.aspx.cs">
+      <DependentUpon>visualinspection2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\visualinspection2.aspx.designer.cs">
+      <DependentUpon>visualinspection2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\VISummaryReport.aspx.cs">
+      <DependentUpon>VISummaryReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\VISummaryReport.aspx.designer.cs">
+      <DependentUpon>VISummaryReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\GTRejection.aspx.cs">
+      <DependentUpon>GTRejection.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\GTRejection.aspx.designer.cs">
+      <DependentUpon>GTRejection.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\xrayreport.aspx.cs">
+      <DependentUpon>xrayreport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\xrayreport.aspx.designer.cs">
+      <DependentUpon>xrayreport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="smartMISCuringReportMaster.Master.cs">
+      <DependentUpon>smartMISCuringReportMaster.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="smartMISCuringReportMaster.Master.designer.cs">
+      <DependentUpon>smartMISCuringReportMaster.Master</DependentUpon>
+    </Compile>
+    <Compile Include="smartMISCURReportMaster.Master.cs">
+      <DependentUpon>smartMISCURReportMaster.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="smartMISCURReportMaster.Master.designer.cs">
+      <DependentUpon>smartMISCURReportMaster.Master</DependentUpon>
+    </Compile>
+    <Compile Include="SmartMISProdReportMaster.Master.cs">
+      <DependentUpon>SmartMISProdReportMaster.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SmartMISProdReportMaster.Master.designer.cs">
+      <DependentUpon>SmartMISProdReportMaster.Master</DependentUpon>
+    </Compile>
+    <Compile Include="smartMISTBMmanualproductionReport.Master.cs">
+      <DependentUpon>smartMISTBMmanualproductionReport.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="smartMISTBMmanualproductionReport.Master.designer.cs">
+      <DependentUpon>smartMISTBMmanualproductionReport.Master</DependentUpon>
+    </Compile>
+    <Compile Include="smartMISTBMproductionReport.Master.cs">
+      <DependentUpon>smartMISTBMproductionReport.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="smartMISTBMproductionReport.Master.designer.cs">
+      <DependentUpon>smartMISTBMproductionReport.Master</DependentUpon>
+    </Compile>
+    <Compile Include="smartMISTUOReportGraphMaster.Master.cs">
+      <DependentUpon>smartMISTUOReportGraphMaster.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="smartMISTUOReportGraphMaster.Master.designer.cs">
+      <DependentUpon>smartMISTUOReportGraphMaster.Master</DependentUpon>
+    </Compile>
+    <Compile Include="smartMISUBReportMaster.master.cs">
+      <DependentUpon>smartMISUBReportMaster.master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="smartMISUBReportMaster.master.designer.cs">
+      <DependentUpon>smartMISUBReportMaster.master</DependentUpon>
+    </Compile>
+    <Compile Include="tbmDefault.aspx.cs">
+      <DependentUpon>tbmDefault.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="tbmDefault.aspx.designer.cs">
+      <DependentUpon>tbmDefault.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\recipe.aspx.cs">
+      <DependentUpon>recipe.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\recipe.aspx.designer.cs">
+      <DependentUpon>recipe.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="smartMISTUOReportMaster.Master.cs">
+      <DependentUpon>smartMISTUOReportMaster.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="smartMISTUOReportMaster.Master.designer.cs">
+      <DependentUpon>smartMISTUOReportMaster.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Input\curingHMI.aspx.cs">
+      <DependentUpon>curingHMI.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Input\curingHMI.aspx.designer.cs">
+      <DependentUpon>curingHMI.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Input\curingOperatorPlanning.aspx.cs">
+      <DependentUpon>curingOperatorPlanning.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Input\curingOperatorPlanning.aspx.designer.cs">
+      <DependentUpon>curingOperatorPlanning.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Input\tyreBuildingMachineHMI.aspx.cs">
+      <DependentUpon>tyreBuildingMachineHMI.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Input\tyreBuildingMachineHMI.aspx.designer.cs">
+      <DependentUpon>tyreBuildingMachineHMI.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Home\home.aspx.cs">
+      <DependentUpon>home.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Home\home.aspx.designer.cs">
+      <DependentUpon>home.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Input\mheInput.aspx.cs">
+      <DependentUpon>mheInput.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Input\mheInput.aspx.designer.cs">
+      <DependentUpon>mheInput.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Input\productionPlanning.aspx.cs">
+      <DependentUpon>productionPlanning.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Input\productionPlanning.aspx.designer.cs">
+      <DependentUpon>productionPlanning.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Input\productionPlanningTest.aspx.cs">
+      <DependentUpon>productionPlanningTest.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Input\productionPlanningTest.aspx.designer.cs">
+      <DependentUpon>productionPlanningTest.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Input\uniformityBalancing.aspx.cs">
+      <DependentUpon>uniformityBalancing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Input\uniformityBalancing.aspx.designer.cs">
+      <DependentUpon>uniformityBalancing.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Input\visualInspectionHMI.aspx.cs">
+      <DependentUpon>visualInspectionHMI.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Input\visualInspectionHMI.aspx.designer.cs">
+      <DependentUpon>visualInspectionHMI.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\area.aspx.cs">
+      <DependentUpon>area.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\area.aspx.designer.cs">
+      <DependentUpon>area.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\category.aspx.cs">
+      <DependentUpon>category.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\category.aspx.designer.cs">
+      <DependentUpon>category.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\defectLocation.aspx.cs">
+      <DependentUpon>defectLocation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\defectLocation.aspx.designer.cs">
+      <DependentUpon>defectLocation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\jobPost.aspx.cs">
+      <DependentUpon>jobPost.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\jobPost.aspx.designer.cs">
+      <DependentUpon>jobPost.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\manPower.aspx.cs">
+      <DependentUpon>manPower.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\manPower.aspx.designer.cs">
+      <DependentUpon>manPower.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\productType.aspx.cs">
+      <DependentUpon>productType.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\productType.aspx.designer.cs">
+      <DependentUpon>productType.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Production\Production.cs" />
+    <Compile Include="Properties\mySetting.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>mySetting.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Report\oee.aspx.cs">
+      <DependentUpon>oee.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\oee.aspx.designer.cs">
+      <DependentUpon>oee.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\qualityAnalysis.aspx.cs">
+      <DependentUpon>qualityAnalysis.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\qualityAnalysis.aspx.designer.cs">
+      <DependentUpon>qualityAnalysis.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\tyreGeneaology.aspx.cs">
+      <DependentUpon>tyreGeneaology.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\tyreGeneaology.aspx.designer.cs">
+      <DependentUpon>tyreGeneaology.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="smartMISHMIMaster.Master.cs">
+      <DependentUpon>smartMISHMIMaster.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="smartMISHMIMaster.Master.designer.cs">
+      <DependentUpon>smartMISHMIMaster.Master</DependentUpon>
+    </Compile>
+    <Compile Include="smartMISMaster.Master.cs">
+      <DependentUpon>smartMISMaster.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="smartMISMaster.Master.designer.cs">
+      <DependentUpon>smartMISMaster.Master</DependentUpon>
+    </Compile>
+    <Compile Include="smartMISReportMaster.Master.cs">
+      <DependentUpon>smartMISReportMaster.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="smartMISReportMaster.Master.designer.cs">
+      <DependentUpon>smartMISReportMaster.Master</DependentUpon>
+    </Compile>
+    <Compile Include="smartMISWebService.asmx.cs">
+      <DependentUpon>smartMISWebService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TUO\AverageANDstdPerformanceReport.aspx.cs">
+      <DependentUpon>AverageANDstdPerformanceReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\AverageANDstdPerformanceReport.aspx.designer.cs">
+      <DependentUpon>AverageANDstdPerformanceReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\DinamicBalPerformanceReport.aspx.cs">
+      <DependentUpon>DinamicBalPerformanceReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\DinamicBalPerformanceReport.aspx.designer.cs">
+      <DependentUpon>DinamicBalPerformanceReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\DinamicBalPerformanceReportnew.aspx.cs">
+      <DependentUpon>DinamicBalPerformanceReportnew.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\DinamicBalPerformanceReportnew.aspx.designer.cs">
+      <DependentUpon>DinamicBalPerformanceReportnew.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\NewRunoutperformanceReport.aspx.cs">
+      <DependentUpon>NewRunoutperformanceReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\NewRunoutperformanceReport.aspx.designer.cs">
+      <DependentUpon>NewRunoutperformanceReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\performanceExecutiveReport.aspx.cs">
+      <DependentUpon>performanceExecutiveReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\performanceExecutiveReport.aspx.designer.cs">
+      <DependentUpon>performanceExecutiveReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\performanceReport2SizeWise.aspx.cs">
+      <DependentUpon>performanceReport2SizeWise.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\performanceReport2SizeWise.aspx.designer.cs">
+      <DependentUpon>performanceReport2SizeWise.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\performanceReportCuringWCWise.aspx.cs">
+      <DependentUpon>performanceReportCuringWCWise.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\performanceReportCuringWCWise.aspx.designer.cs">
+      <DependentUpon>performanceReportCuringWCWise.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\PerformanceReportOAY.aspx.cs">
+      <DependentUpon>PerformanceReportOAY.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\PerformanceReportOAY.aspx.designer.cs">
+      <DependentUpon>PerformanceReportOAY.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\performanceReportOAYGraf.aspx.cs">
+      <DependentUpon>performanceReportOAYGraf.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\performanceReportOAYGraf.aspx.designer.cs">
+      <DependentUpon>performanceReportOAYGraf.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\performanceReportSizeWise.aspx.cs">
+      <DependentUpon>performanceReportSizeWise.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\performanceReportSizeWise.aspx.designer.cs">
+      <DependentUpon>performanceReportSizeWise.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\performanceReportSpacWise.aspx.cs">
+      <DependentUpon>performanceReportSpacWise.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\performanceReportSpacWise.aspx.designer.cs">
+      <DependentUpon>performanceReportSpacWise.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\performanceReportTUOmachineWise.aspx.cs">
+      <DependentUpon>performanceReportTUOmachineWise.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\performanceReportTUOmachineWise.aspx.designer.cs">
+      <DependentUpon>performanceReportTUOmachineWise.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\performanceReportWithRejectionDetail.aspx.cs">
+      <DependentUpon>performanceReportWithRejectionDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\performanceReportWithRejectionDetail.aspx.designer.cs">
+      <DependentUpon>performanceReportWithRejectionDetail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\QualityPerformanceSpecReport.aspx.cs">
+      <DependentUpon>QualityPerformanceSpecReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\QualityPerformanceSpecReport.aspx.designer.cs">
+      <DependentUpon>QualityPerformanceSpecReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\RunOutPerformanceReport.aspx.cs">
+      <DependentUpon>RunOutPerformanceReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\RunOutPerformanceReport.aspx.designer.cs">
+      <DependentUpon>RunOutPerformanceReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\RunoutPerformanceReportNew.aspx.cs">
+      <DependentUpon>RunoutPerformanceReportNew.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\RunoutPerformanceReportNew.aspx.designer.cs">
+      <DependentUpon>RunoutPerformanceReportNew.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\RunoutPerformanceReportNew1.aspx.cs">
+      <DependentUpon>RunoutPerformanceReportNew1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\RunoutPerformanceReportNew1.aspx.designer.cs">
+      <DependentUpon>RunoutPerformanceReportNew1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\RUnoutReport2.aspx.cs">
+      <DependentUpon>RUnoutReport2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\RUnoutReport2.aspx.designer.cs">
+      <DependentUpon>RUnoutReport2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\RUnoutReportNew.aspx.cs">
+      <DependentUpon>RUnoutReportNew.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\RUnoutReportNew.aspx.designer.cs">
+      <DependentUpon>RUnoutReportNew.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\RUnoutReportNew1.aspx.cs">
+      <DependentUpon>RUnoutReportNew1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\RUnoutReportNew1.aspx.designer.cs">
+      <DependentUpon>RUnoutReportNew1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\TBRRUNOUT1.aspx.cs">
+      <DependentUpon>TBRRUNOUT1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\TBRRUNOUT1.aspx.designer.cs">
+      <DependentUpon>TBRRUNOUT1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\TBRTUOBarcode.aspx.cs">
+      <DependentUpon>TBRTUOBarcode.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\TBRTUOBarcode.aspx.designer.cs">
+      <DependentUpon>TBRTUOBarcode.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\TBRUniformityReport.aspx.cs">
+      <DependentUpon>TBRUniformityReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\TBRUniformityReport.aspx.designer.cs">
+      <DependentUpon>TBRUniformityReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\TUOBarcodeWiseReport.aspx.cs">
+      <DependentUpon>TUOBarcodeWiseReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\TUOBarcodeWiseReport.aspx.designer.cs">
+      <DependentUpon>TUOBarcodeWiseReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\TUOReport.aspx.cs">
+      <DependentUpon>TUOReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\TUOReport.aspx.designer.cs">
+      <DependentUpon>TUOReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\TUOReport1.aspx.cs">
+      <DependentUpon>TUOReport1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\TUOReport1.aspx.designer.cs">
+      <DependentUpon>TUOReport1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\TUOReport2.aspx.cs">
+      <DependentUpon>TUOReport2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\TUOReport2.aspx.designer.cs">
+      <DependentUpon>TUOReport2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\TUOReport3.aspx.cs">
+      <DependentUpon>TUOReport3.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\TUOReport3.aspx.designer.cs">
+      <DependentUpon>TUOReport3.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\TUOReport4.aspx.cs">
+      <DependentUpon>TUOReport4.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\TUOReport4.aspx.designer.cs">
+      <DependentUpon>TUOReport4.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\TUOReport5.aspx.cs">
+      <DependentUpon>TUOReport5.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\TUOReport5.aspx.designer.cs">
+      <DependentUpon>TUOReport5.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\TUOReportLnq1.aspx.cs">
+      <DependentUpon>TUOReportLnq1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\TUOReportLnq1.aspx.designer.cs">
+      <DependentUpon>TUOReportLnq1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TUO\RUnoutReport.aspx.cs">
+      <DependentUpon>RUnoutReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\RUnoutReport.aspx.designer.cs">
+      <DependentUpon>RUnoutReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="tyredestination.aspx.cs">
+      <DependentUpon>tyredestination.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="tyredestination.aspx.designer.cs">
+      <DependentUpon>tyredestination.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\BladderReport.ascx.cs">
+      <DependentUpon>BladderReport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\BladderReport.ascx.designer.cs">
+      <DependentUpon>BladderReport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\calenderTextBox.ascx.cs">
+      <DependentUpon>calenderTextBox.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\calenderTextBox.ascx.designer.cs">
+      <DependentUpon>calenderTextBox.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\CuringProductionReport.ascx.cs">
+      <DependentUpon>CuringProductionReport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\CuringProductionReport.ascx.designer.cs">
+      <DependentUpon>CuringProductionReport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\dailySummaryReportControl.ascx.cs">
+      <DependentUpon>dailySummaryReportControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\dailySummaryReportControl.ascx.designer.cs">
+      <DependentUpon>dailySummaryReportControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\department.aspx.cs">
+      <DependentUpon>department.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\department.aspx.designer.cs">
+      <DependentUpon>department.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Input\downTime.aspx.cs">
+      <DependentUpon>downTime.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Input\downTime.aspx.designer.cs">
+      <DependentUpon>downTime.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\downTime.aspx.cs">
+      <DependentUpon>downTime.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\downTime.aspx.designer.cs">
+      <DependentUpon>downTime.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\event.aspx.cs">
+      <DependentUpon>event.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\event.aspx.designer.cs">
+      <DependentUpon>event.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\defect.aspx.cs">
+      <DependentUpon>defect.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\defect.aspx.designer.cs">
+      <DependentUpon>defect.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Input\heldUpMaterial.aspx.cs">
+      <DependentUpon>heldUpMaterial.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Input\heldUpMaterial.aspx.designer.cs">
+      <DependentUpon>heldUpMaterial.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Input\heldUpMaterialUserDecision.aspx.cs">
+      <DependentUpon>heldUpMaterialUserDecision.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Input\heldUpMaterialUserDecision.aspx.designer.cs">
+      <DependentUpon>heldUpMaterialUserDecision.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\manning.aspx.cs">
+      <DependentUpon>manning.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\manning.aspx.designer.cs">
+      <DependentUpon>manning.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Input\workCenterLogIn.aspx.cs">
+      <DependentUpon>workCenterLogIn.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Input\workCenterLogIn.aspx.designer.cs">
+      <DependentUpon>workCenterLogIn.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\matarialConsumption.aspx.cs">
+      <DependentUpon>matarialConsumption.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\matarialConsumption.aspx.designer.cs">
+      <DependentUpon>matarialConsumption.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Input\leftOverMaterial.aspx.cs">
+      <DependentUpon>leftOverMaterial.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Input\leftOverMaterial.aspx.designer.cs">
+      <DependentUpon>leftOverMaterial.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\myConnection.cs" />
+    <Compile Include="Master\mhe.aspx.cs">
+      <DependentUpon>mhe.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\mhe.aspx.designer.cs">
+      <DependentUpon>mhe.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\processCheckParameter.aspx.cs">
+      <DependentUpon>processCheckParameter.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\processCheckParameter.aspx.designer.cs">
+      <DependentUpon>processCheckParameter.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Input\processCheckParameter.aspx.cs">
+      <DependentUpon>processCheckParameter.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Input\processCheckParameter.aspx.designer.cs">
+      <DependentUpon>processCheckParameter.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Input\oldProductionPlanning.aspx.cs">
+      <DependentUpon>oldProductionPlanning.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Input\oldProductionPlanning.aspx.designer.cs">
+      <DependentUpon>oldProductionPlanning.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\production.aspx.cs">
+      <DependentUpon>production.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\production.aspx.designer.cs">
+      <DependentUpon>production.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Report\quality.aspx.cs">
+      <DependentUpon>quality.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\quality.aspx.designer.cs">
+      <DependentUpon>quality.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Input\rawMatarialUsed.aspx.cs">
+      <DependentUpon>rawMatarialUsed.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Input\rawMatarialUsed.aspx.designer.cs">
+      <DependentUpon>rawMatarialUsed.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\rawMaterial.aspx.cs">
+      <DependentUpon>rawMaterial.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\rawMaterial.aspx.designer.cs">
+      <DependentUpon>rawMaterial.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\reason.aspx.cs">
+      <DependentUpon>reason.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\reason.aspx.designer.cs">
+      <DependentUpon>reason.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\role.aspx.cs">
+      <DependentUpon>role.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\role.aspx.designer.cs">
+      <DependentUpon>role.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\productionSummary.aspx.cs">
+      <DependentUpon>productionSummary.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\productionSummary.aspx.designer.cs">
+      <DependentUpon>productionSummary.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\unit.aspx.cs">
+      <DependentUpon>unit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\unit.aspx.designer.cs">
+      <DependentUpon>unit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\downTimeReportWCWise.ascx.cs">
+      <DependentUpon>downTimeReportWCWise.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\downTimeReportWCWise.ascx.designer.cs">
+      <DependentUpon>downTimeReportWCWise.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\matConsumptionControl.ascx.cs">
+      <DependentUpon>matConsumptionControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\matConsumptionControl.ascx.designer.cs">
+      <DependentUpon>matConsumptionControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\mould.ascx.cs">
+      <DependentUpon>mould.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\mould.ascx.designer.cs">
+      <DependentUpon>mould.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\MouldReport.ascx.cs">
+      <DependentUpon>MouldReport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\MouldReport.ascx.designer.cs">
+      <DependentUpon>MouldReport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\OAYGRAFReport.ascx.cs">
+      <DependentUpon>OAYGRAFReport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\OAYGRAFReport.ascx.designer.cs">
+      <DependentUpon>OAYGRAFReport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\performanceReportTUOWise.ascx.cs">
+      <DependentUpon>performanceReportTUOWise.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\performanceReportTUOWise.ascx.designer.cs">
+      <DependentUpon>performanceReportTUOWise.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\productionReportWCWise.ascx.cs">
+      <DependentUpon>productionReportWCWise.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\productionReportWCWise.ascx.designer.cs">
+      <DependentUpon>productionReportWCWise.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\QualityPerformanceReport2.ascx.cs">
+      <DependentUpon>QualityPerformanceReport2.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\QualityPerformanceReport2.ascx.designer.cs">
+      <DependentUpon>QualityPerformanceReport2.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\QualityPerformanceReportTBMRecipeWise.ascx.cs">
+      <DependentUpon>QualityPerformanceReportTBMRecipeWise.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\QualityPerformanceReportTBMRecipeWise.ascx.designer.cs">
+      <DependentUpon>QualityPerformanceReportTBMRecipeWise.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\QualityperformancereportTBMWise.ascx.cs">
+      <DependentUpon>QualityperformancereportTBMWise.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\QualityperformancereportTBMWise.ascx.designer.cs">
+      <DependentUpon>QualityperformancereportTBMWise.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\QualityperformanceSpacReport.ascx.cs">
+      <DependentUpon>QualityperformanceSpacReport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\QualityperformanceSpacReport.ascx.designer.cs">
+      <DependentUpon>QualityperformanceSpacReport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\qualityWcWise.ascx.cs">
+      <DependentUpon>qualityWcWise.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\qualityWcWise.ascx.designer.cs">
+      <DependentUpon>qualityWcWise.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\reportHeader.ascx.cs">
+      <DependentUpon>reportHeader.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\reportHeader.ascx.designer.cs">
+      <DependentUpon>reportHeader.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\tuoFilter.ascx.cs">
+      <DependentUpon>tuoFilter.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\tuoFilter.ascx.designer.cs">
+      <DependentUpon>tuoFilter.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\tuoFilterRep2.ascx.cs">
+      <DependentUpon>tuoFilterRep2.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\tuoFilterRep2.ascx.designer.cs">
+      <DependentUpon>tuoFilterRep2.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\weighmentReport.ascx.cs">
+      <DependentUpon>weighmentReport.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControl\weighmentReport.ascx.designer.cs">
+      <DependentUpon>weighmentReport.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserManagement\userManagement.aspx.cs">
+      <DependentUpon>userManagement.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserManagement\userManagement.aspx.designer.cs">
+      <DependentUpon>userManagement.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserManagement\userRegistration.aspx.cs">
+      <DependentUpon>userRegistration.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserManagement\userRegistration.aspx.designer.cs">
+      <DependentUpon>userRegistration.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserManagement\userUpdation.aspx.cs">
+      <DependentUpon>userUpdation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserManagement\userUpdation.aspx.designer.cs">
+      <DependentUpon>userUpdation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\utility.aspx.cs">
+      <DependentUpon>utility.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\utility.aspx.designer.cs">
+      <DependentUpon>utility.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\utility.aspx.cs">
+      <DependentUpon>utility.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\utility.aspx.designer.cs">
+      <DependentUpon>utility.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Input\visualInspection.aspx.cs">
+      <DependentUpon>visualInspection.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Input\visualInspection.aspx.designer.cs">
+      <DependentUpon>visualInspection.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\weighment.aspx.cs">
+      <DependentUpon>weighment.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\weighment.aspx.designer.cs">
+      <DependentUpon>weighment.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Master\workCenter.aspx.cs">
+      <DependentUpon>workCenter.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Master\workCenter.aspx.designer.cs">
+      <DependentUpon>workCenter.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="validateUser.aspx.cs">
+      <DependentUpon>validateUser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="validateUser.aspx.designer.cs">
+      <DependentUpon>validateUser.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\SmartWebReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\favicon.ico" />
+    <Content Include="Images\glossyback.gif" />
+    <Content Include="Images\glossyback2.gif" />
+    <Content Include="Images\logo.png" />
+    <Content Include="Images\minus.gif" />
+    <Content Include="Images\plus.gif" />
+    <Content Include="Images\Sun.png" />
+    <Content Include="Images\users.png" />
+    <Content Include="Master\manning.aspx" />
+    <Content Include="Script\jquery.min.js" />
+    <Content Include="Script\ddaccordion.js" />
+    <Content Include="Style\userManagement.css" />
+    <Content Include="Style\userRegistration.css" />
+    <Content Include="Style\default.css" />
+    <Content Include="Style\masterPage.css" />
+    <Content Include="Master\unit.aspx" />
+    <Content Include="UserManagement\userManagement.aspx" />
+    <Content Include="UserManagement\userRegistration.aspx" />
+    <Content Include="Master\workCenter.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Master\category.aspx" />
+    <Content Include="Master\department.aspx" />
+    <Content Include="Master\event.aspx" />
+    <Content Include="Master\defect.aspx" />
+    <Content Include="Images\tick.png" />
+    <Content Include="Images\tyreXRay.jpg" />
+    <Content Include="Images\user.png" />
+    <Content Include="Master\reason.aspx" />
+    <Content Include="Master\role.aspx" />
+    <Content Include="Script\jquery.js" />
+    <Content Include="Style\home.css" />
+    <Content Include="Style\userUpdation.css" />
+    <Content Include="UserManagement\userUpdation.aspx" />
+    <Content Include="Web.sitemap" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Global.asax" />
+    <Content Include="Images\calendar.png" />
+    <Content Include="Images\closelabel.png" />
+    <Content Include="Images\loading.gif" />
+    <Content Include="Images\notify.png" />
+    <Content Include="Images\notifyCircle.png" />
+    <Content Include="Images\question.png" />
+    <Content Include="Images\review.png" />
+    <Content Include="Input\mheInput.aspx" />
+    <Content Include="Input\uniformityBalancing.aspx" />
+    <Content Include="Master\area.aspx" />
+    <Content Include="Report\tyreGeneaology.aspx" />
+    <Content Include="Script\CalendarControl.js" />
+    <Content Include="smartMISWebService.asmx" />
+    <Content Include="Style\CalendarControl.css" />
+    <Content Include="Style\master.css" />
+    <Content Include="Style\input.css" />
+    <Content Include="UserControl\calenderTextBox.ascx" />
+    <Content Include="UserControl\dailySummaryReportControl.ascx" />
+    <Content Include="Input\downTime.aspx" />
+    <Content Include="Report\downTime.aspx" />
+    <Content Include="Input\heldUpMaterial.aspx" />
+    <Content Include="Input\heldUpMaterialUserDecision.aspx" />
+    <Content Include="Images\Delete.gif" />
+    <Content Include="Images\downTime.png" />
+    <Content Include="Images\Edit.gif" />
+    <Content Include="Images\add.png" />
+    <Content Include="Images\cancel.png" />
+    <Content Include="Images\geonology.png" />
+    <Content Include="Images\oee.png" />
+    <Content Include="Images\logo.jpg" />
+    <Content Include="Images\planning.png" />
+    <Content Include="Images\report1.JPG" />
+    <Content Include="Images\reports.png" />
+    <Content Include="Images\schedule.png" />
+    <Content Include="Images\Update.gif" />
+    <Content Include="Input\workCenterLogIn.aspx" />
+    <Content Include="Report\matarialConsumption.aspx" />
+    <Content Include="Input\leftOverMaterial.aspx" />
+    <Content Include="Master\mhe.aspx" />
+    <Content Include="Master\processCheckParameter.aspx" />
+    <Content Include="Input\processCheckParameter.aspx" />
+    <Content Include="Input\oldProductionPlanning.aspx" />
+    <Content Include="Report\production.aspx" />
+    <Content Include="Report\quality.aspx" />
+    <Content Include="Input\rawMatarialUsed.aspx" />
+    <Content Include="Master\rawMaterial.aspx" />
+    <Content Include="Script\jquery-latest.js" />
+    <Content Include="Style\oeeReport.css" />
+    <Content Include="Style\downtime.css" />
+    <Content Include="Style\matarialconsumptionReport.css" />
+    <Content Include="Style\downtimeReport.css" />
+    <Content Include="Style\productionReport.css" />
+    <Content Include="Style\reportMaster.css" />
+    <Content Include="Style\weighmentReport.css" />
+    <Content Include="Report\productionSummary.aspx" />
+    <Content Include="Master\utility.aspx" />
+    <Content Include="Report\utility.aspx" />
+    <Content Include="Input\visualInspection.aspx" />
+    <Content Include="Report\weighment.aspx" />
+    <Content Include="UserControl\productionReportWCWise.ascx" />
+    <None Include="Web References\SmartWebReference\smartMISWebService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Error.aspx" />
+    <Content Include="getdestination.aspx" />
+    <Content Include="Images\history.png" />
+    <Content Include="Images\loadingbar.jpeg" />
+    <Content Include="Images\showdetail.jpg" />
+    <Content Include="Input\AddXRayOperator.aspx" />
+    <Content Include="Input\Input.aspx" />
+    <Content Include="Input\newCuringOperatorPlanning.aspx" />
+    <Content Include="Input\newCuringOperatorPlanning2.aspx" />
+    <Content Include="Input\xRayHMI.aspx" />
+    <Content Include="Master\oem.aspx" />
+    <Content Include="Master\ReceipeFileName.aspx" />
+    <Content Include="Master\RecipeDetails.aspx" />
+    <Content Include="Master\RecipeLookUp.aspx" />
+    <Content Include="Master\recipeNew.aspx" />
+    <Content Include="Master\TrimmingFileName.aspx" />
+    <Content Include="Master\Unloadbarcode.aspx" />
+    <Content Include="Report\AreaWisedetail.aspx" />
+    <Content Include="Report\BarcodewiseWeighmentReport.aspx" />
+    <Content Include="Report\Bladder.aspx" />
+    <Content Include="Report\BudhayTyreScanningReport.aspx" />
+    <Content Include="Report\BudhayTyreScanningReportNew.aspx" />
+    <Content Include="Report\classificationReport.aspx" />
+    <Content Include="Report\classificationReport2.aspx" />
+    <Content Include="Report\CuringBarcodeDetails.aspx" />
+    <Content Include="Report\CuringProductionReportNew.aspx" />
+    <Content Include="Report\DownTimeReport.aspx" />
+    <Content Include="Report\ManualProductionReport.aspx" />
+    <Content Include="Report\NewoperatorReport.aspx" />
+    <Content Include="Report\PCR2ndLiveVI.aspx" />
+    <Content Include="Report\PCRinspectionDefectwise.aspx" />
+    <Content Include="Report\PCRInspectionsummaryReport.aspx" />
+    <Content Include="Report\PCRpaintingReport.aspx" />
+    <Content Include="Report\PCRVISummaryReport.aspx" />
+    <Content Include="Report\PCRVISummaryReport2.aspx" />
+    <Content Include="Report\PCRVISummaryReport3.aspx" />
+    <Content Include="Report\Mould.aspx" />
+    <Content Include="Report\CuringProductionReport.aspx" />
+    <Content Include="Report\info.aspx" />
+    <Content Include="Report\newCuringProductionReport.aspx" />
+    <Content Include="Report\newproduction.aspx" />
+    <Content Include="Report\PCRVI2SummaryReport.aspx" />
+    <Content Include="Report\PCRVI3SummaryReport.aspx" />
+    <Content Include="Report\ProductionDetails.aspx" />
+    <Content Include="Report\ReceipeExportReport.aspx" />
+    <Content Include="Master\Resetbarcode.aspx" />
+    <Content Include="Report\ShearographyReport.aspx" />
+    <Content Include="Report\ShreoDefectReport.aspx" />
+    <Content Include="Report\SLI_PCRVISummaryReport.aspx" />
+    <Content Include="Report\SmartFinalFinish.aspx" />
+    <Content Include="Report\TBMProductionReport.aspx" />
+    <Content Include="Report\TBRVISecondline.aspx" />
+    <Content Include="Report\TBRvisualinspection2.aspx" />
+    <Content Include="Report\TBRVISummaryReport.aspx" />
+    <Content Include="Report\TBRVISummaryReport2.aspx" />
+    <Content Include="Report\test.aspx" />
+    <Content Include="Report\TyreWeighmentReport.aspx" />
+    <Content Include="Report\UniformityReport.aspx" />
+    <Content Include="Report\VIProductionReport.aspx" />
+    <Content Include="Report\visualinspection2.aspx" />
+    <Content Include="Report\VISummaryReport.aspx" />
+    <Content Include="Report\GTRejection.aspx" />
+    <Content Include="Report\waveformReport.aspx" />
+    <Content Include="Report\WebForm2.aspx" />
+    <Content Include="Report\WeighingReport.aspx" />
+    <Content Include="Report\xrayreport.aspx" />
+    <Content Include="Script\download.js" />
+    <Content Include="Script\jquery-1.4.1.min.js" />
+    <Content Include="Script\ScrollableGridPlugin.js" />
+    <Content Include="Style\xRay.css" />
+    <Content Include="tbmDefault.aspx" />
+    <Content Include="Images\jkLogo.jpg" />
+    <Content Include="Images\logo_jk.jpg" />
+    <Content Include="Input\curingHMI.aspx" />
+    <Content Include="Input\curingOperatorPlanning.aspx" />
+    <Content Include="Input\tyreBuildingMachineHMI.aspx" />
+    <Content Include="Master\recipe.aspx" />
+    <Content Include="smartMISTUOReportMaster.Master" />
+    <Content Include="NewTUOReportMaster.Master" />
+    <Content Include="smartMISDownTimeReportMaster.Master" />
+    <None Include="ClassDiagram1.cd" />
+    <None Include="crystalreport\DataSet1.xsc">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="crystalreport\DataSet1.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet1.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="crystalreport\DataSet1.xss">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </None>
+    <Content Include="DMYOptionMaster.Master" />
+    <None Include="Properties\mySetting.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>mySetting.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="autoComplete.aspx" />
+    <Content Include="Home\home.aspx" />
+    <Content Include="Images\control down.png" />
+    <Content Include="Images\control up.png" />
+    <Content Include="Images\leave.png" />
+    <Content Include="Images\present.png" />
+    <Content Include="Images\back.png" />
+    <Content Include="Images\absent.png" />
+    <Content Include="Images\Calendar_scheduleHS.png" />
+    <Content Include="Images\exclamation.png" />
+    <Content Include="Images\plus.png" />
+    <Content Include="Images\print Preview.png" />
+    <Content Include="Images\print.png" />
+    <Content Include="Images\tableHeaderBlue.jpg" />
+    <Content Include="Input\productionPlanning.aspx" />
+    <Content Include="Input\productionPlanningTest.aspx" />
+    <Content Include="Input\visualInspectionHMI.aspx" />
+    <Content Include="Master\defectLocation.aspx" />
+    <Content Include="Master\jobPost.aspx" />
+    <Content Include="Master\manPower.aspx" />
+    <Content Include="Master\productType.aspx" />
+    <Content Include="Report\oee.aspx" />
+    <Content Include="Report\qualityAnalysis.aspx" />
+    <Content Include="Script\autoComplete.js" />
+    <Content Include="smartMISHMIMaster.Master" />
+    <Content Include="smartMISMaster.Master" />
+    <Content Include="smartMISReportMaster.Master" />
+    <Content Include="Style\curing.css" />
+    <Content Include="Style\tbm.css" />
+    <Content Include="Style\vi.css" />
+    <Content Include="Style\report.css" />
+    <Content Include="TUO\AverageANDstdPerformanceReport.aspx" />
+    <Content Include="TUO\DinamicBalPerformanceReport.aspx" />
+    <Content Include="TUO\DinamicBalPerformanceReportnew.aspx" />
+    <Content Include="TUO\NewRunoutperformanceReport.aspx" />
+    <Content Include="TUO\performanceExecutiveReport.aspx" />
+    <Content Include="TUO\performanceReport2SizeWise.aspx" />
+    <Content Include="TUO\performanceReportCuringWCWise.aspx" />
+    <Content Include="TUO\PerformanceReportOAY.aspx" />
+    <Content Include="TUO\performanceReportOAYGraf.aspx" />
+    <Content Include="TUO\performanceReportSizeWise.aspx" />
+    <Content Include="TUO\performanceReportSpacWise.aspx" />
+    <Content Include="TUO\performanceReportTUOmachineWise.aspx" />
+    <Content Include="TUO\performanceReportWithRejectionDetail.aspx" />
+    <Content Include="TUO\QualityPerformanceSpecReport.aspx" />
+    <Content Include="TUO\RunOutPerformanceReport.aspx" />
+    <Content Include="TUO\RunoutPerformanceReportNew.aspx" />
+    <Content Include="TUO\RunoutPerformanceReportNew1.aspx" />
+    <Content Include="TUO\RUnoutReport2.aspx" />
+    <Content Include="TUO\RUnoutReportNew.aspx" />
+    <Content Include="TUO\RUnoutReportNew1.aspx" />
+    <Content Include="TUO\TBRRUNOUT1.aspx" />
+    <Content Include="TUO\TBRTUOBarcode.aspx" />
+    <Content Include="TUO\TBRUniformityReport.aspx" />
+    <Content Include="TUO\TUOBarcodeWiseReport.aspx" />
+    <Content Include="TUO\TUOReport.aspx" />
+    <Content Include="TUO\TUOReport1.aspx" />
+    <Content Include="TUO\TUOReport2.aspx" />
+    <Content Include="TUO\TUOReport3.aspx" />
+    <Content Include="TUO\TUOReport4.aspx" />
+    <Content Include="TUO\TUOReport5.aspx" />
+    <Content Include="TUO\TUOReportLnq1.aspx" />
+    <Content Include="TUO\RUnoutReport.aspx" />
+    <Content Include="tyredestination.aspx" />
+    <Content Include="UserControl\BladderReport.ascx" />
+    <Content Include="UserControl\CuringProductionReport.ascx" />
+    <Content Include="UserControl\downTimeReportWCWise.ascx" />
+    <Content Include="UserControl\matConsumptionControl.ascx" />
+    <Content Include="UserControl\mould.ascx" />
+    <Content Include="UserControl\MouldReport.ascx" />
+    <Content Include="UserControl\OAYGRAFReport.ascx" />
+    <Content Include="UserControl\performanceReportTUOWise.ascx" />
+    <Content Include="UserControl\QualityPerformanceReport2.ascx" />
+    <Content Include="UserControl\QualityPerformanceReportTBMRecipeWise.ascx" />
+    <Content Include="UserControl\QualityperformancereportTBMWise.ascx" />
+    <Content Include="UserControl\QualityperformanceSpacReport.ascx" />
+    <Content Include="UserControl\qualityWcWise.ascx" />
+    <Content Include="UserControl\reportHeader.ascx" />
+    <Content Include="UserControl\tuoFilter.ascx" />
+    <Content Include="UserControl\tuoFilterRep2.ascx" />
+    <Content Include="UserControl\weighmentReport.ascx" />
+    <Content Include="validateUser.aspx" />
+    <Content Include="smartMISUBReportMaster.master" />
+    <Content Include="smartMISCuringReportMaster.Master" />
+    <Content Include="smartMISTUOReportGraphMaster.Master" />
+    <Content Include="smartMISTBMproductionReport.Master" />
+    <Content Include="smartMISCURReportMaster.Master" />
+    <Content Include="SmartMISCURReportMasterNew.Master" />
+    <Content Include="SmartMISProdReportMaster.Master" />
+    <Content Include="smartMISTBMmanualproductionReport.Master" />
+    <None Include="Web References\SmartWebReference\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\SmartWebReference\smartMISWebService.wsdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://192.168.1.133/SmartMIS/smartMISWebService.asmx%3fop=FillDropDownList">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\SmartWebReference\</RelPath>
+      <UpdateFromURL>http://192.168.1.133/SmartMIS/smartMISWebService.asmx%3fop=FillDropDownList</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>SmartMIS_SmartWebReference_smartMISWebService</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+    <Service Include="{967B4E0D-AD0C-4609-AB67-0FA40C0206D8}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="crystalreport\gtrejectioncrpt.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>gtrejectioncrpt.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>65074</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

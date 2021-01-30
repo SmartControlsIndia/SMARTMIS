@@ -1,0 +1,681 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" MasterPageFile="~/smartMISMaster.Master" CodeBehind="smartMISTBMmanualproductionReport.master.cs" Inherits="SmartMIS.smartMISTBMmanualproductionReport" %>
+
+<%@ Register src="UserControl/calenderTextBox.ascx" tagname="calenderTextBox" tagprefix="myControl" %>
+<asp:Content ID="reportMasterContent" runat="server" ContentPlaceHolderID="mastercontentplaceholder">
+
+    <link rel="stylesheet" href="../Style/reportMaster.css" type="text/css" charset="utf-8" />
+    <link rel="SHORTCUT ICON" href="../Images/favicon.ico" />
+    <style>
+    #ctl00_ctl00_masterContentPlaceHolder_reportMasterWCPanel
+    {
+        position:relative;
+        overflow:auto;
+    }
+    .durationclass
+    {
+        display:none;
+        border: 1px solid #129FEA;
+padding: 6px 0;
+text-align: center;
+-webkit-border-radius: 8px;
+-moz-border-radius: 8px;
+border-radius: 8px;
+-webkit-box-shadow: #666 0px 2px 3px;
+-moz-box-shadow: #666 0px 2px 3px;
+box-shadow: #666 0px 2px 3px;
+    }
+    </style>
+    <script type="text/javascript" language="javascript">
+        $(function() {
+        $("select").selectbox();
+        });
+        function toggleprocess() {
+
+            $("#ctl00_ctl00_masterContentPlaceHolder_reportMasterWCPanel").toggle(700);
+            $("#ctl00_ctl00_masterContentPlaceHolder_selectAll").toggle(700);
+        }
+
+        function setDuration() {
+
+            var element = ["setdate", "setMonth", "setYear"];
+            for (var i = 0; i <= element.length - 1; i++)
+                document.getElementById(element[i]).style.display = "none";
+
+            if (ctl00_ctl00_masterContentPlaceHolder_DropDownListDuration.value == "Date")
+                document.getElementById("setdate").style.display = "block";
+            else if (ctl00_ctl00_masterContentPlaceHolder_DropDownListDuration.value == "Month") {
+                document.getElementById("setMonth").style.display = "block";
+            } else if (ctl00_ctl00_masterContentPlaceHolder_DropDownListDuration.value == "Year")
+                document.getElementById("setYear").style.display = "block";
+            
+            //alert(ctl00_ctl00_masterContentPlaceHolder_DropDownListDuration.value);
+             
+            document.getElementById("ctl00_ctl00_masterContentPlaceHolder_DropDownListDuration").value = ctl00_ctl00_masterContentPlaceHolder_DropDownListDuration.value;
+        }
+        function showPrintPreview(id)
+        {
+
+            var el = document.getElementById('printArea');
+            var backEl = document.getElementById('BackImage');
+            var printPreviewEl = document.getElementById('PrintPreviewImage');
+            var printEl = document.getElementById('PrintImage');
+
+            if (id == 'PrintPreviewImage') 
+            {
+                document.body.style.visibility = "hidden";
+
+                el.style.visibility = "visible";
+                el.style.position = "absolute";
+                el.style.top = "20px";
+                el.style.left = "30px";
+
+                backEl.style.display = "inline";
+                printPreviewEl.style.display = "none";
+                printEl.style.display = "inline";
+            }
+            else if (id == 'PrintImage') 
+            {
+                window.print();
+            }
+            else if (id == 'BackImage')
+             {
+                 location.reload(true);
+            }
+            
+        }
+    </script> 
+    
+    <script type="text/javascript" language="javascript">
+
+        function enableSelection(value) 
+        {
+            var currentTime = new Date()
+
+            var day = currentTime.getDate();
+            var month = currentTime.getMonth() + 1;
+            var year = currentTime.getFullYear();
+
+            if (day.toString().length < 2) 
+            {
+                day = "0" + day;
+            }
+            if (month.toString().length < 2) 
+            {
+                month = "0" + month;
+            }
+            
+            currentTime = (day + "-" + month + "-" + year);
+            
+            if (value == "0")
+            {
+
+                document.getElementById('ctl00_ctl00_masterContentPlaceHolder_reportMasterFromDateTextBox_calenderUserControlTextBox').disabled = false;
+                document.getElementById('ctl00_ctl00_masterContentPlaceHolder_reportMasterFromDateTextBox_calenderUserControlTextBox').value = currentTime;
+
+                document.getElementById('ctl00_ctl00_masterContentPlaceHolder_reportMasterToDateTextBox_calenderUserControlTextBox').disabled = false;
+                document.getElementById('ctl00_ctl00_masterContentPlaceHolder_reportMasterToDateTextBox_calenderUserControlTextBox').value = currentTime;
+
+            }           
+            
+        }
+
+    </script>
+    
+    <script type="text/javascript" language="javascript">
+        function getWCIDFromGridView()
+        {
+            document.getElementById('<%= this.reportMasterWCIDHidden.ClientID %>').value = "";
+            //get reference of GridView control
+            var grid = document.getElementById('<%= this.reportMasterWCGridView.ClientID %>');
+            //variable to contain the cell of the grid
+            var cell;
+
+            if (grid.rows.length > 0) {
+                //loop starts from 1. rows[0] points to the header.
+                for (i = 0; i < grid.rows.length; i++) {
+                    //get the reference of first column
+                    cell = grid.rows[i].cells[0];
+                    //loop according to the number of childNodes in the cell
+                    for (j = 0; j < cell.childNodes.length; j++) {
+                        //if childNode type is CheckBox
+                        if (cell.childNodes[j].checked == true) {
+                            document.getElementById('<%= this.reportMasterWCIDHidden.ClientID %>').value = document.getElementById('<%= this.reportMasterWCIDHidden.ClientID %>').value + "#" + cell.childNodes[j].value;
+                        }
+                        
+                    }
+                }
+            }
+        }
+
+        function getWCIDFromContentGridView()
+        {
+            document.getElementById('<%= this.reportMasterContentIDHidden.ClientID %>').value = "";
+            //get reference of GridView control
+            var grid = document.getElementById('<%= this.reportMasterContentGridView.ClientID %>');
+            //variable to contain the cell of the grid
+            var cell;
+
+            if (grid.rows.length > 0) {
+                //loop starts from 1. rows[0] points to the header.
+                for (i = 0; i < grid.rows.length; i++) {
+                    //get the reference of first column
+                    cell = grid.rows[i].cells[0];
+                    //loop according to the number of childNodes in the cell
+                    for (j = 0; j < cell.childNodes.length; j++) {
+                        //if childNode type is CheckBox
+                        if (cell.childNodes[j].checked == true) {
+                            document.getElementById('<%= this.reportMasterContentIDHidden.ClientID %>').value = document.getElementById('<%= this.reportMasterContentIDHidden.ClientID %>').value + "#" + cell.childNodes[j].value;
+                        }
+
+                    }
+                }
+            }
+        }
+        function checkAll(ele) {
+            var checkboxes = document.getElementsByTagName('input');
+            if (ele.checked) {
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].type == 'checkbox') {
+                        checkboxes[i].checked = true;
+                    }
+                }
+            } else {
+                for (var i = 0; i < checkboxes.length; i++) {
+                    console.log(i)
+                    if (checkboxes[i].type == 'checkbox') {
+                        checkboxes[i].checked = false;
+                    }
+                }
+            }
+        }
+        
+        function queryString()
+        {
+            var splitter = "?";
+            var process = getIndex('<%=this.reportMasterWCProcessDropDownList.ClientID %>');
+            var wcID = getID(document.getElementById('<%= this.reportMasterWCIDHidden.ClientID %>').value);
+            var reportChoice = getReportChoice();
+            var fromDate = getDate('ctl00_ctl00_masterContentPlaceHolder_reportMasterFromDateTextBox_calenderUserControlTextBox');
+            var toDate = "";
+            var size = "";
+            var operatorID = "";
+            var fromYear = "";
+           
+            var toMonth = "";
+            var toYear = "";
+            
+            var fromYear = "";
+            var contentChoice = getID(document.getElementById('<%= this.reportMasterContentIDHidden.ClientID %>').value);
+            
+            showReport('1' + splitter + wcID + splitter + reportChoice + splitter + fromDate + splitter + toYear + splitter + fromYear + splitter + contentChoice + splitter + process);
+            //showReport('1' + splitter + wcID + splitter + reportChoice + splitter + fromDate + splitter + toDate + splitter + size + splitter + operatorID + splitter + fromYear + splitter + contentChoice + splitter + process);
+            
+        }
+        function getValue(controlID) {
+            var objDropDownList = document.getElementById(controlID);
+            return objDropDownList.value;
+        }
+        function getIndex(controlID)
+        {
+            var objDropDownList = document.getElementById(controlID);
+            return objDropDownList.selectedIndex;
+        }
+        function getID(controlID)
+        {
+            if (controlID == "") 
+            {
+                return "0";
+            }
+            else 
+            {
+                return controlID;
+            }
+            
+        }
+        function getReportChoice()
+        {
+            var choice;
+            choice = "0";
+            return choice;
+        }
+
+        function getDate(controlID)
+        {
+            var fromDate;
+            if((document.getElementById(controlID).value) == "")
+            {
+                fromDate = "0";
+            }
+            else
+            {
+                fromDate = (document.getElementById(controlID).value);
+            }
+            
+            return fromDate;
+        }
+
+        function getYear(controlID)
+        {
+            var objDropDownList = document.getElementById(controlID);
+            if (objDropDownList.value == "") {
+                return "0";
+            }
+            else
+            {
+                return objDropDownList.value;
+            }
+        }
+       
+        
+    </script>
+    
+    <script type="text/javascript" language="javascript">
+        function getKeyCode(e) {
+            if (window.event)
+                return window.event.keyCode;
+            else if (e)
+                return e.which;
+            else
+                return null;
+        }
+        function keyRestrict(e, validchars) {
+            var key = '', keychar = '';
+            key = getKeyCode(e);
+            if (key == null) return true;
+            keychar = String.fromCharCode(key);
+            keychar = keychar.toLowerCase();
+            validchars = validchars.toLowerCase();
+            if (validchars.indexOf(keychar) != -1)
+                return true;
+            if (key == null || key == 0 || key == 8 || key == 9 || key == 13 || key == 27)
+                return true;
+            return false;
+        }
+    </script>
+    
+    <script type="text/javascript" language="javascript">
+        function ExportToExcel()
+         {
+            var html = $("#exportArea").html();
+            html = $.trim(html);
+            html = html.replace(/>/g, '&gt;');
+            html = html.replace(/</g, '&lt;');
+            $("input[id$='HdnValue']").val(html);
+        }
+        function showDuration(duration) {
+            hidewcDiv();
+            
+        switch(duration)
+        {
+            case "day":
+                $("#setdate").show(500);
+                break;
+            case "month":
+                $("#setMonth").show(500);
+                break;
+            case "year":
+                $("#setYear").show(500);
+                break;
+            }
+        }
+        function hidewcDiv() {
+            $("#ctl00_ctl00_masterContentPlaceHolder_reportMasterWCPanel:visible").slideUp(500);
+            $("#ctl00_ctl00_masterContentPlaceHolder_selectAll:visible").slideUp(500);
+        }
+    </script>
+<asp:ScriptManager ID="TBMScriptManager" AsyncPostBackTimeout="360000" runat="server"></asp:ScriptManager>
+ 
+    <asp:UpdatePanel ID="UpdatePanelProcess" runat="server">
+              <ContentTemplate>
+     <table align="center" class="reportMasterTable">
+         <tr>
+             <td></td>
+             <td></td>
+             <td></td>
+         </tr>
+         <tr>
+             <td colspan="3" align="center">
+                 <div id="reportMasterDiv" class="reportMasterDiv">
+                     <table class="reportContentTable" align="center">
+                         <tr>
+                             <td class="reportMasterFirstCol"></td>
+                             <td class="reportMasterSecondCol"></td>
+                             <td class="reportMasterThirdCol"></td>
+                             <td class="reportMasterForthCol"></td>
+                             <td class="reportMasterFifthCol"></td>
+                             <td class="reportMasterSixthCol"></td>
+                             <td class="reportMasterSeventhCol"></td>
+                             <td class="reportMasterEighthCol"></td>
+                         </tr>
+                         <tr>
+                             <td colspan="8" align="center">
+                                 
+                                <asp:HiddenField id="reportMasterWCIDHidden" runat="server" Value="" />&nbsp;
+                                <h3 style="font-weight: 600;font-size: x-large;">TBM Manual Production Report </h3>
+                                    
+                             </td>
+                         </tr>                        
+                         <tr>
+                             <td colspan="8">
+                              
+                                 <div id="reportMasterWCDiv" runat="server" visible="true" class="glossymenu">
+                                          <div>
+                                       
+                                            <div class="panel"  style="padding:5px;">
+                                                    <span class="masterLabel" style="padding-left: 5px; cursor:pointer;" onclick="toggleprocess();">Select Process : </span>
+                                                    <asp:DropDownList ID="reportMasterWCProcessDropDownList" runat="server" Width="65%"
+                                                    CssClass="sbHolder" AutoPostBack="true" OnSelectedIndexChanged="DropDownList_SelectedIndexChanged"></asp:DropDownList> 
+                                                    
+                                                </div>
+                                                
+                                                <asp:Panel class="panel" runat="server" Visible="false" ID="selectAll">
+                                                    <table align="center" width="100%" style="display:none;">
+                                                        <tr>
+                                                            <td align="left">
+                                                                <label class="gridViewItems"><input id="reportMasterWCAllCheckBox" runat="server" onchange="checkAll(this)" CssClass="gridViewItems" type="checkbox" /> Select All</label>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </asp:Panel>
+                                                 <asp:Panel ID="reportMasterWCPanel" runat="server" ScrollBars="Auto" Height="50px" CssClass="panel" Visible="false" >
+                                                     <asp:GridView ID="reportMasterWCGridView" runat="server" AutoGenerateColumns="False"
+                                                     Width="100%" CellPadding="3" ForeColor="#333333" GridLines="None"
+                                                     AllowPaging="false" AllowSorting="false" PageSize="5" ShowHeader="false"  >
+                                                     <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
+                                                     <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
+                                                     <Columns>
+                                                         <asp:TemplateField HeaderText="ID" HeaderStyle-CssClass="gridViewHeader" ItemStyle-HorizontalAlign="Left" Visible="false" ItemStyle-Width="10%">
+                                                             <ItemTemplate>
+                                                                 <asp:Label ID="reportMasterWCIDLabel" runat="server" Text='<%# Eval("iD") %>' CssClass="gridViewItems"></asp:Label>
+                                                             </ItemTemplate>
+                                                         </asp:TemplateField>
+                                                     </Columns>
+                                                     <Columns>
+                                                         <asp:TemplateField HeaderText="Workcenter Name" SortExpression="ProcessID" HeaderStyle-CssClass="gridViewHeader" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="5%">
+                                                             <ItemTemplate>
+                                                                 <asp:CheckBox ID="reportMasterWCCheckBox" runat="server" Value='<%# Eval("iD") %>' onClick="javascript:getWCIDFromGridView()" CssClass="gridViewItems" />
+                                                                 
+                                                             </ItemTemplate>
+                                                         </asp:TemplateField>
+                                                     </Columns>
+                                                     <Columns>
+                                                         <asp:TemplateField HeaderText="Workcenter Name" SortExpression="ProcessName" HeaderStyle-CssClass="gridViewHeader" ItemStyle-HorizontalAlign="Left" ItemStyle-Width="95%">
+                                                             <ItemTemplate>
+                                                                 <asp:Label ID="reportMasterWCNameLabel" runat="server" Text='<%# Eval("name") %>' CssClass="gridViewItems"></asp:Label>
+                                                             </ItemTemplate>
+                                                         </asp:TemplateField>
+                                                     </Columns>
+                                                 <PagerStyle BackColor="#507CD1" ForeColor="White" 
+                                                     HorizontalAlign="Center" />
+                                                 <SelectedRowStyle BackColor="#E2DED6" ForeColor="#333333" Font-Bold="True" />
+                                                 <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                                 <EditRowStyle BackColor="#999999" />
+                                                 <AlternatingRowStyle BackColor="#FFFFFF" />
+                                             </asp:GridView>
+                                             </asp:Panel>
+                                         </div>
+                                 </div>
+                             </td>
+                         </tr>
+                         <tr>
+                             <td colspan="8" class="masterHeader">&nbsp;</td>
+                         </tr>
+                         <tr>
+                             <td></td>
+                             <td class="masterLabel">Duration :</td>
+                             <td class="masterLabel"></td>
+                             <td class="masterTextBox">
+                                <asp:DropDownList ID="DropDownListDuration"  
+                   Width="90%" runat="server" 
+                   CausesValidation="false" 
+                   style="margin-bottom: 0px" onchange="setDuration();">
+                   <asp:ListItem Value="Select">--Select--</asp:ListItem>
+                   <asp:ListItem Value="Date">Date</asp:ListItem>
+                   <asp:ListItem Value="Month">Month</asp:ListItem>
+                   <asp:ListItem Value="Year">Year</asp:ListItem>
+             </asp:DropDownList>
+                                 
+                             </td>
+                             
+                             <td class="masterLabel"></td>
+                             <td class="masterTextBox" colspan="2">
+                                 
+                             </td>
+                             <td>
+                             </td>
+                         </tr>
+                         <tr>
+                            <td colspan="8">
+                             <div id="setdate" class="durationclass">
+                             <table width="100%"><tr>
+                             <td class="masterLabel" width="24%">Date :</td>
+                             <td class="masterLabel" width="6%"></td>
+                             <td class="masterTextBox" width="60%">
+                                
+                                 <myControl:calenderTextBox ID="reportMasterFromDateTextBox" runat="server" Width="45%" />
+                                 
+                             </td>
+                             
+                             </tr>
+                             </table>
+                             </div>
+                             <div id="setMonth" class="durationclass">
+                             <table width="100%"><tr>
+                             
+                             <td class="masterLabel" width="24%">Month :</td>
+                             <td class="masterLabel" width="6%"></td>
+                             <td class="masterTextBox" width="60%">
+                                
+                                 <asp:DropDownList ID="DropDownListMonth"  
+                   Width="45%" runat="server" 
+                   CausesValidation="false" 
+                   style="margin-bottom: 0px">
+                   <asp:ListItem Value="01">January</asp:ListItem>
+                   <asp:ListItem Value="02">February</asp:ListItem>
+                   <asp:ListItem Value="03">March</asp:ListItem>
+                   <asp:ListItem Value="04">April</asp:ListItem>
+                   <asp:ListItem Value="05">May</asp:ListItem>
+                   <asp:ListItem Value="06">June</asp:ListItem>
+                   <asp:ListItem Value="07">July</asp:ListItem>
+                   <asp:ListItem Value="08">August</asp:ListItem>
+                   <asp:ListItem Value="09">September</asp:ListItem>
+                   <asp:ListItem Value="10">October</asp:ListItem>
+                   <asp:ListItem Value="11">November</asp:ListItem>
+                   <asp:ListItem Value="12">December</asp:ListItem>
+             </asp:DropDownList>
+                                <asp:DropDownList ID="DropDownListYear"  
+                   Width="45%" runat="server" 
+                   CausesValidation="false" 
+                   style="margin-bottom: 0px">
+                   <asp:ListItem Text="2010">2010</asp:ListItem>
+                   <asp:ListItem Text="2011">2011</asp:ListItem>
+                   <asp:ListItem Text="2012">2012</asp:ListItem>
+                   <asp:ListItem Text="2013">2013</asp:ListItem>
+                   <asp:ListItem Text="2014">2014</asp:ListItem>
+                   <asp:ListItem Text="2015">2015</asp:ListItem>
+                   <asp:ListItem Text="2016">2016</asp:ListItem>
+                   <asp:ListItem Text="2017">2017</asp:ListItem>
+                   <asp:ListItem Text="2018">2018</asp:ListItem>
+                   <asp:ListItem Text="2019">2019</asp:ListItem>
+                   <asp:ListItem Text="2020">2020</asp:ListItem>
+                   <asp:ListItem Text="2021">2021</asp:ListItem>
+             </asp:DropDownList> 
+                             </td>
+                             
+                             
+                             </tr>
+                             </table>
+                             </div>
+                             <div id="setYear" class="durationclass">
+                             <table width="100%"><tr>
+                             
+                             <td class="masterLabel" width="24%">Year :</td>
+                             <td width="6%"></td>
+                             <td class="masterTextBox" width="60%">
+                             <asp:DropDownList ID="DropDownListYearWise"  
+                   Width="45%" runat="server" 
+                   CausesValidation="false" 
+                   style="margin-bottom: 0px">
+                   <asp:ListItem Text="2010">2010</asp:ListItem>
+                   <asp:ListItem Text="2011">2011</asp:ListItem>
+                   <asp:ListItem Text="2012">2012</asp:ListItem>
+                   <asp:ListItem Text="2013">2013</asp:ListItem>
+                   <asp:ListItem Text="2014">2014</asp:ListItem>
+                   <asp:ListItem Text="2015">2015</asp:ListItem>
+                   <asp:ListItem Text="2016">2016</asp:ListItem>
+                   <asp:ListItem Text="2017">2017</asp:ListItem>
+                   <asp:ListItem Text="2018">2018</asp:ListItem>
+                   <asp:ListItem Text="2019">2019</asp:ListItem>
+                   <asp:ListItem Text="2020">2020</asp:ListItem>
+                   <asp:ListItem Text="2021">2021</asp:ListItem>
+             </asp:DropDownList> 
+                             </td>
+                             
+                             
+                             </tr>
+                             </table>
+                             </div>
+
+                             </td>
+                         </tr>
+                         <tr>
+                            <td></td>
+                            <td class="masterLabel">Type :</td>
+                            <td class="masterLabel"></td>
+                            <td class="masterTextBox"><asp:DropDownList ID="DropDownListType"  
+                   Width="90%" runat="server" 
+                   CausesValidation="false" 
+                   style="margin-bottom: 0px" AutoPostBack="true" OnSelectedIndexChanged="DropDownList_SelectedIndexChanged">
+                   <asp:ListItem Text="WcWise">WcWise</asp:ListItem>
+                   <asp:ListItem Text="RecipeWise">RecipeWise</asp:ListItem>
+                   <asp:ListItem Text="OperatorWise">OperatorWise</asp:ListItem>
+             </asp:DropDownList>
+             </td>
+             
+             <td colspan="4" class="masterTextBox"><asp:DropDownList ID="DropDownListOperators" Visible="false"  
+                   Width="90%" runat="server" 
+                   CausesValidation="false" 
+                   style="margin-bottom: 0px" OnSelectedIndexChanged="DropDownList_SelectedIndexChanged" AppendDataBoundItems="True">
+             <asp:ListItem Text="All">All</asp:ListItem>
+             </asp:DropDownList>
+             </td>
+                            
+                         </tr>
+                         <tr>
+                             <td colspan="8" class="masterHeader">
+                              &nbsp;</td>
+                         </tr>
+                         <tr>
+                             <td colspan="8">
+                                <asp:HiddenField id="reportMasterContentIDHidden" runat="server" Value="" />
+                                 <div id="reportMasterContentDiv" runat="server" visible="false" class="glossymenu">
+                                     <a id="reportMasterContentDivHeader" runat="server" class="menuitem submenuheader" href="#" >Material Name</a>
+                                         <div class="submenu">
+                                                 <asp:Panel ID="reportMasterContentPanel" runat="server" ScrollBars="Vertical" Height="145px" CssClass="panel" >
+                                                     <asp:GridView ID="reportMasterContentGridView" runat="server" AutoGenerateColumns="False"
+                                                     Width="100%" CellPadding="3" ForeColor="#333333" GridLines="None"
+                                                     AllowPaging="false" AllowSorting="false" PageSize="5" ShowHeader="false"  >
+                                                     <FooterStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
+                                                     <RowStyle BackColor="#F7F6F3" ForeColor="#333333" />
+                                                     <Columns>
+                                                         <asp:TemplateField HeaderText="ID" HeaderStyle-CssClass="gridViewHeader" ItemStyle-HorizontalAlign="Left" Visible="false" ItemStyle-Width="10%">
+                                                             <ItemTemplate>
+                                                                 <asp:Label ID="reportMasterContentIDLabel" runat="server" Text='<%# Eval("iD") %>' CssClass="gridViewItems"></asp:Label>
+                                                             </ItemTemplate>
+                                                         </asp:TemplateField>
+                                                     </Columns>
+                                                     <Columns>
+                                                         <asp:TemplateField HeaderText="Name" HeaderStyle-CssClass="gridViewHeader" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="5%">
+                                                             <ItemTemplate>
+                                                                 <input id="reportMasterContentCheckBox" runat="server" Value='<%# Eval("iD") %>' onClick="javascript:getWCIDFromContentGridView()" CssClass="gridViewItems" type="checkbox" />
+                                                             </ItemTemplate>
+                                                         </asp:TemplateField>
+                                                     </Columns>
+                                                     <Columns>
+                                                         <asp:TemplateField HeaderText="Name" HeaderStyle-CssClass="gridViewHeader" ItemStyle-HorizontalAlign="Left" ItemStyle-Width="95%">
+                                                             <ItemTemplate>
+                                                                 <asp:Label ID="reportMasterContentNameLabel" runat="server" Text='<%# Eval("name") %>' CssClass="gridViewItems"></asp:Label>
+                                                             </ItemTemplate>
+                                                         </asp:TemplateField>
+                                                     </Columns>
+                                                 <PagerStyle BackColor="#507CD1" ForeColor="White" 
+                                                     HorizontalAlign="Center" />
+                                                 <SelectedRowStyle BackColor="#E2DED6" ForeColor="#333333" Font-Bold="True" />
+                                                 <HeaderStyle BackColor="#507CD1" Font-Bold="True" ForeColor="White" />
+                                                 <EditRowStyle BackColor="#999999" />
+                                                 <AlternatingRowStyle BackColor="#FFFFFF" />
+                                             </asp:GridView>
+                                             </asp:Panel>
+                                         </div>
+                                 </div>
+                             </td>
+                         </tr>
+                         <tr>
+                             <td colspan="8" align="center">
+                                 <asp:Button ID="reportMasterViewButton" runat="server" Text="  View  " OnClick="viewReport_Click" />
+                                 <!--<input id="reportMasterViewButton" type="button" class="button" 
+                                     value=" View " onclick="return queryString()" />-->&nbsp;
+                                 <asp:Button ID="reportMasterResetButton" runat="server" CssClass="button" Text="Reset" />
+                             </td>
+                         </tr>
+                     </table>
+                 </div>
+             </td>
+         </tr>
+         <tr>
+             <td>&nbsp;</td>
+             <td>&nbsp;</td>
+             <td>&nbsp;</td>
+         </tr>
+         <tr>
+             <td colspan="3">
+                <div id="printArea">
+                    <div style="text-align:left;">
+                        <img id="BackImage" alt="Home" title="Back" src="../Images/back.png" class="masterToolBoxImage" onclick="javascript:showPrintPreview('BackImage')"  style="display: none" />
+                        <img id="PrintPreviewImage" alt="Print Preview" title="Print Preview" src="../Images/Print Preview.png" class="masterToolBoxImage" onclick="javascript:showPrintPreview('PrintPreviewImage')"  />
+                        <img id="PrintImage" alt="Print" title="Print" src="../Images/print.png" class="masterToolBoxImage" onclick="javascript:showPrintPreview('PrintImage')" style="display: none" />
+                        
+                        <asp:LinkButton runat="server" ID="btnExport" onclick="Export_click"><img src="../Images/Excel.jpg" class="imag" /></asp:LinkButton>
+                    </div>
+                    <div id="exportArea">
+
+        <asp:ContentPlaceHolder ID="TBMMasterContentPalceHolder" runat="server">
+        
+        </asp:ContentPlaceHolder>
+  </div>
+                 </div>
+             </td>
+         </tr>
+         <tr>
+             <td>&nbsp;</td>
+             <td>&nbsp;</td>
+             <td>&nbsp;</td>
+         </tr>
+     </table></ContentTemplate>
+      <Triggers>
+        <asp:PostBackTrigger ControlID="btnExport" />
+        </Triggers>
+    </asp:UpdatePanel>
+    
+    <asp:UpdateProgress ID="upProgClaimantSearch" runat="server" AssociatedUpdatePanelID="UpdatePanelProcess">
+        <ProgressTemplate>
+        <div class="backDiv">             
+             <div align="center" class="waitBox">
+             
+<div id="bookG">
+<div id="blockG_1" class="blockG">
+</div>
+<div id="blockG_2" class="blockG">
+</div>
+<div id="blockG_3" class="blockG">
+</div>
+</div>
+
+<br />
+
+             <h2>Loading, please wait............ </h2> 
+            </div>
+        </div>
+        </ProgressTemplate>
+    </asp:UpdateProgress>
+</asp:Content>

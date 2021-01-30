@@ -1,0 +1,172 @@
+﻿.xRayTable
+{
+	width: 100%;
+	
+	border-style: solid;
+	border-width:thin;
+	border-color: #C3D9FF;
+	background-color: #FFFFFF;
+}
+.xRayTextBox
+{
+	background-color : #FFFFFF;
+	color: #000000;
+	
+	border: 0px;
+	
+	font-family: Arial;
+	font-size: 30px;
+	font-weight: bold;
+	
+	text-align: center;
+	
+	width: 50px;
+	height: 35px;
+}
+.xRayButton
+{
+	font-family: Arial;
+	font-size: 24px;
+	font-weight: bold;
+	width: 70px;
+	height: 35px;
+	
+	background-color: #0099FF;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow: 3px 3px 1px #999;
+	-webkit-box-shadow: 3px 3px 1px #999;
+	border: solid 1px #CCC;
+	
+	color: #ffffff;
+	text-shadow: 2px 2px 4px #000000;
+}
+.xRayDefectButton
+{
+	font-family: Arial;
+	font-size: large;
+	font-weight: bold;
+	width: 100%;
+	height: 35px;
+	
+	background-color: #0099FF;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-box-shadow: 3px 3px 1px #999;
+	-webkit-box-shadow: 3px 3px 1px #999;
+	border: solid 1px #CCC;
+	
+	color: #ffffff;
+	text-shadow: 2px 2px 4px #000000;
+}
+	 
+.xRayButton:hover 
+{
+	 background-color: #C3D9FF;
+}
+
+.xRayDefectButton:hover 
+{
+	 background-color: #C3D9FF;
+}
+
+#modalPageForStatus
+{
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px; left: 0px;
+}
+#modalPageForDefectCode
+{
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px; left: 0px;
+}
+#modalPageForBodyPly
+{
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px; left: 0px;
+}
+#modalPageForBelt
+{
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px; left: 0px;
+}
+#modalPageForBead
+{
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px; left: 0px;
+}
+#modalPageForSteelChipper
+{
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px; left: 0px;
+}
+#modalPageForOther
+{
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px; left: 0px;
+}
+.xRayModalContainer
+{
+    position: absolute;
+    width: 400px;
+    left: 40%;
+    top: 0%;
+    z-index: 750;
+}
+.xRayModal
+{
+    background-color: white;
+    border: 3px solid #C3D9FF;
+    position: relative;
+    top: 50px;
+    left: -250px;
+    z-index: 800;
+    width: 650px;
+    height: 380px;
+    padding: 0px;
+    
+    -webkit-border-radius:5px;
+	-moz-border-radius:5px;
+	border-radius:5px;
+	-webkit-box-shadow: 0 0 18px rgba(0,0,0,0.4);
+	-moz-box-shadow: 0 0 18px rgba(0,0,0,0.4);
+	box-shadow: 0 0 18px rgba(0,0,0,0.4);
+}
+.xRayModalTop
+{
+    width: 99%;
+    background-color: #C3D9FF;
+    padding: 4px;
+    color: #FFFFFF;
+    text-align: right;
+}
+.xRayModalTop a, .xRayModalTop a:visited
+{
+    color: #ffffff;
+}
+
+.xRayModalBody
+{
+    padding: 10px;
+}

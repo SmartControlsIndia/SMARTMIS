@@ -1,0 +1,2 @@
+Needs to add Camouflage option in TBR VI thinclient 7007 and 7008
+request =prabhakaran

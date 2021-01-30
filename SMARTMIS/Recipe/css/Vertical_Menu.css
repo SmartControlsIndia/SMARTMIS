@@ -1,0 +1,51 @@
+﻿.glossymenu{
+list-style-type: none;
+margin: 5px 0;
+padding: 0;
+width: 170px;
+border: 1px solid #9A9A9A;
+border-bottom-width: 0;
+}
+
+.glossymenu li a{
+background: white url(images/glossyback.gif) repeat-x bottom left;
+font: bold 13px "Lucida Grande", "Trebuchet MS", Verdana, Helvetica, sans-serif;
+color: white;
+display: block;
+width: auto;
+padding: 3px 0;
+padding-left: 10px;
+text-decoration: none;
+
+}
+
+
+* html .glossymenu li a{ /*IE only. Actual menu width minus left padding of A element (10px) */
+width: 160px;
+}
+
+.glossymenu li a:visited, .glossymenu li a:active{
+color: white;
+}
+
+.glossymenu li a:hover{
+background-image: url(images/glossyback2.gif);
+}
+
+.current{
+	background:#74befd url(images/glossyback.gif)) repeat-x;
+	border:2px solid #4a88ce;
+	
+	padding:5px 20px 5px 20px;
+	display:block;
+	float:left;
+	color:#2b61a1;
+	text-transform:uppercase;
+	text-decoration:none;
+	font-family:Geneva, Arial, Helvetica, sans-serif;
+	font-size:13px;
+	cursor:pointer;
+	font-weight:bold;
+	height: 55px;
+	width: 128px;
+}

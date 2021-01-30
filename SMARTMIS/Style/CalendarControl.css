@@ -1,0 +1,123 @@
+﻿#CalendarControlIFrame {
+  display: none;
+  left: 0px;
+  position: absolute;
+  top: 0px;
+  height: 250px;
+  width: 250px;
+  z-index: 99;
+}
+
+#CalendarControl
+{
+	position: absolute;
+	background-color: #FFFFFF;
+	margin: 0;
+	padding: 0;
+	display: none;
+	z-index: 100;
+}
+
+#CalendarControl table
+{
+	font-family: arial, verdana, helvetica, sans-serif;
+	font-size: 8pt;
+	border-left: 1px solid #336;
+	border-right: 1px solid #336;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #C3D9FF;
+}
+
+#CalendarControl th
+{
+	font-weight: normal;
+}
+
+#CalendarControl th a
+{
+	font-weight: normal;
+	text-decoration: none;
+	color: #0466CC;
+	padding: 1px;
+}
+
+#CalendarControl td
+{
+	text-align: center;
+}
+
+#CalendarControl .header
+{
+	background-color: #F4F2F4;
+}
+
+#CalendarControl .weekday
+{
+	background-color: #FFFFFF;
+	color: #0466CC;
+}
+
+#CalendarControl .weekend
+{
+	background-color: #ECEEEC;
+	color: #0466CC;
+}
+
+#CalendarControl .current
+{
+	border: 1px solid #339;
+	background-color: #0466CC;
+	color: #FFF;
+}
+
+#CalendarControl .weekday, #CalendarControl .weekend, #CalendarControl .current
+{
+	display: block;
+	text-decoration: none;
+	border: 1px solid #DCDEDC;
+	width: 2em;
+}
+
+#CalendarControl .weekday:hover, #CalendarControl .weekend:hover, #CalendarControl .current:hover
+{
+	color: #FFF;
+	background-color: #0466CC;
+	border: 1px solid #DCDEDC;
+}
+
+#CalendarControl .previous
+{
+	text-align: left;
+}
+
+#CalendarControl .next
+{
+	text-align: right;
+}
+
+#CalendarControl .previous, #CalendarControl .next
+{
+	padding: 1px 3px 1px 3px;
+	font-size: 1.4em;
+}
+
+#CalendarControl .previous a, #CalendarControl .next a
+{
+	color: #0466CC;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+#CalendarControl .title
+{
+	text-align: center;
+	font-weight: bold;
+	color: #0466CC;
+}
+
+#CalendarControl .empty
+{
+	background-color: #FFFFFF;
+	border: 1px solid #FFFFFF;
+}

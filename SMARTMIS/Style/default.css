@@ -1,0 +1,181 @@
+﻿.loginTable
+{
+	width: 98%;
+}
+.loginFirstCol
+{
+	width: 20%;
+}
+.loginSecondCol
+{
+	width: 80%;
+}
+.loginHeader
+{
+	background-color: #C3D9FF;
+}
+.loginHeaderTagline
+{
+	font-family: Arial;
+	font-size: smaller;
+	font-weight: bold;
+	
+	padding: 2px;
+}
+.loginFooter
+{
+	background-color: #C3D9FF;
+}
+.loginFooterTagline
+{
+	font-family: Arial;
+	font-size: small;
+	font-weight: bold;
+	
+	text-align: center;
+	padding: 5px;
+}
+a.anchor:link,a.anchor:visited
+{
+	font-family:Arial;
+	font-size:small;
+	font-weight:bold;
+	color:#3333CC;
+	padding:4px;
+	text-decoration:none;
+}
+
+/*------------Style for Inner Table------------*/
+/*---------------------------------------------*/
+
+.loginInnerTable
+{
+	width: 100%;
+}
+.loginInnerTableFirstCol
+{
+	width: 30%;
+}
+.loginInnerTableSecondCol
+{
+	width: 2%;
+}
+.loginInnerTableThirdCol
+{
+	width: 8%;
+}
+.loginInnerTableForthCol
+{
+	width: 60%;
+}
+
+.invalidMessageLabel
+{
+	font-family: Arial;
+	font-size: small;
+	font-weight: bold;
+	color: Red;
+}
+
+.logoImage
+{
+	width: 80%;
+	height: 80%;
+}
+
+.custImage
+{
+	width: 20%;
+	height: 80%;
+}
+
+.image
+{
+	width: 50%;
+	height: 50%;
+	
+	padding-right: 5px;
+}
+
+/*---------------------------------------------*/
+/*---------------------------------------------*/
+
+/*------------Style for Login Div Table------------*/
+/*-------------------------------------------------*/
+
+.loginInnerDiv
+{
+	width: 93%;
+		
+	border-style: solid;
+	border-color: #C3D9FF;
+	border-width: thin;
+	
+	padding:5px;
+	
+	font-family: Arial;
+	font-size: small;
+	
+	overflow: visible;
+}
+.loginInnerDivTable
+{
+	width: 100%;
+	background-color: #E8EEFA;
+	
+}
+.loginInnerDivFirstCol
+{
+	width: 40%;
+}
+.loginInnerDivSecondCol
+{
+	width: 60%;
+}
+
+.loginInnerDivHeaderTagline
+{
+	font-family: Arial;
+	font-size: small;
+	
+	padding: 8px;
+	
+	text-align: center;
+	vertical-align: top;
+}
+
+.loginLabel
+{
+	text-align: right;
+	
+	font-family: Arial;
+	font-size: small;
+	font-weight: bold;
+	
+	padding-right: 5px;
+}
+.loginTextBox
+{
+	width: 70%;
+	
+	text-align: left;
+	font-family: Arial;
+	font-size: small;
+}
+.logInHeaderDiv
+{
+	font-family: Arial;
+	font-size: small;
+	font-weight: bold;
+	
+	padding-right: 5px;	
+}
+.logInContentDiv
+{
+	font-family: Arial;
+	font-size: small;
+	
+	padding-right: 5px;
+}
+/*---------------------------------------------------*/
+/*---------------------------------------------------*/

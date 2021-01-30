@@ -1,0 +1,177 @@
+﻿.weighmentReportTable
+{
+	width: 100%;
+	
+	border-style: solid;
+	border-width:thin;
+	border-color: #C3D9FF;
+	background-color: #FFFFFF;
+}
+.weighmentReportDailyFirstCol
+{
+	width: 4%;
+}
+.weighmentReportDailySecondCol
+{
+	width: 6%;
+}
+.weighmentReportDailyThirdCol
+{
+	width: 4%;
+}
+.weighmentReportDailyForthCol
+{
+	width: 6%;
+}
+.weighmentReportDailyFifthCol
+{
+	width: 4%;
+}
+.weighmentReportDailySixthCol
+{
+	width: 6%;
+}
+.weighmentReportDailySeventhCol
+{
+	width: 8%;
+}
+.weighmentReportDailyEighthCol
+{
+	width: 6%;
+}
+.weighmentReportDailyNinthCol
+{
+	width: 6%;
+}
+.weighmentReportDailyTenthCol
+{
+	width: 8%;
+}
+.weighmentReportDailyEleventhCol
+{
+}
+.weighmentReportDailyTwelvethCol
+{
+	width: 6%;
+}
+.weighmentReportDailyThirteenthCol
+{
+	width: 8%;
+}
+
+
+.weighmentReportMonthlyFirstCol
+{
+	width: 4%;
+}
+.weighmentReportMonthlySecondCol
+{
+	width: 15%;
+}
+.weighmentReportMonthlyThirdCol
+{
+	width: 15%;
+}
+.weighmentReportMonthlyForthCol
+{
+	width: 18%;
+}
+.weighmentReportMonthlyFifthCol
+{
+	width: 15%;
+}
+.weighmentReportMonthlySixthCol
+{
+	width: 15%;
+}
+.weighmentReportMonthlySeventhCol
+{
+	width: 18%;
+}
+
+.weighmentReportYearlyFirstCol
+{
+	width: 10%;
+}
+.weighmentReportYearlySecondCol
+{
+	width: 15%;
+}
+.weighmentReportYearlyThirdCol
+{
+	width: 15%;
+}
+.weighmentReportYearlyForthCol
+{
+	width: 15%;
+}
+.weighmentReportYearlyFifthCol
+{
+	width: 15%;
+}
+.weighmentReportYearlySixthCol
+{
+	width: 15%;
+}
+.weighmentReportYearlySeventhCol
+{
+	width: 15%;
+}
+
+.weighmentReportHeader
+{
+	background-color: #C3D9FF;
+	
+	font-family: Arial;
+	font-size: medium;
+	font-weight: bold;
+	
+	padding: 5px;
+}
+
+.weighmentReportShiftHeader
+{
+	background-color: #5D90E7;
+	
+	color : #FFFFFF;
+	
+	font-family: Arial;
+	font-size: small;
+	font-weight: bold;
+	text-align: center;
+	padding: 5px;
+}
+
+.weighmentReportActualPlanHeader
+{
+	background-color: #FF9933;
+	color: #FFFFFF;
+	font-family: Arial;
+	font-size: small;
+	font-weight: bold;
+	text-align: center;
+	padding: 5px;
+}
+.weighmentReportSrNo
+{
+	background-color: #FF9933;
+	color: #FFFFFF;
+	font-family: Arial;
+	font-size: small;
+	font-weight: bold;
+	text-align: center;
+	padding: 2px;
+}
+
+.weighmentReportHeaderLabel
+{
+	text-align: center;
+	
+	font-family: Arial;
+	font-size: small;
+	font-weight: bold;
+	
+	padding-right: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}

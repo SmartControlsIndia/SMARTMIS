@@ -1,0 +1,25 @@
+﻿.updationTable
+{
+	width: 100%;
+	
+	border-style: solid;
+	border-width:thin;
+	border-color: #C3D9FF;
+	background-color: #FFFFFF;
+}
+.updationFirstCol
+{
+	width: 25%;
+}
+.updationSecondCol
+{
+	width: 25%;
+}
+.updationThirdCol
+{
+	width: 10%;
+}
+.updationForthCol
+{
+	width: 40%;
+}
