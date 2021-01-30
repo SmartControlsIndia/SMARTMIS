@@ -30,7 +30,7 @@ namespace SmartMIS.Home
                 TBRPanel.Visible = true;
                 PCRPanel.Visible = false;
 
-                // For TBM TBR WorkCenterwise
+                // For TBM TBR WorkCenterwise //
                 TBMTBRChart.Series["TBMTBRSeries"].ChartType = SeriesChartType.Pie;
                 TBMTBRChart.Series["TBMTBRSeries"]["DrawingStyle"] = "Emboss"; //Emboss,Cylinder,LightToDark,Wedge,Default
                 TBMTBRChart.ChartAreas["TBMTBRChartArea"].Area3DStyle.Enable3D = true;
