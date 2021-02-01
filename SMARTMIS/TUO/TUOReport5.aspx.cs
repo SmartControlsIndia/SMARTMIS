@@ -1157,18 +1157,18 @@ namespace SmartMIS.TUO
                         dr[1] = uniqrecipedt.Rows[i][0].ToString();
                         dr[2] = total.ToString();
                         dr[3] = Math.Round(pYTD, 1);
-                        dr[4] = Math.Round(pJAN, 1);                    
-                        dr[5] = Math.Round(pFEB, 1);
-                        dr[6] = Math.Round(pMAR, 1);
-                        dr[7] = Math.Round(pAPR, 1);
-                        dr[8] = Math.Round(pMAY, 1);
-                        dr[9] = Math.Round(pJUN, 1);
-                        dr[10] = Math.Round(pJUL, 1);
-                        dr[11] = Math.Round(pAUG, 1);
-                        dr[12] = Math.Round(pSEP, 1);
-                        dr[13] = Math.Round(pOCT, 1);
-                        dr[14] = Math.Round(pNOV, 1);
-                        dr[15] = Math.Round(pDECE, 1);
+                        dr[4] = Math.Round(pJAN, 1).ToString() == "NaN" ? "" : Math.Round(pJAN, 1).ToString();                    
+                        dr[5] = Math.Round(pFEB, 1).ToString() == "NaN" ? "" : Math.Round(pFEB, 1).ToString();
+                        dr[6] = Math.Round(pMAR, 1).ToString() == "NaN" ? "" : Math.Round(pMAR, 1).ToString();
+                        dr[7] = Math.Round(pAPR, 1).ToString() == "NaN" ? "" : Math.Round(pAPR, 1).ToString();
+                        dr[8] = Math.Round(pMAY, 1).ToString() == "NaN" ? "" : Math.Round(pMAY, 1).ToString();
+                        dr[9] = Math.Round(pJUN, 1).ToString() == "NaN" ? "" : Math.Round(pJUN, 1).ToString();
+                        dr[10] = Math.Round(pJUL, 1).ToString() == "NaN" ? "" : Math.Round(pJUL, 1).ToString();
+                        dr[11] = Math.Round(pAUG, 1).ToString() == "NaN" ? "" : Math.Round(pAUG, 1).ToString();
+                        dr[12] = Math.Round(pSEP, 1).ToString() == "NaN" ? "" : Math.Round(pSEP, 1).ToString();
+                        dr[13] = Math.Round(pOCT, 1).ToString() == "NaN" ? "" : Math.Round(pOCT, 1).ToString();
+                        dr[14] = Math.Round(pNOV, 1).ToString() == "NaN" ? "" : Math.Round(pNOV, 1).ToString();
+                        dr[15] = Math.Round(pDECE, 1).ToString() == "NaN" ? "" : Math.Round(pDECE, 1).ToString();
                         break;
                 }
 
@@ -1217,19 +1217,19 @@ namespace SmartMIS.TUO
 
                         tdr[1] = "Total";
                         tdr[2] = total_;
-                        tdr[3] = Math.Round(pYTD_, 1);
-                        tdr[4] = Math.Round(pJAN_, 1);
-                        tdr[5] = Math.Round(pFEB_, 1);
-                        tdr[6] = Math.Round(pMAR_, 1);
-                        tdr[7] = Math.Round(pAPR_, 1);
-                        tdr[8] = Math.Round(pMAY_, 1);
-                        tdr[9] = Math.Round(pJUN_, 1);
-                        tdr[10] = Math.Round(pJUL_, 1);
-                        tdr[11] = Math.Round(pAUG_, 1);
-                        tdr[12] = Math.Round(pSEP_, 1);
-                        tdr[13] = Math.Round(pOCT_, 1);
-                        tdr[14] = Math.Round(pNOV_, 1);
-                        tdr[15] = Math.Round(pDECE_, 1);
+                        tdr[3] = Math.Round(pYTD_, 1).ToString() == "NaN" ? "" : Math.Round(pYTD_, 1).ToString();
+                        tdr[4] = Math.Round(pJAN_, 1).ToString() == "NaN" ? "" : Math.Round(pJAN_, 1).ToString();
+                        tdr[5] = Math.Round(pFEB_, 1).ToString() == "NaN" ? "" : Math.Round(pFEB_, 1).ToString();
+                        tdr[6] = Math.Round(pMAR_, 1).ToString() == "NaN" ? "" : Math.Round(pMAR_, 1).ToString();
+                        tdr[7] = Math.Round(pAPR_, 1).ToString() == "NaN" ? "" : Math.Round(pAPR_, 1).ToString();
+                        tdr[8] = Math.Round(pMAY_, 1).ToString() == "NaN" ? "" : Math.Round(pMAY_, 1).ToString();
+                        tdr[9] = Math.Round(pJUN_, 1).ToString() == "NaN" ? "" : Math.Round(pJUN_, 1).ToString();
+                        tdr[10] = Math.Round(pJUL_, 1).ToString() == "NaN" ? "" : Math.Round(pJUL_, 1).ToString();
+                        tdr[11] = Math.Round(pAUG_, 1).ToString() == "NaN" ? "" : Math.Round(pAUG_, 1).ToString();
+                        tdr[12] = Math.Round(pSEP_, 1).ToString() == "NaN" ? "" : Math.Round(pSEP_, 1).ToString();
+                        tdr[13] = Math.Round(pOCT_, 1).ToString() == "NaN" ? "" : Math.Round(pOCT_, 1).ToString();
+                        tdr[14] = Math.Round(pNOV_, 1).ToString() == "NaN" ? "" : Math.Round(pNOV_, 1).ToString();
+                        tdr[15] = Math.Round(pDECE_, 1).ToString() == "NaN" ? "" : Math.Round(pDECE_, 1).ToString();
                         break;
                 }
 
@@ -1493,20 +1493,22 @@ namespace SmartMIS.TUO
                     
                     dr[0] = uniqrecipedt.Rows[i][0].ToString();
                     dr[1] = total.ToString();
-                    dr[2] = Math.Round(pYTD, 1);
-                    dr[3] = Math.Round(pJAN, 1);
+                  
 
-                    dr[4] = Math.Round(pFEB, 1);
-                    dr[5] = Math.Round(pMAR, 1);
-                    dr[6] = Math.Round(pAPR, 1);
-                    dr[7] = Math.Round(pMAY, 1);
-                    dr[8] = Math.Round(pJUN, 1);
-                    dr[9] = Math.Round(pJUL, 1);
-                    dr[10] = Math.Round(pAUG, 1);
-                    dr[11] = Math.Round(pSEP, 1);
-                    dr[12] = Math.Round(pOCT, 1);
-                    dr[13] = Math.Round(pNOV, 1);
-                    dr[14] = Math.Round(pDECE, 1);
+                    dr[2] = Math.Round(pYTD, 1).ToString() == "NaN" ? "" : Math.Round(pYTD, 1).ToString();
+                    dr[3] = Math.Round(pJAN, 1).ToString() == "NaN" ? "" : Math.Round(pJAN, 1).ToString();
+                    dr[4] = Math.Round(pFEB, 1).ToString() == "NaN" ? "" : Math.Round(pFEB, 1).ToString();
+                    dr[5] = Math.Round(pMAR, 1).ToString() == "NaN" ? "" : Math.Round(pMAR, 1).ToString();
+                    dr[6] = Math.Round(pAPR, 1).ToString() == "NaN" ? "" : Math.Round(pAPR, 1).ToString();
+                    dr[7] = Math.Round(pMAY, 1).ToString() == "NaN" ? "" : Math.Round(pMAY, 1).ToString();
+                    dr[8] = Math.Round(pJUN, 1).ToString() == "NaN" ? "" : Math.Round(pJUN, 1).ToString();
+                    dr[9] = Math.Round(pJUL, 1).ToString() == "NaN" ? "" : Math.Round(pJUL, 1).ToString();
+                    dr[10] = Math.Round(pAUG, 1).ToString() == "NaN" ? "" : Math.Round(pAUG, 1).ToString();
+                    dr[11] = Math.Round(pSEP, 1).ToString() == "NaN" ? "" : Math.Round(pSEP, 1).ToString();
+                    dr[12] = Math.Round(pOCT, 1).ToString() == "NaN" ? "" : Math.Round(pOCT, 1).ToString();
+                    dr[13] = Math.Round(pNOV, 1).ToString() == "NaN" ? "" : Math.Round(pNOV, 1).ToString();
+                    dr[14] = Math.Round(pDECE, 1).ToString() == "NaN" ? "" : Math.Round(pDECE, 1).ToString();
+
                     break;
                 }
 
@@ -1563,19 +1565,22 @@ namespace SmartMIS.TUO
 
                 tdr[0] = "Total";
                 tdr[1] = total_;
-                tdr[2] = Math.Round(pYTD_, 1);
-                tdr[3] = Math.Round(pJAN_, 1);
-                tdr[4] = Math.Round(pFEB_, 1);
-                tdr[5] = Math.Round(pMAR_, 1);
-                tdr[6] = Math.Round(pAPR_, 1);
-                tdr[7] = Math.Round(pMAY_, 1);
-                tdr[8] = Math.Round(pJUN_, 1);
-                tdr[9] = Math.Round(pJUL_, 1);
-                tdr[10] = Math.Round(pAUG_, 1);
-                tdr[11] = Math.Round(pSEP_, 1);
-                tdr[12] = Math.Round(pOCT_, 1);
-                tdr[13] = Math.Round(pNOV_, 1);
-                tdr[14] = Math.Round(pDECE_, 1);
+                tdr[2] = Math.Round(pYTD_, 1).ToString() == "NaN" ? "" : Math.Round(pYTD_, 1).ToString();
+                tdr[3] = Math.Round(pJAN_, 1).ToString() == "NaN" ? "" : Math.Round(pJAN_, 1).ToString();
+                tdr[4] = Math.Round(pFEB_, 1).ToString() == "NaN" ? "" : Math.Round(pFEB_, 1).ToString();
+                tdr[5] = Math.Round(pMAR_, 1).ToString() == "NaN" ? "" : Math.Round(pMAR_, 1).ToString();
+                tdr[6] = Math.Round(pAPR_, 1).ToString() == "NaN" ? "" : Math.Round(pAPR_, 1).ToString();
+                tdr[7] = Math.Round(pMAY_, 1).ToString() == "NaN" ? "" : Math.Round(pMAY_, 1).ToString();
+                tdr[8] = Math.Round(pJUN_, 1).ToString() == "NaN" ? "" : Math.Round(pJUN_, 1).ToString();
+                tdr[9] = Math.Round(pJUL_, 1).ToString() == "NaN" ? "" : Math.Round(pJUL_, 1).ToString();
+                tdr[10] = Math.Round(pAUG_, 1).ToString() == "NaN" ? "" : Math.Round(pAUG_, 1).ToString();
+                tdr[11] = Math.Round(pSEP_, 1).ToString() == "NaN" ? "" : Math.Round(pSEP_, 1).ToString();
+                tdr[12] = Math.Round(pOCT_, 1).ToString() == "NaN" ? "" : Math.Round(pOCT_, 1).ToString();
+                tdr[13] = Math.Round(pNOV_, 1).ToString() == "NaN" ? "" : Math.Round(pNOV_, 1).ToString();
+                tdr[14] = Math.Round(pDECE_, 1).ToString() == "NaN" ? "" : Math.Round(pDECE_, 1).ToString();
+
+
+           
                 break;
             }
 

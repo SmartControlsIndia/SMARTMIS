@@ -207,3 +207,11 @@ D:\ctp_ct_1148\SmartMIS\bin\Microsoft.Vbe.Interop.dll
 D:\ctp_ct_1148\SmartMIS\obj\Debug\ResolveAssemblyReference.cache
 D:\ctp_ct_1148\SmartMIS\obj\Debug\SmartMIS.dll
 D:\ctp_ct_1148\SmartMIS\obj\Debug\SmartMIS.pdb
+D:\GitHub Project\CTP\SMARTMIS\SmartMIS\bin\SmartMIS.dll
+D:\GitHub Project\CTP\SMARTMIS\SmartMIS\bin\SmartMIS.pdb
+D:\GitHub Project\CTP\SMARTMIS\SmartMIS\bin\Microsoft.Office.Interop.Excel.dll
+D:\GitHub Project\CTP\SMARTMIS\SmartMIS\bin\office.dll
+D:\GitHub Project\CTP\SMARTMIS\SmartMIS\bin\Microsoft.Vbe.Interop.dll
+D:\GitHub Project\CTP\SMARTMIS\SmartMIS\obj\Debug\ResolveAssemblyReference.cache
+D:\GitHub Project\CTP\SMARTMIS\SmartMIS\obj\Debug\SmartMIS.dll
+D:\GitHub Project\CTP\SMARTMIS\SmartMIS\obj\Debug\SmartMIS.pdb

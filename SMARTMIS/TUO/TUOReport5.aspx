@@ -78,7 +78,7 @@
        <Columns>
             <asp:TemplateField HeaderText="WorkCenter Name" ItemStyle-HorizontalAlign="Left">
                 <ItemTemplate>
-                        <asp:Label ID="performanceReportOAYGRAFWiseWCNameLabel" runat="server" Text='<%# Eval("workCenterName") %>'></asp:Label>
+                            <asp:Label ID="performanceReportOAYGRAFWiseWCNameLabel" runat="server" Text='<%# Eval("workCenterName") %>'></asp:Label>
                 </ItemTemplate>
                   
             </asp:TemplateField>
