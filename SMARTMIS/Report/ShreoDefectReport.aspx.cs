@@ -108,6 +108,23 @@ namespace SmartMIS.Report
                 myConnection.comm = myConnection.conn.CreateCommand();
 
 
+//                myConnection.comm.CommandText = @"select CONVERT(VARCHAR(15),shd.dtandtime,106) as  Date,
+// Shift=(CASE WHEN convert(char(8), shd.dtandtime, 108) >= '07:00:00 AM' AND 
+// convert(char(8), shd.dtandtime, 108) <= '14:59:59.999' THEN 'A' WHEN 
+// convert(char(8), shd.dtandtime, 108) >= '15:00:00.000' AND convert(char(8), shd.dtandtime, 108) <= '22:59:59.999' THEN 'B' WHEN 
+// ((convert(char(8), shd.dtandtime, 108) >= '23:00:00.000' AND convert(char(8), shd.dtandtime, 108) <= '23:59:59.999') 
+// or (convert(char(8), shd.dtandtime, 108) >= '00:00:01.000' AND convert(char(8), shd.dtandtime, 108) <= '06:59:59.999')) THEN 'C' END) 
+// ,RM.name as TyreSize,shd.barcode as Barcode,ctbr.mouldNo as MouldNo,WM.name as PressName,ctbr.dtandTime as CureDate,WM1.name as TBM,MRM.firstName as BuilderName,ttbr.dtandtime as TBMDate,shd.Grade
+// from dbo.ShearographyData shd
+//  
+//  join recipeMaster RM on RM.id=shd.RecipeID 
+//  left outer join curingtbr ctbr on ctbr.gtbarCode=shd.barCode
+//  inner join wcmaster WM on WM.id=ctbr.wcID
+//
+//   left outer join tbmtbr ttbr on ttbr.gtbarCode=shd.barCode
+//     inner join wcmaster WM1 on WM1.id=ttbr.wcID
+//   inner join manningMaster MRM on MRM.id=ttbr.manningID  where shd.dtandTime >= '" + fromDate + "' AND shd.dtandTime < '" + toDate + "'  ";
+
                 myConnection.comm.CommandText = @"select CONVERT(VARCHAR(15),shd.dtandtime,106) as  Date,
  Shift=(CASE WHEN convert(char(8), shd.dtandtime, 108) >= '07:00:00 AM' AND 
  convert(char(8), shd.dtandtime, 108) <= '14:59:59.999' THEN 'A' WHEN 
@@ -115,15 +132,14 @@ namespace SmartMIS.Report
  ((convert(char(8), shd.dtandtime, 108) >= '23:00:00.000' AND convert(char(8), shd.dtandtime, 108) <= '23:59:59.999') 
  or (convert(char(8), shd.dtandtime, 108) >= '00:00:01.000' AND convert(char(8), shd.dtandtime, 108) <= '06:59:59.999')) THEN 'C' END) 
  ,RM.name as TyreSize,shd.barcode as Barcode,ctbr.mouldNo as MouldNo,WM.name as PressName,ctbr.dtandTime as CureDate,WM1.name as TBM,MRM.firstName as BuilderName,ttbr.dtandtime as TBMDate,shd.Grade
- from dbo.ShearographyData shd
-  
-  join recipeMaster RM on RM.id=shd.RecipeID 
-  left outer join curingtbr ctbr on ctbr.gtbarCode=shd.barCode
-  inner join wcmaster WM on WM.id=ctbr.wcID
+ from ( SELECT barcode, dtandtime,RecipeID,Grade FROM  
+    ( SELECT barcode, dtandtime,RecipeID,Grade,
+             ROW_NUMBER() OVER (PARTITION BY barcode ORDER BY dtandtime desc )  
+               AS rn                                 
+      FROM ShearographyData where dtandTime >= '" + fromDate + "' AND dtandTime < '" + toDate + "') tmp WHERE rn = 1  ) as shd join recipeMaster RM on RM.id=shd.RecipeID left outer join curingtbr ctbr on ctbr.gtbarCode=shd.barCode inner join wcmaster WM on WM.id=ctbr.wcID left outer join tbmtbr ttbr on ttbr.gtbarCode=shd.barCode inner join wcmaster WM1 on WM1.id=ttbr.wcID inner join manningMaster MRM on MRM.id=ttbr.manningID order by shd.dtandtime asc";
 
-   left outer join tbmtbr ttbr on ttbr.gtbarCode=shd.barCode
-     inner join wcmaster WM1 on WM1.id=ttbr.wcID
-   inner join manningMaster MRM on MRM.id=ttbr.manningID  where shd.dtandTime >= '" + fromDate + "' AND shd.dtandTime < '" + toDate + "'  ";
+
+
 
                     myConnection.comm.CommandTimeout = 180;
                     myConnection.reader = myConnection.comm.ExecuteReader();
