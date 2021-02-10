@@ -31,7 +31,7 @@
           <td style="font-weight:bold; font-family:Arial; font-size:small; width:3%">Size::</td>        
            <td style="font-weight:bold; font-family:Arial; font-size:small; width:7%">
            
-             <asp:DropDownList ID="tuoFilterPerformanceReportTUOWiseSizeDropdownlist"  Width="60%" runat="server" OnSelectedIndexChanged="DropDownList_SelectedIndexChanged" CausesValidation="false" AutoPostBack="true" Visible="true"> </asp:DropDownList>
+             <asp:DropDownList ID="tuoFilterPerformanceReportTUOWiseSizeDropdownlist"  Width="90%" runat="server" OnSelectedIndexChanged="DropDownList_SelectedIndexChanged" CausesValidation="false" AutoPostBack="true" Visible="true"> </asp:DropDownList>
         </td>       
           <td style="font-weight:bold; font-family:Arial; font-size:small; width:3%">Design:</td>        
            <td style="font-weight:bold; font-family:Arial; font-size:small; width:7%">

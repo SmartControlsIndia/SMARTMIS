@@ -462,7 +462,7 @@ namespace SmartMIS
                 GradeShearography.Clear();
                 myConnection.open(ConnectionOption.SQL);
                 myConnection.comm = myConnection.conn.CreateCommand();
-                myConnection.comm.CommandText = "select top 1 * from ShearographyData where barcode='" + gtbarcode + "'";
+                myConnection.comm.CommandText = "select top 1 * from ShearographyData where barcode='" + gtbarcode + "' order by id desc";
                 myConnection.reader = myConnection.comm.ExecuteReader();
                 GradeShearography.Load(myConnection.reader);
                 mywebservice.writeLogs("GradeShearography", System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));

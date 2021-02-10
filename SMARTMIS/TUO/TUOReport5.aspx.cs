@@ -859,14 +859,14 @@ namespace SmartMIS.TUO
         {
 
             tuoFilterPerformanceReportTUOWiseSizeDropdownlist.DataSource = null;
-            tuoFilterPerformanceReportTUOWiseSizeDropdownlist.DataSource = FillDropDownList("recipemaster", "tyreSize");
+            tuoFilterPerformanceReportTUOWiseSizeDropdownlist.DataSource = FillDropDownListNew("recipemaster", "name"); //tyreSize
             tuoFilterPerformanceReportTUOWiseSizeDropdownlist.DataBind();
         }
         private void fillDesigndropdownlist()
         {
 
             tuoFilterPerformanceReportTUOWiseRecipeDropdownlist.DataSource = null;
-            tuoFilterPerformanceReportTUOWiseRecipeDropdownlist.DataSource = FillDropDownList("recipemaster", "tyreDesign");
+            tuoFilterPerformanceReportTUOWiseRecipeDropdownlist.DataSource = FillDropDownListNew("recipemaster", "tyreDesign");
             tuoFilterPerformanceReportTUOWiseRecipeDropdownlist.DataBind();
         }
         public ArrayList FillDropDownList(string tableName, string coloumnName)
@@ -874,12 +874,7 @@ namespace SmartMIS.TUO
             ArrayList flag = new ArrayList();
             string sqlQuery = "";
 
-            //Description   : Function for returning values of coloums of a table in an ArrayList
-            //Author        : Brajesh kumar
-            //Date Created  : 01 April 2011
-            //Date Updated  : 01 April 2011
-            //Revision No.  : 01
-
+          
             flag.Add("All");
             try
             {
@@ -887,6 +882,42 @@ namespace SmartMIS.TUO
                 myConnection.comm = myConnection.conn.CreateCommand();
 
                 sqlQuery = "Select DISTINCT " + coloumnName + " from " + tableName + "";
+
+                myConnection.comm.CommandText = sqlQuery;
+
+                myConnection.reader = myConnection.comm.ExecuteReader();
+                while (myConnection.reader.Read())
+                {
+                    if (myConnection.reader[0].ToString() != "")
+                        flag.Add(myConnection.reader[0].ToString());
+                }
+            }
+            catch (Exception exp)
+            {
+                myWebService.writeLogs(exp.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+            }
+
+            myConnection.reader.Close();
+            myConnection.comm.Dispose();
+            myConnection.close(ConnectionOption.SQL);
+
+
+            return flag;
+        }
+
+        public ArrayList FillDropDownListNew(string tableName, string coloumnName)
+        {
+            ArrayList flag = new ArrayList();
+            string sqlQuery = "";
+
+
+            flag.Add("All");
+            try
+            {
+                myConnection.open(ConnectionOption.SQL);
+                myConnection.comm = myConnection.conn.CreateCommand();
+
+                sqlQuery = "Select DISTINCT " + coloumnName + " from " + tableName + " where processID in('7','8','18')";
 
                 myConnection.comm.CommandText = sqlQuery;
 
@@ -1038,7 +1069,10 @@ namespace SmartMIS.TUO
                 else if (tuoFilterPerformanceReportTUOWiseSizeDropdownlist.SelectedItem.Text != "All" && tuoFilterPerformanceReportTUOWiseRecipeDropdownlist.SelectedItem.Text == "All")
                 {
 
-                    query = "Select  tireType ,uniformityGrade, CONVERT(int,DATEPART(MM,TestTime)) AS TestTime FROM " + tablename + " WHERE tireType in(select name from recipeMaster where tyreSize='" + tuoFilterPerformanceReportTUOWiseSizeDropdownlist.SelectedItem.Text + "' )and  ";
+                   // query = "Select  tireType ,uniformityGrade, CONVERT(int,DATEPART(MM,TestTime)) AS TestTime FROM " + tablename + " WHERE tireType in(select name from recipeMaster where tyreSize='" + tuoFilterPerformanceReportTUOWiseSizeDropdownlist.SelectedItem.Text + "' )and  ";
+                    query = "Select  tireType ,uniformityGrade, CONVERT(int,DATEPART(MM,TestTime)) AS TestTime FROM " + tablename + " WHERE tireType in(select name from recipeMaster where name='" + tuoFilterPerformanceReportTUOWiseSizeDropdownlist.SelectedItem.Text + "' )and  ";
+                   
+                    
                     dt = getFilledDT(query, rtoYear);
                 }
                 else if (tuoFilterPerformanceReportTUOWiseSizeDropdownlist.SelectedItem.Text == "All" && tuoFilterPerformanceReportTUOWiseRecipeDropdownlist.SelectedItem.Text != "All")
@@ -1260,7 +1294,9 @@ namespace SmartMIS.TUO
             }
             else if (tuoFilterPerformanceReportTUOWiseSizeDropdownlist.SelectedItem.Text != "All" && tuoFilterPerformanceReportTUOWiseRecipeDropdownlist.SelectedItem.Text == "All")
             {
-                query = "Select  tireType ,uniformityGrade, CONVERT(int,DATEPART(MM,TestTime)) AS TestTime FROM " + tablename + " WHERE " + wcNameString + " AND tireType in(select name from recipeMaster where tyreSize='" + tuoFilterPerformanceReportTUOWiseSizeDropdownlist.SelectedItem.Text + "' )and  ";
+              //  query = "Select  tireType ,uniformityGrade, CONVERT(int,DATEPART(MM,TestTime)) AS TestTime FROM " + tablename + " WHERE " + wcNameString + " AND tireType in(select name from recipeMaster where tyreSize='" + tuoFilterPerformanceReportTUOWiseSizeDropdownlist.SelectedItem.Text + "' )and  ";
+                query = "Select  tireType ,uniformityGrade, CONVERT(int,DATEPART(MM,TestTime)) AS TestTime FROM " + tablename + " WHERE " + wcNameString + " AND tireType in(select name from recipeMaster where name='" + tuoFilterPerformanceReportTUOWiseSizeDropdownlist.SelectedItem.Text + "' )and  ";
+          
             }
             else if (tuoFilterPerformanceReportTUOWiseSizeDropdownlist.SelectedItem.Text == "All" && tuoFilterPerformanceReportTUOWiseRecipeDropdownlist.SelectedItem.Text != "All")
             {
@@ -1375,7 +1411,9 @@ namespace SmartMIS.TUO
                 else if (tuoFilterPerformanceReportTUOWiseSizeDropdownlist.SelectedItem.Text != "All" && tuoFilterPerformanceReportTUOWiseRecipeDropdownlist.SelectedItem.Text == "All")
                 {
 
-                    query = "Select  tireType ,uniformityGrade, CONVERT(int,DATEPART(MM,TestTime)) AS TestTime FROM " + tablename + " WHERE tireType in(select name from recipeMaster where tyreSize='" + tuoFilterPerformanceReportTUOWiseSizeDropdownlist.SelectedItem.Text + "' )and  ";
+                   // query = "Select  tireType ,uniformityGrade, CONVERT(int,DATEPART(MM,TestTime)) AS TestTime FROM " + tablename + " WHERE tireType in(select name from recipeMaster where tyreSize='" + tuoFilterPerformanceReportTUOWiseSizeDropdownlist.SelectedItem.Text + "' )and  ";
+                    query = "Select  tireType ,uniformityGrade, CONVERT(int,DATEPART(MM,TestTime)) AS TestTime FROM " + tablename + " WHERE tireType in(select name from recipeMaster where name='" + tuoFilterPerformanceReportTUOWiseSizeDropdownlist.SelectedItem.Text + "' )and  ";
+                   
                     dt = getFilledDT(query, rtoYear);
                 }
                 else if (tuoFilterPerformanceReportTUOWiseSizeDropdownlist.SelectedItem.Text == "All" && tuoFilterPerformanceReportTUOWiseRecipeDropdownlist.SelectedItem.Text != "All")
@@ -1928,7 +1966,9 @@ namespace SmartMIS.TUO
                 else if (tuoFilterPerformanceReportTUOWiseSizeDropdownlist.SelectedItem.Text != "All" && tuoFilterPerformanceReportTUOWiseRecipeDropdownlist.SelectedItem.Text == "All")
                 {
 
+                   // query = "Select  tireType ,uniformityGrade, CONVERT(int,DATEPART(MM,TestTime)) AS TestTime FROM " + tablename + " WHERE tireType in(select name from recipeMaster where tyreSize='" + tuoFilterPerformanceReportTUOWiseSizeDropdownlist.SelectedItem.Text + "' )and  ";
                     query = "Select  tireType ,uniformityGrade, CONVERT(int,DATEPART(MM,TestTime)) AS TestTime FROM " + tablename + " WHERE tireType in(select name from recipeMaster where tyreSize='" + tuoFilterPerformanceReportTUOWiseSizeDropdownlist.SelectedItem.Text + "' )and  ";
+                  
                     dt = getFilledDT(query, rtoYear);
                 }
                 else if (tuoFilterPerformanceReportTUOWiseSizeDropdownlist.SelectedItem.Text == "All" && tuoFilterPerformanceReportTUOWiseRecipeDropdownlist.SelectedItem.Text != "All")
