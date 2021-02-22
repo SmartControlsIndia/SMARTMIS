@@ -79,7 +79,7 @@ namespace SmartMIS
             }
             wcIDInQuery = wcIDInQuery.TrimEnd(',');
             wcIDInQuery += ")";
-            //End
+            //End//
 
             // Set Table to take data from i.e. TBR/PCR
             SQLTable = (getProcess.ToString() == "Tyre Building PCR") ? "vTbmPCR" : (getProcess == "Tyre Building TBR" ? "vTbmTBR" : "");
