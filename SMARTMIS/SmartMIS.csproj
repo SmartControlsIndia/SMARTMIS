@@ -829,6 +829,13 @@
     <Compile Include="TUO\DinamicBalPerformanceReportnew.aspx.designer.cs">
       <DependentUpon>DinamicBalPerformanceReportnew.aspx</DependentUpon>
     </Compile>
+    <Compile Include="TUO\MyRunout.aspx.cs">
+      <DependentUpon>MyRunout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\MyRunout.aspx.designer.cs">
+      <DependentUpon>MyRunout.aspx</DependentUpon>
+    </Compile>
     <Compile Include="TUO\NewRunoutperformanceReport.aspx.cs">
       <DependentUpon>NewRunoutperformanceReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1654,6 +1661,7 @@
     <Content Include="TUO\AverageANDstdPerformanceReport.aspx" />
     <Content Include="TUO\DinamicBalPerformanceReport.aspx" />
     <Content Include="TUO\DinamicBalPerformanceReportnew.aspx" />
+    <Content Include="TUO\MyRunout.aspx" />
     <Content Include="TUO\NewRunoutperformanceReport.aspx" />
     <Content Include="TUO\performanceExecutiveReport.aspx" />
     <Content Include="TUO\performanceReport2SizeWise.aspx" />
