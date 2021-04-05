@@ -92,17 +92,19 @@
 
     <div style="text-align:center; font-size:large; font-style:normal; font-weight:bold; background-color:Gray"> TBR Xray Report</div>
     <table style="width: 100%">
-        <tr class="FinalFinishgridViewHeader">
-        <td align="center" width="10%">
+       <tr class="FinalFinishgridViewHeader">
+        <td align="center" width="7%">
                 Wcname</td>
-            <td align="center" width="10%">
+            <td align="center">
                 Barcode</td>
-            <td width="40%">
+            <td align="center" width="20%">
                 Name</td>
-            <td>
-                Date &amp; Time</td>
-            <td>
-                Shift</td>
+            <td align="center" width="20%">
+                Date  </td>
+          <td align="center" width="10%">
+            Time</td>
+              <td align="center">  Shift</td>
+                <td align="center" width="7%">Result</td>
         </tr>
     </table>
     

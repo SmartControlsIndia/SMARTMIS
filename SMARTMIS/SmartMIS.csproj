@@ -105,6 +105,13 @@
     <Compile Include="Input\AddXRayOperator.aspx.designer.cs">
       <DependentUpon>AddXRayOperator.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Input\CycleTime.aspx.cs">
+      <DependentUpon>CycleTime.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Input\CycleTime.aspx.designer.cs">
+      <DependentUpon>CycleTime.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Input\Input.aspx.cs">
       <DependentUpon>Input.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -913,6 +920,13 @@
     <Compile Include="TUO\QualityPerformanceSpecReport.aspx.designer.cs">
       <DependentUpon>QualityPerformanceSpecReport.aspx</DependentUpon>
     </Compile>
+    <Compile Include="TUO\RunoutBarcodeWiseReport.aspx.cs">
+      <DependentUpon>RunoutBarcodeWiseReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TUO\RunoutBarcodeWiseReport.aspx.designer.cs">
+      <DependentUpon>RunoutBarcodeWiseReport.aspx</DependentUpon>
+    </Compile>
     <Compile Include="TUO\RunOutPerformanceReport.aspx.cs">
       <DependentUpon>RunOutPerformanceReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1536,6 +1550,7 @@
     <Content Include="Images\loadingbar.jpeg" />
     <Content Include="Images\showdetail.jpg" />
     <Content Include="Input\AddXRayOperator.aspx" />
+    <Content Include="Input\CycleTime.aspx" />
     <Content Include="Input\Input.aspx" />
     <Content Include="Input\newCuringOperatorPlanning.aspx" />
     <Content Include="Input\newCuringOperatorPlanning2.aspx" />
@@ -1673,6 +1688,7 @@
     <Content Include="TUO\performanceReportTUOmachineWise.aspx" />
     <Content Include="TUO\performanceReportWithRejectionDetail.aspx" />
     <Content Include="TUO\QualityPerformanceSpecReport.aspx" />
+    <Content Include="TUO\RunoutBarcodeWiseReport.aspx" />
     <Content Include="TUO\RunOutPerformanceReport.aspx" />
     <Content Include="TUO\RunoutPerformanceReportNew.aspx" />
     <Content Include="TUO\RunoutPerformanceReportNew1.aspx" />

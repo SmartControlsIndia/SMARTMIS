@@ -262,6 +262,7 @@ namespace SmartMIS.Report
                             {
                                 description = l.Field<string>("recipe_description"),
                                 status = l.Field<int?>("status"),
+                                defectid =l.Field<int?>("defectid"),
                                 ssORnss = l.Field<string>("ssORnss")
                             }).ToArray();
                             if (data.Count() != 0)
@@ -269,17 +270,23 @@ namespace SmartMIS.Report
                                 DataRow dr = gridviewdt.NewRow();
 
                                 total_checked += data.Count();
-                                buff += data.Count(d => d.status == 21);
-                                rework += data.Count(d => d.status == 22);
+                                //buff += data.Count(d => d.status == 21);
+                                //rework += data.Count(d => d.status == 22);
+                                //ncmr += data.Count(d => d.status == 23);
+                                //camoflauge += data.Count(d => d.status == 27);
+
+                                buff += data.Count(d => d.defectid == 21);
+                                rework += data.Count(d => d.defectid == 22);
                                 ncmr += data.Count(d => d.status == 23);
-                                camoflauge += data.Count(d => d.status == 27);
+                                camoflauge += data.Count(d => d.defectid == 27);
+
                                 dr[0] = data[0].description;
                                 dr[1] = data[0].ssORnss;
                                 dr[2] = data.Count();
-                                dr[3] = data.Count(d => d.status == 21);
-                                dr[4] = data.Count(d => d.status == 22);
+                                dr[3] = data.Count(d => d.defectid == 21);
+                                dr[4] = data.Count(d => d.defectid == 22);
                                 dr[5] = data.Count(d => d.status == 23);
-                                dr[6] = data.Count(d => d.status == 27);
+                                dr[6] = data.Count(d => d.defectid == 27);
                                 gridviewdt.Rows.Add(dr);
                             }
                         }
@@ -311,6 +318,7 @@ namespace SmartMIS.Report
                             {
                                 description = l.Field<string>("recipe_description"),
                                 status = l.Field<int?>("status"),
+                                defectid = l.Field<int?>("defectid"),
                                 ssORnss = l.Field<string>("ssORnss")
                             }).ToArray();
                             if (data.Count() != 0)
@@ -318,18 +326,23 @@ namespace SmartMIS.Report
                                 DataRow dr = gridviewdt.NewRow();
 
                                 total_checked += data.Count();
-                                buff += data.Count(d => d.status == 21);
-                                rework += data.Count(d => d.status == 22);
+                                //buff += data.Count(d => d.status == 21);
+                                //rework += data.Count(d => d.status == 22);
+                                //ncmr += data.Count(d => d.status == 23);
+                                //camoflauge += data.Count(d => d.status == 27);
+
+                                buff += data.Count(d => d.defectid == 21);
+                                rework += data.Count(d => d.defectid == 22);
                                 ncmr += data.Count(d => d.status == 23);
-                                 camoflauge += data.Count(d => d.status == 27);
+                                camoflauge += data.Count(d => d.defectid == 27);
 
                                 dr[0] = data[0].description;
                                 dr[1] = data[0].ssORnss;
                                 dr[2] = data.Count();
-                                dr[3] = (data.Count(d => d.status == 21) * 100 / Convert.ToInt32(dr[2])) + "%";
-                                dr[4] = (data.Count(d => d.status == 22) * 100 / Convert.ToInt32(dr[2])) + "%";
+                                dr[3] = (data.Count(d => d.defectid == 21) * 100 / Convert.ToInt32(dr[2])) + "%";
+                                dr[4] = (data.Count(d => d.defectid == 22) * 100 / Convert.ToInt32(dr[2])) + "%";
                                 dr[5] = (data.Count(d => d.status == 23) * 100 / Convert.ToInt32(dr[2])) + "%";
-                                dr[6] = (data.Count(d => d.status == 27) * 100 / Convert.ToInt32(dr[2])) + "%";
+                                dr[6] = (data.Count(d => d.defectid == 27) * 100 / Convert.ToInt32(dr[2])) + "%";
 
                                 gridviewdt.Rows.Add(dr);
                             }

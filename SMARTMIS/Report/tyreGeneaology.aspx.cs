@@ -1275,7 +1275,7 @@ namespace SmartMIS
         }
         private DataTable fillTBRVisualInspectionReport(string wcName, string gtbarCode)
         {
-            string defectAreaID = "";
+            string defectAreaID = ""; string defectNames = ""; string faultAreaNames = "";
             DataTable flag = new DataTable();
             flag.Columns.Add("sapCode", typeof(string));
             flag.Columns.Add("firstName", typeof(string));
@@ -1295,30 +1295,78 @@ namespace SmartMIS
             {
                 myConnection.open(ConnectionOption.SQL);
                 myConnection.comm = myConnection.conn.CreateCommand();
-
-                myConnection.comm.CommandText = "select sapCode,firstName,lastName,defectstatusName,SSorNSS as faultSideName, defectname as faultName,  reasonName, serialNo, remarks as Remark,dtandTime,defectAreaName from vTBRVisualInspectionReport WHERE (gtbarCode = '" + gtbarCode + "') AND (wcName = '" + wcName + "')";
-
+                myConnection.comm.CommandText = "select sapCode,firstName,lastName,defectstatusName,SSorNSS as faultSideName, defectname as faultName,  reasonName, serialNo, remarks as Remark,dtandTime,defectAreaName,defectID,wcName from vTBRVisualInspectionReport WHERE (gtbarCode = '" + gtbarCode + "') AND (wcName = '" + wcName + "')";
                 myConnection.reader = myConnection.comm.ExecuteReader(CommandBehavior.CloseConnection);
-
+                defectNames = ""; faultAreaNames = "";
+                myWebService.writeLogs(myConnection.comm.CommandText, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+        
                 while (myConnection.reader.Read())
                 {
                     DataRow dr = flag.NewRow();
 
-
-                   
                     dr["sapCode"] = myConnection.reader[0].ToString();
                     dr["firstName"] = myConnection.reader[1].ToString();
                     dr["lastName"] = myConnection.reader[2].ToString();
-                    dr["defectStatusName"] = myConnection.reader[3].ToString();
+
+                    if(myConnection.reader[12].ToString().Trim() =="7010")
+                    {
+                        if (myConnection.reader[11].ToString() == "31")
+                            dr["defectStatusName"] = "OK - " + myConnection.reader[3].ToString().ToUpper();
+                        else
+                            dr["defectStatusName"] = myConnection.reader[3].ToString().ToUpper();
+                    }
+                    else{
+                        if ((myConnection.reader[12].ToString().Trim() == "7007" || myConnection.reader[12].ToString().Trim() == "7008") && (myConnection.reader[11].ToString() == "31" || myConnection.reader[11].ToString() == "21" || myConnection.reader[11].ToString() == "22" || myConnection.reader[11].ToString() == "27"))
+                        {
+                            if (myConnection.reader[11].ToString() == "21")
+                                dr["defectStatusName"] = "BUFF - " + myConnection.reader[3].ToString().ToUpper();
+
+                            if (myConnection.reader[11].ToString() == "22")
+                                dr["defectStatusName"] = "REPAIR - " + myConnection.reader[3].ToString().ToUpper();
+
+                            if (myConnection.reader[11].ToString() == "27")
+                                dr["defectStatusName"] = "Comflauge - " + myConnection.reader[3].ToString().ToUpper();
+
+                            if (myConnection.reader[11].ToString() == "31")
+                                dr["defectStatusName"] = "OK - " + myConnection.reader[3].ToString().ToUpper();
+                        }
+                        else
+                        {
+                            dr["defectStatusName"] = myConnection.reader[3].ToString().ToUpper();
+                        }
+                    }
+                    
+
                     if (myConnection.reader[4].ToString() == "1")
-                    dr["faultSideName"] ="SS";
+                        dr["faultSideName"] ="SS";
                     else if(myConnection.reader[4].ToString()=="2")
-                     dr["faultSideName"] = "NSS";
+                        dr["faultSideName"] = "NSS";
                     else if (myConnection.reader[4].ToString() == "0")
                         dr["faultSideName"] = "N/A";
+                    
+                 
 
-                    dr["faultAreaName"] =myConnection.reader[10].ToString();
-                    dr["faultName"] = myConnection.reader[5].ToString();
+                    if (myConnection.reader[12].ToString().Trim() == "7001" || myConnection.reader[12].ToString().Trim() == "7002" || myConnection.reader[12].ToString().Trim() == "7003" || myConnection.reader[12].ToString().Trim() == "7004" || myConnection.reader[12].ToString().Trim() == "7005" || myConnection.reader[12].ToString().Trim() == "7006")
+                    {
+                        dr["faultName"] = myConnection.reader[5].ToString();
+                        defectNames = myConnection.reader[5].ToString();
+                        dr["faultAreaName"] =myConnection.reader[10].ToString();
+                        faultAreaNames = myConnection.reader[10].ToString();
+                    }
+                    else
+                    {
+                        if (myConnection.reader[12].ToString().Trim() == "7011" || myConnection.reader[12].ToString().Trim() == "7007" || myConnection.reader[12].ToString().Trim() == "7008")
+                        {
+                            dr["faultName"] = defectNames;
+                            dr["faultAreaName"] = faultAreaNames;
+                        }
+                        else
+                        {
+                            dr["faultName"] = myConnection.reader[5].ToString();
+                            dr["faultAreaName"] = myConnection.reader[10].ToString();
+                        }
+                    }
+                    
                     dr["reasonName"] = myConnection.reader[6].ToString();
                     dr["SerialNo"] = myConnection.reader[7].ToString();
                     dr["Remark"] = myConnection.reader[8].ToString();

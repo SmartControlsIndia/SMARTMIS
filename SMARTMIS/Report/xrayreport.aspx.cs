@@ -162,22 +162,22 @@ convert(char(8), dtandTime, 108) <= '23:59:59.999') or (convert(char(8), dtandTi
 
                     if (dpdxray.SelectedIndex == 1 )
                     {
-                        GridView1.DataSource = mywebservice.fillGridView(@"SELECT WCNAME, gtbarCode, firstName+' '+lastName AS name,convert(char(10), dtandTime, 105) AS Date,CONVERT(VARCHAR(8) , dtandTime , 108) AS [Time],
+                        GridView1.DataSource = getDB(mywebservice.fillGridView(@"SELECT WCNAME =(CASE WHEN WCNAME='7201' THEN 'Xray1' END), gtbarCode, firstName+' '+lastName AS name,convert(char(10), dtandTime, 105) AS Date,CONVERT(VARCHAR(8) , dtandTime , 108) AS [Time],
                     myDate=(CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'Shift A' WHEN convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8), dtandTime, 108) <= '22:59:59.999' THEN 'Shift B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND
-convert(char(8), dtandTime, 108) <= '23:59:59.999') or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'Shift C' END) FROM vTyreXray WHERE  wcname='" + dpdxray.SelectedValue + "' AND  dtandTime>='" + mywebservice.formatDate(fromdate) + " 07:00:00'  AND dtandTime<'" + formatfromDate(mywebservice.formatDate(todate).Replace(" 07:00:00", "")) + "' order by dtandTime asc", ConnectionOption.SQL);
+convert(char(8), dtandTime, 108) <= '23:59:59.999') or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'Shift C' END), status AS Result,data=(CASE WHEN status='1' THEN 'OK' WHEN status='3' THEN 'NOK' END) FROM vTyreXray WHERE  wcname='" + dpdxray.SelectedValue + "' AND  dtandTime>='" + mywebservice.formatDate(fromdate) + " 07:00:00'  AND dtandTime<'" + formatfromDate(mywebservice.formatDate(todate).Replace(" 07:00:00", "")) + "' order by dtandTime asc", ConnectionOption.SQL));
                         GridView1.DataBind();
                     }
                     else if (dpdxray.SelectedIndex == 2)
                     {
-                        GridView1.DataSource = mywebservice.fillGridView(@"SELECT WCNAME, gtbarCode, firstName+' '+lastName AS name,convert(char(10), dtandTime, 105) AS Date,CONVERT(VARCHAR(8) , dtandTime , 108) AS [Time],
+                        GridView1.DataSource = getDB(mywebservice.fillGridView(@"SELECT WCNAME, gtbarCode, firstName+' '+lastName AS name,convert(char(10), dtandTime, 105) AS Date,CONVERT(VARCHAR(8) , dtandTime , 108) AS [Time],
                     myDate=(CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'Shift A' WHEN convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8), dtandTime, 108) <= '22:59:59.999' THEN 'Shift B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND
-convert(char(8), dtandTime, 108) <= '23:59:59.999') or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'Shift C' END) FROM vTyreXray2 WHERE wcname='" + dpdxray.SelectedValue + "' AND dtandTime>='" + mywebservice.formatDate(fromdate) + " 07:00:00'  AND dtandTime<'" + formatfromDate(mywebservice.formatDate(todate).Replace(" 07:00:00", "")) + "' order by dtandTime asc", ConnectionOption.SQL);
+convert(char(8), dtandTime, 108) <= '23:59:59.999') or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'Shift C' END), status AS Result,data=(CASE WHEN status='1' THEN 'OK' WHEN status='3' THEN 'NOK' END) FROM vTyreXray2 WHERE wcname='" + dpdxray.SelectedValue + "' AND dtandTime>='" + mywebservice.formatDate(fromdate) + " 07:00:00'  AND dtandTime<'" + formatfromDate(mywebservice.formatDate(todate).Replace(" 07:00:00", "")) + "' order by dtandTime asc", ConnectionOption.SQL));
                         GridView1.DataBind();
                     }
                    else
                     {
-                        GridView1.DataSource = mywebservice.fillGridView(@"SELECT WCNAME, gtbarCode, firstName+' '+lastName AS name,convert(char(10), dtandTime, 105) AS Date,CONVERT(VARCHAR(8) , dtandTime , 108) AS [Time],
-                    myDate=(CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'Shift A' WHEN convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8), dtandTime, 108) <= '22:59:59.999' THEN 'Shift B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999') or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'Shift C' END) FROM vTyreXray2 WHERE dtandTime>='" + mywebservice.formatDate(fromdate) + " 07:00:00'  AND dtandTime<'" + formatfromDate(mywebservice.formatDate(todate).Replace(" 07:00:00", "")) + "' union  SELECT WCNAME, gtbarCode, firstName+' '+lastName AS name,convert(char(10), dtandTime, 105) AS Date,CONVERT(VARCHAR(8) , dtandTime , 108) AS [Time],myDate=(CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'Shift A' WHEN convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8), dtandTime, 108) <= '22:59:59.999' THEN 'Shift B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999') or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'Shift C' END) FROM vTyreXray WHERE dtandTime>='" + mywebservice.formatDate(fromdate) + " 07:00:00'  AND dtandTime<'" + formatfromDate(mywebservice.formatDate(todate).Replace(" 07:00:00", "")) + "' order by date,Time asc", ConnectionOption.SQL);
+                        GridView1.DataSource = getDB(mywebservice.fillGridView(@"SELECT WCNAME , gtbarCode, firstName+' '+lastName AS name,convert(char(10), dtandTime, 105) AS Date,CONVERT(VARCHAR(8) , dtandTime , 108) AS [Time],
+                    myDate=(CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'Shift A' WHEN convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8), dtandTime, 108) <= '22:59:59.999' THEN 'Shift B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999') or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'Shift C' END), status AS Result,data=(CASE WHEN status='1' THEN 'OK' WHEN status='3' THEN 'NOK' END) FROM vTyreXray2 WHERE dtandTime>='" + mywebservice.formatDate(fromdate) + " 07:00:00'  AND dtandTime<'" + formatfromDate(mywebservice.formatDate(todate).Replace(" 07:00:00", "")) + "' union  SELECT WCNAME =(CASE WHEN WCNAME='7201' THEN 'Xray1' END), gtbarCode, firstName+' '+lastName AS name,convert(char(10), dtandTime, 105) AS Date,CONVERT(VARCHAR(8) , dtandTime , 108) AS [Time],myDate=(CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'Shift A' WHEN convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8), dtandTime, 108) <= '22:59:59.999' THEN 'Shift B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999') or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'Shift C' END), status AS Result,data=(CASE WHEN status='1' THEN 'OK' WHEN status='3' THEN 'NOK' END) FROM vTyreXray WHERE dtandTime>='" + mywebservice.formatDate(fromdate) + " 07:00:00'  AND dtandTime<'" + formatfromDate(mywebservice.formatDate(todate).Replace(" 07:00:00", "")) + "' order by date,Time asc", ConnectionOption.SQL));
                         GridView1.DataBind();
                     }
                     
@@ -189,6 +189,16 @@ convert(char(8), dtandTime, 108) <= '23:59:59.999') or (convert(char(8), dtandTi
                 }
             }
         }
+
+        private DataTable getDB(DataTable dt)
+        {
+            //dt.Rows.RemoveAt(7);
+            dt.Columns.RemoveAt(7);
+           // dr.Delete();
+            dt.AcceptChanges();
+            return dt ;
+        }
+
 
         protected void Export_click(object sender, EventArgs e)
         {
