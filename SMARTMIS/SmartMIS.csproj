@@ -105,6 +105,13 @@
     <Compile Include="Input\AddXRayOperator.aspx.designer.cs">
       <DependentUpon>AddXRayOperator.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Input\ColorCode.aspx.cs">
+      <DependentUpon>ColorCode.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Input\ColorCode.aspx.designer.cs">
+      <DependentUpon>ColorCode.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Input\CycleTime.aspx.cs">
       <DependentUpon>CycleTime.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1550,6 +1557,7 @@
     <Content Include="Images\loadingbar.jpeg" />
     <Content Include="Images\showdetail.jpg" />
     <Content Include="Input\AddXRayOperator.aspx" />
+    <Content Include="Input\ColorCode.aspx" />
     <Content Include="Input\CycleTime.aspx" />
     <Content Include="Input\Input.aspx" />
     <Content Include="Input\newCuringOperatorPlanning.aspx" />

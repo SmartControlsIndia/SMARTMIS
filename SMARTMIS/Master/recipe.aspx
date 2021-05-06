@@ -190,9 +190,13 @@ table th
                         </asp:DropDownList>
                     </td>
                     <td>
-                        &nbsp;</td>
+                          <span class="errorSpan">*</span></td>
                     <td>
                         <asp:Label ID="oemIDLabel" runat="server" CssClass="masterHiddenLabel" Text="0"></asp:Label>
+                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" 
+                            ControlToValidate="OEMDropDownList" CssClass="reqFieldValidator"
+                            ErrorMessage="OEM Name is Required" ValidationGroup="RR">
+                        </asp:RequiredFieldValidator>
                     </td>
                 </tr>
                 <tr>

@@ -326,9 +326,17 @@ namespace SmartMIS.Report
             myConnection.open(ConnectionOption.SQL);
             myConnection.comm = myConnection.conn.CreateCommand();
 
-            myConnection.comm.CommandText = "select wcID, curingRecipeID, status, defectID from TBRVisualInspection where  dtandTime>'" + rToDate + "' and dtandTime<='" + rFromDate + "' AND wcID IN ('93')";
+           // myConnection.comm.CommandText = "select distinct wcID, curingRecipeID, status, defectID from TBRVisualInspection where  dtandTime>'" + rToDate + "' and dtandTime<='" + rFromDate + "' AND wcID IN ('244')"; //93
+            myConnection.comm.CommandText = @"	SELECT  *
+FROM (	select wcID, curingRecipeID, status, defectID, 
+ ROW_NUMBER() OVER (PARTITION BY gtbarcode ORDER BY wcID) AS RowNumber
+from TBRVisualInspection 
+where  dtandTime>'" + rToDate + "' and dtandTime<='" + rFromDate + "' AND wcID IN ('244')) As a Where a.RowNumber=1";
+            
             myConnection.reader = myConnection.comm.ExecuteReader();
             dt_vi.Load(myConnection.reader);
+            dt_vi.Columns.RemoveAt(4);
+
 
             myConnection.reader.Close();
             myConnection.comm.Dispose();
@@ -337,7 +345,7 @@ namespace SmartMIS.Report
             myConnection.open(ConnectionOption.SQL);
             myConnection.comm = myConnection.conn.CreateCommand();
 
-            myConnection.comm.CommandText = "select Distinct iD, name AS wc_name from wcMaster where name IN ('7004')";
+            myConnection.comm.CommandText = "select Distinct iD, name AS wc_name from wcMaster where name IN ('7010')";
             myConnection.reader = myConnection.comm.ExecuteReader();
             dt_workcenter.Load(myConnection.reader);
 
@@ -406,10 +414,17 @@ namespace SmartMIS.Report
 
                 createGridView(gridviewdt, ExcelGridView);
 
-                string query = @"select 
-                    shift=(CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'A' WHEN convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8), dtandTime, 108) <= '22:59:59.999' THEN 'B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999') or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'C' END),
-                    description, wcName, CAST(dtandTime AS DATE) AS getdate, convert(char(8), dtandTime, 108) AS gettime, firstName + ' ' + lastName As builderName, gtbarcode, defectName, defectstatusName, remarks
-                    from vTBRVisualInspectionReport where dtandTime>'" + rToDate + "' and dtandTime<='" + rFromDate + "' AND wcName = '7004'";
+              //  string query = @"select distinct
+                  //  shift=(CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'A' WHEN convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8), dtandTime, 108) <= '22:59:59.999' THEN 'B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999') or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'C' END),
+                //    description, wcName, CAST(dtandTime AS DATE) AS getdate, convert(char(8), dtandTime, 108) AS gettime, firstName + ' ' + lastName As builderName, gtbarcode, defectName, defectstatusName, remarks
+                 //   from vTBRVisualInspectionReport where dtandTime>'" + rToDate + "' and dtandTime<='" + rFromDate + "' AND wcName = '7010'";
+
+                string query = @"	SELECT  *
+FROM (	select   shift=(CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'A' WHEN convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8), dtandTime, 108) <= '22:59:59.999' THEN 'B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999') or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'C' END),
+                    description, wcName, CAST(dtandTime AS DATE) AS getdate, convert(char(8), dtandTime, 108) AS gettime, firstName + ' ' + lastName As builderName,gtbarcode, defectName, defectstatusName, remarks,
+					 ROW_NUMBER() OVER (PARTITION BY gtbarcode ORDER BY dtandTime desc) AS RowNumber
+                    from vTBRVisualInspectionReport  where dtandTime>'" + rToDate + "' and dtandTime<='" + rFromDate + "' AND  wcName = '7010' )As a Where a.RowNumber=1";
+
 
                 myConnection.open(ConnectionOption.SQL);
                 myConnection.comm = myConnection.conn.CreateCommand();
@@ -429,7 +444,7 @@ namespace SmartMIS.Report
                     con.ConnectionString = ConfigurationManager.ConnectionStrings["mySQLConnection"].ToString();
                     con.Open();
 
-                    SqlCommand cmd = new SqlCommand("SELECT gtbarCode AS cur_gtbarcode, wcName AS pressno, mouldNo FROM vCuringpcr WHERE gtbarCode IN " + InQuery.ToString(), con);
+                    SqlCommand cmd = new SqlCommand("SELECT gtbarCode AS cur_gtbarcode, wcName AS pressno, mouldNo FROM vCuringtbr WHERE gtbarCode IN " + InQuery.ToString(), con);
                     var dread = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                     curdt.Load(dread);
 
