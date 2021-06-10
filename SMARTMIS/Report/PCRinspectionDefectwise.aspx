@@ -167,7 +167,7 @@
          <td style="width: 8%">
          <myControl:calenderTextBox ID="tuoReportMasterToDateTextBox" runat="server" Width="75%" />
         </td>
-        <td style="font-weight:bold; font-family:Arial; font-size:small; width:7%">  &nbsp;&nbsp;&nbsp;
+        <td style="font-weight:bold; font-family:Arial; font-size:small; width:9%">  &nbsp;&nbsp;&nbsp;
                 <asp:Button ID="ViewButton" runat="server" Text="View Report" onclick="ViewButton_Click" CssClass="button" />
 
             &nbsp;</td>
@@ -185,28 +185,28 @@
                </asp:DropDownList>
               
           </td>    
-           <td style="font-weight:bold; font-family:Arial; font-size:small; width:8%"> &nbsp;&nbsp;&nbsp;select category &nbsp; ::</td>
+           <td style="font-weight:bold; font-family:Arial; font-size:small; width:11%"> &nbsp;&nbsp;&nbsp;select category &nbsp; ::</td>
 
         
            <td style="font-weight:bold; font-family:Arial; font-size:small; width:9%">
            
-               <asp:DropDownList ID="ddlCategory" Width="100%" runat="server" AutoPostBack="true" >
-                  
+               <asp:DropDownList ID="ddlCategory" Width="100%" runat="server" AutoPostBack="true" OnSelectedIndexChanged="FillddlFault" >
+                   <asp:ListItem Value="0">Select</asp:ListItem>
                    <asp:ListItem Value="1">Minor</asp:ListItem>
                    <asp:ListItem Value="2">Major</asp:ListItem>
                </asp:DropDownList>
               
           </td>
-           <td style="font-weight:bold; font-family:Arial; font-size:small; width:8%"> &nbsp;&nbsp;&nbsp;select Fault &nbsp; ::</td>
+           <td style="font-weight:bold; font-family:Arial; font-size:small; width:9%"> &nbsp;&nbsp;&nbsp;select Fault &nbsp; ::</td>
 
         
            <td style="font-weight:bold; font-family:Arial; font-size:small; width:9%">
            
                <asp:DropDownList ID="ddlFault" Width="100%" runat="server" AutoPostBack="true" >
-                   <asp:ListItem>Select</asp:ListItem>
-                    <asp:ListItem Value="1">OK</asp:ListItem>
-                   <asp:ListItem Value="2">Buff</asp:ListItem>
-                   <asp:ListItem Value="3">Scrap</asp:ListItem>
+                   <%-- <asp:ListItem>Select</asp:ListItem>
+                    <asp:ListItem Value="1">PASS-1</asp:ListItem>
+                    <asp:ListItem Value="2">Buff</asp:ListItem>
+                    <asp:ListItem Value="3">Scrap</asp:ListItem>--%>
                   
                </asp:DropDownList>
               

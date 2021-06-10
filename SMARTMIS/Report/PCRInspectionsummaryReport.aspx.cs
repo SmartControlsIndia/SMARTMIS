@@ -24,7 +24,7 @@ namespace SmartMIS.Report
         #endregion
         #region globle variable
         public string queryString, rType, rWCID, rChoice, rToDate, rFromDate, rToMonth, rToYear, rFromYear, option, workcentername, wcnamequery, wcIDQuery, machinenamequery, percent_sign=null;
-        public int totalcheckedcount = 0, okcount = 0, NotOkCount = 0, reworkcount = 0, scrapcount = 0, majorokcount = 0, minorbuffcount = 0, majorholdcount = 0, minorCount = 0, majorCount = 0, majorscrapcount = 0, totalokcount = 0, totalbuffcount = 0, totalscrapcount = 0, totalholdcount = 0, totalminorcount = 0,  min_count = 0;
+        public int totalcheckedcount = 0, okcount = 0, NotOkCount = 0, reworkcount = 0, scrapcount = 0, majorokcount = 0, minorbuffcount = 0, majorholdcount = 0, minorCount = 0, majorCount = 0, majorscrapcount = 0, erraticHold =0,Pass1Count = 0,Pass2Count=0,Pass3Count=0,Pass4Count=0, totalokcount = 0, totalbuffcount = 0, totalscrapcount = 0, totalholdcount = 0, totalminorcount = 0,  min_count = 0,min_pass1count = 0,min_pass2count = 0;
         string sqlquery = "";
         int status;                                                                      
         DateTime fromDate, toDate;                                                        
@@ -81,7 +81,14 @@ namespace SmartMIS.Report
 
                         string nfromDate = fromDate.ToString("dd/MMM/yyyy") + " 07:00:00";
                         string ntoDate = toDate.ToString("dd/MMM/yyyy") + " 07:00:00";
-                        showReportDateMonthWise(nfromDate, ntoDate, recipe, tyredesign);
+
+                        //string nfromDate = fromDate.ToString("yyyy/MMM/dd") + " 07:00:00";
+                       // string ntoDate = toDate.ToString("yyyy/MMM/dd") + " 07:00:00";
+
+                          DateTime date1 = Convert.ToDateTime(nfromDate, System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
+                          DateTime date2 = Convert.ToDateTime(ntoDate, System.Globalization.CultureInfo.GetCultureInfo("hi-IN").DateTimeFormat);
+                        //showReportDateMonthWise(nfromDate, ntoDate, recipe, tyredesign);
+                       showReportDateMonthWise(date1.ToString(), date2.ToString(), recipe, tyredesign);
                         break;
 
                     case "Month":
@@ -194,19 +201,21 @@ namespace SmartMIS.Report
                 gridviewdt.Columns.Add("Tyre Size", typeof(string));
                 //gridviewdt.Columns.Add("Design", typeof(string));
                 gridviewdt.Columns.Add("Inspected", typeof(string));
-                gridviewdt.Columns.Add("OK", typeof(string));
-                gridviewdt.Columns.Add("Minor", typeof(string));
+                gridviewdt.Columns.Add(" OK ", typeof(string));
+                gridviewdt.Columns.Add(" Minor ", typeof(string));
                 gridviewdt.Columns.Add("Major", typeof(string));
-                gridviewdt.Columns.Add("Minor Ok", typeof(string));
-                gridviewdt.Columns.Add("Minor Buff", typeof(string));
-                gridviewdt.Columns.Add("Minor Scrap", typeof(string));
-                gridviewdt.Columns.Add("Major Ok", typeof(string));
-                gridviewdt.Columns.Add("Hold", typeof(string));
-                gridviewdt.Columns.Add("Major Scrap", typeof(string));
-                gridviewdt.Columns.Add("Total Ok", typeof(string));
-                gridviewdt.Columns.Add("Total Buff", typeof(string));
-                gridviewdt.Columns.Add("Total Scrap", typeof(string));
-                gridviewdt.Columns.Add("Total Hold", typeof(string));
+                gridviewdt.Columns.Add(" Pass-1", typeof(string));
+                gridviewdt.Columns.Add(" Pass-2", typeof(string));
+                gridviewdt.Columns.Add(" Buff", typeof(string));
+                gridviewdt.Columns.Add(" Hold", typeof(string));
+                gridviewdt.Columns.Add(" Pass-3", typeof(string));
+                gridviewdt.Columns.Add(" Erratic Hold", typeof(string));
+                gridviewdt.Columns.Add("Major Hold", typeof(string));
+               
+                //gridviewdt.Columns.Add(" Pass-4", typeof(string));
+               // gridviewdt.Columns.Add("Total Ok", typeof(string));
+               // gridviewdt.Columns.Add("Total Buff", typeof(string));
+               // gridviewdt.Columns.Add("Total Hold", typeof(string));
 
                 //rToDate = TotaldtformatDate(tuoReportMasterFromDateTextBox.Text, tuoReportMasterToDateTextBox.Text);
 
@@ -260,11 +269,15 @@ namespace SmartMIS.Report
                     myConnection.comm = myConnection.conn.CreateCommand();
                     if (ddlRecipe.SelectedValue != "All")
                     {
-                        myConnection.comm.CommandText = "select wcid,gtbarcode,status,manningId, CASE status WHEN 1 THEN 'Ok' WHEN 2 THEN 'Minor' WHEN 3 THEN 'Major' WHEN 21 THEN 'Buff' WHEN 22 THEN 'Scrap' WHEN 31 THEN 'majorOK' WHEN 32 THEN 'Hold' WHEN 33 THEN 'major_Scrap' END AS StatusName,dtandTime ,curingRecipeID from (select wcid,gtbarcode,status,defectstatusid,dtandTime,curingRecipeID,manningId,  row_number() over (partition by gtbarcode order by dtandtime desc) as rono from vInspectionPCR where dtandTime > '" + nfromDate + "' and dtandtime<'" + ntoDate + "' and wcid in ('82','83','84','85','86','87','88','89','107','109','267') and (curingRecipeID='" + ddlRecipe.SelectedValue + "')) as t where rono = 1 ";
+                        //myConnection.comm.CommandText = "select wcid,gtbarcode,status,manningId, CASE status WHEN 1 THEN 'Ok' WHEN 2 THEN 'Minor' WHEN 3 THEN 'Major' WHEN 21 THEN 'Buff' WHEN 22 THEN 'Scrap' WHEN 31 THEN 'majorOK' WHEN 32 THEN 'Hold' WHEN 33 THEN 'major_Scrap' END AS StatusName,dtandTime ,curingRecipeID from (select wcid,gtbarcode,status,defectstatusid,dtandTime,curingRecipeID,manningId,  row_number() over (partition by gtbarcode order by dtandtime desc) as rono from vInspectionPCR where dtandTime > '" + nfromDate + "' and dtandtime<'" + ntoDate + "' and wcid in ('82','83','84','85','86','87','88','89','107','109','267') and (curingRecipeID='" + ddlRecipe.SelectedValue + "')) as t where rono = 1 ";
+                        myConnection.comm.CommandText = "select wcid,gtbarcode,status,manningId, CASE status WHEN 1 THEN 'Ok' WHEN 2 THEN 'Minor' WHEN 3 THEN 'Major' WHEN 51 THEN 'Pass-1' WHEN 52 THEN 'Pass-2' WHEN 53 THEN 'MINOR-BUFF' WHEN 54 THEN 'MINOR-HOLD' WHEN 55 THEN 'ERRATIC_HOLD' WHEN 56 THEN 'MAJOR_HOLD' WHEN 57 THEN 'PASS-3' WHEN 58 THEN 'PASS-4' END AS StatusName,dtandTime ,curingRecipeID from (select wcid,gtbarcode,status,defectstatusid,dtandTime,curingRecipeID,manningId,  row_number() over (partition by gtbarcode order by dtandtime desc) as rono from vInspectionPCR where dtandTime > '" + nfromDate + "' and dtandtime<'" + ntoDate + "' and wcid in ('82','83','84','85','86','87','88','89','107','109','267') and (curingRecipeID='" + ddlRecipe.SelectedValue + "')) as t where rono = 1 ";
+                 
                     }
                     else
                     {
-                        myConnection.comm.CommandText = "select wcid,gtbarcode,status, manningId,CASE status WHEN 1 THEN 'Ok' WHEN 2 THEN 'Minor' WHEN 3 THEN 'Major' WHEN 21 THEN 'Buff' WHEN 23 THEN 'Scrap' WHEN 31 THEN 'majorOk' WHEN 32 THEN 'Hold' WHEN 33 THEN 'major_Scrap'  END AS StatusName,dtandTime ,curingRecipeID from (select wcid,gtbarcode,status,defectstatusid,dtandTime,curingRecipeID,manningId,  row_number() over (partition by gtbarcode order by dtandtime desc) as rono from vInspectionPCR where dtandTime > '" + nfromDate + "' and dtandtime<'" + ntoDate + "' and wcid in ('82','83','84','85','86','87','88','89','107','109','267')) as t where rono = 1 ";
+                        //myConnection.comm.CommandText = "select wcid,gtbarcode,status, manningId,CASE status WHEN 1 THEN 'Ok' WHEN 2 THEN 'Minor' WHEN 3 THEN 'Major' WHEN 21 THEN 'Buff' WHEN 23 THEN 'Scrap' WHEN 31 THEN 'majorOk' WHEN 32 THEN 'Hold' WHEN 33 THEN 'major_Scrap'  END AS StatusName,dtandTime ,curingRecipeID from (select wcid,gtbarcode,status,defectstatusid,dtandTime,curingRecipeID,manningId,  row_number() over (partition by gtbarcode order by dtandtime desc) as rono from vInspectionPCR where dtandTime > '" + nfromDate + "' and dtandtime<'" + ntoDate + "' and wcid in ('82','83','84','85','86','87','88','89','107','109','267')) as t where rono = 1 ";
+                        myConnection.comm.CommandText = "select wcid,gtbarcode,status, manningId,CASE status WHEN 1 THEN 'Ok' WHEN 2 THEN 'Minor' WHEN 3 THEN 'Major' WHEN 51 THEN 'Pass-1' WHEN 52 THEN 'Pass-2' WHEN 53 THEN 'MINOR-BUFF' WHEN 54 THEN 'MINOR-HOLD' WHEN 55 THEN 'ERRATIC_HOLD' WHEN 56 THEN 'MAJOR_HOLD' WHEN 57 THEN 'PASS-3' WHEN 58 THEN 'PASS-4'  END AS StatusName,dtandTime ,curingRecipeID from (select wcid,gtbarcode,status,defectstatusid,dtandTime,curingRecipeID,manningId,  row_number() over (partition by gtbarcode order by dtandtime desc) as rono from vInspectionPCR where dtandTime > '" + nfromDate + "' and dtandtime<'" + ntoDate + "' and wcid in ('82','83','84','85','86','87','88','89','107','109','267')) as t where rono = 1 ";
+                  
                     }
                    
                 
@@ -287,8 +300,6 @@ namespace SmartMIS.Report
 
                 try
                 {
-
-
                     myConnection.open(ConnectionOption.SQL);
                     myConnection.comm = myConnection.conn.CreateCommand();
                     myConnection.comm.CommandText = "Select ID AS manningID,firstname,lastname FROM manningMaster ";
@@ -367,36 +378,42 @@ namespace SmartMIS.Report
                     {
                         totalcheckedcount += data.Count();
 
-                        okcount += data.Count(d => d.status == 1 && d.vistage == 1);
+                        okcount += data.Count(d => d.status == 1);//&& d.vistage == 1);
                         NotOkCount +=    data.Count(d => d.status != 1);
                         minorCount +=    data.Count(d => d.status == 2);//minorcount
                         majorCount +=    data.Count(d => d.status == 3);//majorcount
                        // totalminorcount += aa.Count();
-                        min_count += data.Count(d => d.status == 1 && d.vistage == 2);//ok count
-                        minorbuffcount +=  data.Count(d => d.status == 21);
-                        scrapcount +=      data.Count(d => d.status == 23);//minorcount
-                        majorokcount +=    data.Count(d => d.status == 31);//ok count
-                        majorholdcount +=  data.Count(d => d.status == 32);//holdcount
-                        majorscrapcount += data.Count(d => d.status == 33);//minorcount
+                        Pass1Count += data.Count(d => d.status == 51);//ok count
+                        Pass2Count += data.Count(d => d.status == 52);//ok count
+                        minorbuffcount +=  data.Count(d => d.status == 53); // 21
+                        scrapcount +=      data.Count(d => d.status == 54);//minorcount 23
+                        majorokcount +=    data.Count(d => d.status == 55);//ok count
+                        majorholdcount +=  data.Count(d => d.status == 56);//holdcount
+                        Pass3Count += data.Count(d => d.status == 57);//minorcount
+                        //Pass4Count += data.Count(d => d.status == 58);//minorcount
                       }
 
                     
                     dr[0] = data[0].ReceipeName;
                     //dr[2] = data[0].tyreDesign;
                     dr[1] = data.Count();
-                    dr[2] = data.Count(d => d.status == 1 && d.vistage == 1);
+                    dr[2] = data.Count(d => d.status == 1);// && d.vistage == 1);
                     dr[3] = data.Count(d => d.status == 2);
                     dr[4] = data.Count(d => d.status == 3);
-                    dr[5] = data.Count(d => d.status == 1 && d.vistage == 2);
-                    dr[6] = data.Count(d => d.status == 21);
-                    dr[7] = data.Count(d => d.status == 23);
-                    dr[8] = data.Count(d => d.status == 31);
-                    dr[9] =data.Count(d => d.status == 32);
-                    dr[10] =data.Count(d => d.status == 33);
-                    dr[11] =data.Count(d => d.status == 31) + data.Count(d => d.status == 1&& d.vistage == 2) + data.Count(d => d.status == 1 && d.vistage == 1);
-                    dr[12] =data.Count(d => d.status == 21);
-                    dr[13] =data.Count(d => d.status == 33) + data.Count(d => d.status == 23);
-                    dr[14] = data.Count(d => d.status == 32);
+                    dr[5] = data.Count(d => d.status == 51);  // Pass1
+                    dr[6] = data.Count(d => d.status == 52);  // Pass2
+                    dr[7] = data.Count(d => d.status == 53);  // Buff Last time 21
+                    dr[8] = data.Count(d => d.status == 54);  // HOLD Last time 23 as Scrap
+
+                    dr[9] = data.Count(d => d.status == 57);  //31
+                    dr[10] =data.Count(d => d.status == 55);  //32
+                    dr[11] =data.Count(d => d.status == 56); //33
+                    //dr[12] = data.Count(d => d.status == 58); //33
+
+                   // dr[13] =data.Count(d => d.status == 1); // Total OK
+                   // dr[14] =data.Count(d => d.status == 53);  // Total Buff
+                    
+                   // dr[15] = data.Count(d => d.status == 56) + data.Count(d => d.status == 54);// Total Hold
                    
                     
                         gridviewdt.Rows.Add(dr);
@@ -421,31 +438,29 @@ namespace SmartMIS.Report
                 DataTable dtsorted = dv.ToTable();
 
                 DataRow drt = dtsorted.NewRow();
-                drt[0] = "Total";
+                drt[0] = "TOTAL";
                
                 drt[1] = totalcheckedcount;
                 drt[2] = okcount;
                 drt[3] = minorCount;
                 drt[4] = majorCount;
-                drt[5] = min_count;
-                drt[6] = minorbuffcount;
-                drt[7] = scrapcount;
-                drt[8] = majorokcount;
-                drt[9] = majorholdcount;
-                drt[10] = majorscrapcount;
-                drt[11] = majorokcount + min_count + okcount;
-                drt[12] = minorbuffcount;
-                drt[13] = majorscrapcount + scrapcount;
-                drt[14] = majorholdcount;
+
+                drt[5] = Pass1Count;
+                drt[6] = Pass2Count;
+                drt[7] = minorbuffcount;
+                drt[8] = scrapcount;
+
+                drt[9] = Pass3Count;
+                drt[10] = majorokcount;
+                drt[11] = majorholdcount;
+                //drt[12] = Pass4Count;
+
+               // drt[13] = okcount;
+               // drt[14] = minorbuffcount;
+               // drt[15] =majorholdcount;
                 dtsorted.Rows.Add(drt);
 
-               //for excel data 
-               
-
-                //DataView dv = dtMarks1.DefaultView;
-                //dv.Sort = "Inspected DESC";
-                //DataTable dtsorted = dv.ToTable();
-                
+               //for excel data     
 
                 ViewState["dt"] = dtExcel;
                 if (dtsorted.Rows.Count > 0)
@@ -600,22 +615,27 @@ namespace SmartMIS.Report
 
                   
                             cell.Text = "";
-                            cell.ColumnSpan = 5;
+                            cell.ColumnSpan = 2;
+                            row.Controls.Add(cell);
+
+                            cell = new TableHeaderCell();
+                            cell.Text = "First Line VI";
+                            cell.ColumnSpan = 3;
                             row.Controls.Add(cell);
 
                             cell = new TableHeaderCell();
                             cell.Text = "Minor";
-                            cell.ColumnSpan = 3;
+                            cell.ColumnSpan = 4;
                             row.Controls.Add(cell);
 
-                            cell = new TableHeaderCell();
-                            cell.ColumnSpan = 3;
-                            cell.Text = "Major";
-
-                            row.Controls.Add(cell);
                             cell = new TableHeaderCell();
                             cell.ColumnSpan = 4;
-                            cell.Text = "Total";
+                            cell.Text = "Major";
+
+                            //row.Controls.Add(cell);
+                           // cell = new TableHeaderCell();
+                           // cell.ColumnSpan = 3;
+                           // cell.Text = "Total";
                             row.Controls.Add(cell);
                             
 

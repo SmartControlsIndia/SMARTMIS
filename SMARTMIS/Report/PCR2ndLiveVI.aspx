@@ -46,7 +46,7 @@
     </style>
     <script type="text/javascript" language="javascript">
         $(function() {
-        $("select").selectbox();
+           $("select").selectbox();
         });
         function showPrintPreview(id)
         {
@@ -234,8 +234,12 @@
 
     </script>
 
-      <center><H3>PCR SECOND LINE REPORT</H3></center> 
-      
+<table width="100%"><tr><td width="95%" align="center">   <center><H3>PCR SECOND LINE REPORT</H3></center> </td>
+<td width="5%" align="right"><div><asp:LinkButton runat="server" ID="LinkButton1" onclick="Export_click"><img src="../Images/Excel.jpg" class="imag" /></asp:LinkButton>
+      </div>
+</td></tr></table>
+
+   
       
       <table align="center" class="reportMasterTable" width="100%" border="1" style="border-collapse:collapse;">
          <tr>
@@ -345,15 +349,18 @@
                         
 
              </td>
-             <td width="10%"><span class="masterLabel" style="padding-left: 5px; cursor:pointer;" onclick="toggleduration();">TYPE :</span>
+             <td width="10%"><span class="masterLabel" style="padding-left: 5px; cursor:pointer;" onclick="toggleduration();">Status Type :</span>
                    <asp:DropDownList ID="ddldecision"  
                    Width="40%" runat="server" 
                    CausesValidation="false">
                    <asp:ListItem Value="ALL">ALL</asp:ListItem>
-                   <asp:ListItem Value="1">OK</asp:ListItem>
-                   <asp:ListItem Value="2">MINOR</asp:ListItem>
-                   <asp:ListItem Value="3">MAJOR</asp:ListItem>
-                   
+                   <asp:ListItem Value="1">OK-OE</asp:ListItem>
+                   <asp:ListItem Value="4">Down Grade</asp:ListItem>
+                   <asp:ListItem Value="2">Not OK</asp:ListItem>
+                   <asp:ListItem Value="3">Marking Defect</asp:ListItem>
+                   <asp:ListItem Value="333">OE Grade</asp:ListItem>
+                   <asp:ListItem Value="444">Replacement</asp:ListItem>
+                      
              </asp:DropDownList>
              </td>
                <td width="10%">
@@ -362,8 +369,13 @@
             
             <td width="10%">
                 <div id="printArea">
-                    <div style="text-align:right;">
-                         <asp:LinkButton runat="server" ID="btnExport" onclick="Export_click"><img src="../Images/Excel.jpg" class="imag" /></asp:LinkButton>
+                 <div style="text-align:right;">
+                 <span class="masterLabel" style="padding-left: 5px; cursor:pointer;" onclick="toggleduration();"> Type :</span>
+               <asp:DropDownList ID="displayType" runat="server" AutoPostBack="True" Width="100" onselectedindexchanged="displayType_SelectedIndexChanged">
+                   <asp:ListItem Selected="True">Numbers</asp:ListItem>
+                   <asp:ListItem>Percentage</asp:ListItem>
+               </asp:DropDownList> 
+                         <%--<asp:LinkButton runat="server" ID="btnExport" onclick="Export_click"><img src="../Images/Excel.jpg" class="imag" /></asp:LinkButton>--%>
                     </div>
                  </div>
              </td>

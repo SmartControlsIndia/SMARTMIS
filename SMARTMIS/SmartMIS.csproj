@@ -245,6 +245,13 @@
     <Compile Include="Report\PCRpaintingReport.aspx.designer.cs">
       <DependentUpon>PCRpaintingReport.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Report\PCRViScrap.aspx.cs">
+      <DependentUpon>PCRViScrap.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\PCRViScrap.aspx.designer.cs">
+      <DependentUpon>PCRViScrap.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Report\ProductionDetails.aspx.cs">
       <DependentUpon>ProductionDetails.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1586,6 +1593,7 @@
     <Content Include="Report\PCRinspectionDefectwise.aspx" />
     <Content Include="Report\PCRInspectionsummaryReport.aspx" />
     <Content Include="Report\PCRpaintingReport.aspx" />
+    <Content Include="Report\PCRViScrap.aspx" />
     <Content Include="Report\PCRVISummaryReport.aspx" />
     <Content Include="Report\PCRVISummaryReport2.aspx" />
     <Content Include="Report\PCRVISummaryReport3.aspx" />

@@ -161,19 +161,27 @@ namespace SmartMIS.Report
                     myConnection.comm = myConnection.conn.CreateCommand();
                     if (ddlRecipe.SelectedItem.Text != "All" && ddlshift.SelectedItem.Text!="ALL")
                     {
-                        myConnection.comm.CommandText = "select Barcode, Recipe ,WeightScale, Shift,convert(char(10), DateInserted, 105) AS Date,CONVERT(VARCHAR(8) , DateInserted , 108) AS [Time]  from paintingDataPCR where DateInserted > '" + nfromDate + "' and DateInserted<'" + ntoDate + "' and (recipe='" + ddlRecipe.SelectedItem.Text + "') and shift = '" + ddlshift.SelectedItem.Text + "'";
+                       // myConnection.comm.CommandText = "select Barcode, Recipe ,WeightScale, Shift,convert(char(10), DateInserted, 105) AS Date,CONVERT(VARCHAR(8) , DateInserted , 108) AS [Time]  from paintingDataPCR where DateInserted > '" + nfromDate + "' and DateInserted<'" + ntoDate + "' and (recipe='" + ddlRecipe.SelectedItem.Text + "') and shift = '" + ddlshift.SelectedItem.Text + "'";
+                        myConnection.comm.CommandText = "select * from (select Barcode, Recipe, WeightScale, Shift,convert(char(10), DateInserted, 105) AS Date,CONVERT(VARCHAR(8) , DateInserted , 108) AS [Time],row_number() over (partition by Barcode order by DateInserted desc) as rono  from paintingDataPCR where (DateInserted > '" + nfromDate + "' and DateInserted<'" + ntoDate + "' and (recipe='" + ddlRecipe.SelectedItem.Text + "') and shift = '" + ddlshift.SelectedItem.Text + "')) as t where rono = 1";
+                  
                     }
                     else if ((ddlRecipe.SelectedItem.Text != "All" )&&( ddlshift.SelectedItem.Text == "ALL"))
                     {
-                        myConnection.comm.CommandText = "select Barcode, Recipe, WeightScale, Shift,convert(char(10), DateInserted, 105) AS Date,CONVERT(VARCHAR(8) , DateInserted , 108) AS [Time]  from paintingDataPCR where DateInserted > '" + nfromDate + "' and DateInserted<'" + ntoDate + "' and (recipe='" + ddlRecipe.SelectedItem.Text + "') ";
+                       // myConnection.comm.CommandText = "select Barcode, Recipe, WeightScale, Shift,convert(char(10), DateInserted, 105) AS Date,CONVERT(VARCHAR(8) , DateInserted , 108) AS [Time]  from paintingDataPCR where DateInserted > '" + nfromDate + "' and DateInserted<'" + ntoDate + "' and (recipe='" + ddlRecipe.SelectedItem.Text + "') ";
+                        myConnection.comm.CommandText = "select * from (select Barcode, Recipe, WeightScale, Shift,convert(char(10), DateInserted, 105) AS Date,CONVERT(VARCHAR(8) , DateInserted , 108) AS [Time],row_number() over (partition by Barcode order by DateInserted desc) as rono  from paintingDataPCR where (DateInserted > '" + nfromDate + "' and DateInserted<'" + ntoDate + "' and (recipe='" + ddlRecipe.SelectedItem.Text + "'))) as t where rono = 1";
+                  
                     }
                     else if ((ddlRecipe.SelectedItem.Text == "All") && (ddlshift.SelectedItem.Text != "ALL"))
                     {
-                        myConnection.comm.CommandText = "select Barcode, Recipe, WeightScale, Shift,convert(char(10), DateInserted, 105) AS Date,CONVERT(VARCHAR(8) , DateInserted , 108) AS [Time]  from paintingDataPCR where DateInserted > '" + nfromDate + "' and DateInserted<'" + ntoDate + "' and shift = '" + ddlshift.SelectedItem.Text + "'";
+                       // myConnection.comm.CommandText = "select Barcode, Recipe, WeightScale, Shift,convert(char(10), DateInserted, 105) AS Date,CONVERT(VARCHAR(8) , DateInserted , 108) AS [Time]  from paintingDataPCR where DateInserted > '" + nfromDate + "' and DateInserted<'" + ntoDate + "' and shift = '" + ddlshift.SelectedItem.Text + "'";
+                        myConnection.comm.CommandText = "select * from (select Barcode, Recipe, WeightScale, Shift,convert(char(10), DateInserted, 105) AS Date,CONVERT(VARCHAR(8) , DateInserted , 108) AS [Time],row_number() over (partition by Barcode order by DateInserted desc) as rono  from paintingDataPCR where (DateInserted > '" + nfromDate + "' and DateInserted<'" + ntoDate + "' and shift = '" + ddlshift.SelectedItem.Text + "')) as t where rono = 1";
+                 
+                    
                     }
                     else 
                     {
-                        myConnection.comm.CommandText = "select Barcode, Recipe, WeightScale, Shift,convert(char(10), DateInserted, 105) AS Date,CONVERT(VARCHAR(8) , DateInserted , 108) AS [Time]  from paintingDataPCR where DateInserted > '" + nfromDate + "' and DateInserted<'" + ntoDate + "' ";
+                        //myConnection.comm.CommandText = "select Barcode, Recipe, WeightScale, Shift,convert(char(10), DateInserted, 105) AS Date,CONVERT(VARCHAR(8) , DateInserted , 108) AS [Time]  from paintingDataPCR where DateInserted > '" + nfromDate + "' and DateInserted<'" + ntoDate + "' ";
+                        myConnection.comm.CommandText = "select * from (select Barcode, Recipe, WeightScale, Shift,convert(char(10), DateInserted, 105) AS Date,CONVERT(VARCHAR(8) , DateInserted , 108) AS [Time],row_number() over (partition by Barcode order by DateInserted desc) as rono  from paintingDataPCR where (DateInserted > '" + nfromDate + "' and DateInserted<'" + ntoDate + "')) as t where rono = 1";
                     }
                     myConnection.reader = myConnection.comm.ExecuteReader();
 

@@ -184,28 +184,30 @@
                                 </asp:TemplateField>
                             </Columns>
         <Columns>
-                                <asp:TemplateField HeaderText="OK">
+                                <asp:TemplateField HeaderText="OK-OE">
                                     <ItemTemplate>
                                             <asp:Label ID="VIRecipeWiseOkLabel" runat="server" Text='<%# Eval("totalOK") %>'></asp:Label><%= percent_sign %>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>                        
         <Columns>
-                                <asp:TemplateField HeaderText="Not OK" ItemStyle-HorizontalAlign="Center">
+                                <asp:TemplateField HeaderText="Down Grade" ItemStyle-HorizontalAlign="Center">
                                     <ItemTemplate>
-                                            <asp:Label ID="VIRecipeWiseNOtOkLabel" runat="server" Text='<%# Eval("TotalNOTOK") %>'></asp:Label><%= percent_sign %>
+                                            
+                                             <asp:LinkButton ID="VIRecipeWiseTotalDownGradeLink" OnClick="VIRecipeWiseTotalMinor_Click" runat="server"><asp:Label ID="VIRecipeWiseNOtOkLabel" runat="server" Text='<%# Eval("TotalNOTOK") %>'></asp:Label><%= percent_sign %></asp:LinkButton>
+                                    
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>                        
         <Columns>
-                                <asp:TemplateField HeaderText="Minor Fault" ItemStyle-HorizontalAlign="Center"> 
+                                <asp:TemplateField HeaderText="Not OK" ItemStyle-HorizontalAlign="Center"> 
                                     <ItemTemplate>
                                             <asp:LinkButton ID="VIRecipeWiseTotalMinorLink" OnClick="VIRecipeWiseTotalMinor_Click" runat="server"><asp:Label ID="VIRecipeWiseTotalMinorLabel" runat="server" Text='<%# Eval("TotalMinor") %>'></asp:Label><%= percent_sign %></asp:LinkButton>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
         <Columns>
-                                <asp:TemplateField HeaderText="Major Fault" ItemStyle-HorizontalAlign="Center">
+                                <asp:TemplateField HeaderText="Marking Defect Fault" ItemStyle-HorizontalAlign="Center">
                                     <ItemTemplate>
                                         <asp:LinkButton ID="VIRecipeWiseMezorLink" OnClick="VIRecipeWiseTotalMinor_Click" runat="server"><asp:Label ID="VIRecipeWiseMezorLabel" runat="server" Text='<%# Eval("TotalMezor") %>'></asp:Label><%= percent_sign %></asp:LinkButton>
                                     </ItemTemplate>

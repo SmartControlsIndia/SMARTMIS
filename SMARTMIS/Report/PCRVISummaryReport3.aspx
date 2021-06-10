@@ -98,7 +98,7 @@
 <link href="../Style/reportMaster.css" rel="stylesheet" type="text/css" />
 <link href="../Style/master.css" rel="stylesheet" type="text/css" />
 <link href="../Style/masterPage.css" rel="stylesheet" type="text/css" />
-<table width="100%"><tr><td width="95%" align="center"><h2>Third PCR Visual Inspection Report</h2></td>
+<table width="100%"><tr><td width="95%" align="center"><h2>PCR Major Report</h2></td>
 <td width="5%" align="right"><div><asp:LinkButton runat="server" ID="ExportExcel" onclick="expToExcel_Click"><img src="../Images/Excel.jpg" alt="Export To Excel" class="imag" /></asp:LinkButton></div>
 </td></tr></table>
 
@@ -153,8 +153,10 @@
            
                <asp:DropDownList ID="FaultTypeDropDownList" Width="100%" runat="server" AutoPostBack="true" onselectedindexchanged="FaultTypeDropDownList_SelectedIndexChanged">
                    <asp:ListItem>Select</asp:ListItem>
-                   <asp:ListItem>HOLD</asp:ListItem>
-                   <asp:ListItem>SCRAP</asp:ListItem>
+                   <asp:ListItem>ERRATIC HOLD</asp:ListItem>
+                   <asp:ListItem>MAJOR HOLD</asp:ListItem>
+                   <asp:ListItem>PASS-3</asp:ListItem>
+                   <%--<asp:ListItem>PASS-4</asp:ListItem>--%>
                </asp:DropDownList>
               
           </td>       
@@ -202,26 +204,33 @@
                                 </asp:TemplateField>
                             </Columns>
          <Columns>
-                                <asp:TemplateField HeaderText="OK">
+                                <asp:TemplateField HeaderText="ERRATIC HOLD">
                                     <ItemTemplate>
-                                            <asp:Label ID="VIRecipeWiseOkLabel" runat="server" Text='<%# Eval("TotalOK") %>'></asp:Label><%= percent_sign %>
+                                            <asp:Label ID="VIRecipeWiseOkLabel" runat="server" Text='<%# Eval("TotalErraticHOLD") %>'></asp:Label><%= percent_sign %>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>                        
         <Columns>
-                                <asp:TemplateField HeaderText="HOLD">
+                                <asp:TemplateField HeaderText="MAJOR HOLD">
                                     <ItemTemplate>
-                                            <asp:LinkButton ID="VIRecipeWiseNotOk" OnClick="VIRecipeWiseTotalMinor_Click" runat="server"><asp:Label ID="VIRecipeWiseNotOkLabel" runat="server" Text='<%# Eval("TotalHOLD") %>'></asp:Label><%= percent_sign %></asp:LinkButton>
+                                            <asp:LinkButton ID="VIRecipeWiseNotOk" OnClick="VIRecipeWiseTotalMinor_Click" runat="server"><asp:Label ID="VIRecipeWiseNotOkLabel" runat="server" Text='<%# Eval("TotalMAJORHOLD") %>'></asp:Label><%= percent_sign %></asp:LinkButton>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
        <Columns>
-                                <asp:TemplateField HeaderText="SCRAP">
+                                <asp:TemplateField HeaderText="PASS-3">
                                     <ItemTemplate>
-                                        <asp:LinkButton ID="VIRecipeWiseTotalMinorLink" OnClick="VIRecipeWiseTotalMinor_Click" runat="server"><asp:Label ID="VIRecipeWiseTotalMinorLabel" runat="server" Text='<%# Eval("TotalSCRAP") %>'></asp:Label><%= percent_sign %></asp:LinkButton>
+                                        <asp:LinkButton ID="VIRecipeWiseTotalMinorLink" OnClick="VIRecipeWiseTotalMinor_Click" runat="server"><asp:Label ID="VIRecipeWiseTotalMinorLabel" runat="server" Text='<%# Eval("TotalPASS-3") %>'></asp:Label><%= percent_sign %></asp:LinkButton>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                            </Columns>      
+                            </Columns>  
+                             <%-- <Columns>
+                                <asp:TemplateField HeaderText="PASS-4">
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="VIRecipeWiseTotalMinorLink123" OnClick="VIRecipeWiseTotalMinor_Click" runat="server"><asp:Label ID="VIRecipeWiseTotalMinor123Label" runat="server" Text='<%# Eval("TotalPASS-4") %>'></asp:Label><%= percent_sign %></asp:LinkButton>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                            </Columns>--%>      
     </asp:GridView> 
 
 <asp:Label ID="backDiv" runat="server" CssClass="modalBackground" Visible="false" Text=""></asp:Label>

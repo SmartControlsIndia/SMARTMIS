@@ -24,7 +24,7 @@ namespace SmartMIS.Report
         #endregion
         #region globle variable
         public string queryString, rType, rWCID, rChoice, rToDate, rFromDate, rToMonth, rToYear, rFromYear, option, workcentername, wcnamequery, wcIDQuery, machinenamequery, percent_sign=null;
-        public int totalcheckedcount = 0, okcount = 0, reworkcount = 0, buffcount = 0, totalrework = 0, treadfault = 0, sidewallfault = 0, beadfault = 0, carcassfault = 0, othersfault = 0;
+        public int totalcheckedcount = 0, okcount = 0, reworkcount = 0, buffcount = 0,pass1count=0,pass2count=0,holdcoun=0, totalrework = 0, treadfault = 0, sidewallfault = 0, beadfault = 0, carcassfault = 0, othersfault = 0;
         int status;
 
         DataTable wc_name_dt = new DataTable();
@@ -110,7 +110,7 @@ namespace SmartMIS.Report
                         myConnection.open(ConnectionOption.SQL);
                         myConnection.comm = myConnection.conn.CreateCommand();
 
-                        myConnection.comm.CommandText = "select wcID, curingRecipeID, status, defectStatusID As defectID from VInspectionPCR where ((dtandTime>=" + rToDate + " AND wcID in (select iD from wcmaster where VIStage=2 and processID=9) and status in (21,22)";
+                        myConnection.comm.CommandText = "select wcID, curingRecipeID, status, defectStatusID As defectID from VInspectionPCR where ((dtandTime>=" + rToDate + " AND wcID in (select iD from wcmaster where processID=9) and status in (51,52,53,54)"; // VIStage=2 and
                         myConnection.reader = myConnection.comm.ExecuteReader();
                         dt_vi.Load(myConnection.reader);
 
@@ -329,10 +329,14 @@ namespace SmartMIS.Report
             }
             else
             {
-                if (FaultTypeDropDownList.SelectedValue == "REPAIR")
-                    status = 22;
+                if (FaultTypeDropDownList.SelectedValue == "PASS-1")
+                    status = 51;
+                if (FaultTypeDropDownList.SelectedValue == "PASS-2")
+                    status = 52;
                 if (FaultTypeDropDownList.SelectedValue == "BUFF")
-                    status = 21;
+                    status = 53;
+                if (FaultTypeDropDownList.SelectedValue == "HOLD")
+                    status = 54;
 
                 if (((DropDownList)sender).ID == "FaultTypeDropDownList")
                     FaultAreaDropDownList.SelectedIndex = 0;
@@ -387,10 +391,17 @@ namespace SmartMIS.Report
 
                 }
                 string defect_type = "";
-                if (status == 22)
-                    defect_type = "REPAIRFaultArea";
-                else if (status == 21)
+               
+
+                if (status == 51)
+                    defect_type = "PASS-1FaultArea";
+                else if (status == 52)
+                    defect_type = "PASS-2FaultArea";
+                else if (status == 53)
                     defect_type = "BUFFFaultArea";
+                else if (status == 54)
+                    defect_type = "HOLDFaultArea";
+
                 getdisplaytype = displayType.SelectedItem.ToString();
                 DataTable gridviewdt = new DataTable();
 
@@ -502,10 +513,14 @@ namespace SmartMIS.Report
                 getdisplaytype = displayType.SelectedItem.ToString();
                 DataTable gridviewdt = new DataTable();
                 string defect_type = "";
-                if (status == 22)
-                    defect_type = "Total_REPAIR";
-                else if (status == 21)
+                if (status == 51)
+                    defect_type = "Total_PASS-1";
+                else if (status == 52)
+                    defect_type = "Total_PASS-2";
+                else if (status == 53)
                     defect_type = "Total_BUFF";
+                else if (status == 54)
+                    defect_type = "Total_HOLD";
                 
                 gridviewdt.Columns.Add("TyreType", typeof(string));
                 gridviewdt.Columns.Add("Total_checked", typeof(string));
@@ -663,9 +678,11 @@ namespace SmartMIS.Report
                 DataTable gridviewdt = new DataTable();
                 DataRow drt;
                 gridviewdt.Columns.Add("curingRecipeName", typeof(string));
-                gridviewdt.Columns.Add("TotalChecked", typeof(string));              
+                gridviewdt.Columns.Add("TotalChecked", typeof(string));
+                gridviewdt.Columns.Add("TotalPASS-1", typeof(string));
+                gridviewdt.Columns.Add("TotalPASS-2", typeof(string));
                 gridviewdt.Columns.Add("TotalBUFF", typeof(string));
-                gridviewdt.Columns.Add("TotalREPAIR", typeof(string));
+                gridviewdt.Columns.Add("TotalHOLD", typeof(string));
 
                 //createGridView(gridviewdt);
 
@@ -694,22 +711,28 @@ namespace SmartMIS.Report
                             if (data.Count() != 0)
                             {
                                 totalcheckedcount += data.Count();
-                                reworkcount += data.Count(d => d.status == 22);
-                               buffcount+= data.Count(d => d.status == 21);
+                                pass1count += data.Count(d => d.status == 51);
+                                pass2count+= data.Count(d => d.status == 52);
+                                buffcount += data.Count(d => d.status == 53);
+                                holdcoun += data.Count(d => d.status == 54);
 
                                 dr[0] = data[0].description;
                                 dr[1] = data.Count();
-                                dr[2] = data.Count(d => d.status == 21);
-                                dr[3] = data.Count(d => d.status == 22);
+                                dr[2] = data.Count(d => d.status == 51);
+                                dr[3] = data.Count(d => d.status == 52);
+                                dr[4] = data.Count(d => d.status == 53);
+                                dr[5] = data.Count(d => d.status == 54);
                             }
                             gridviewdt.Rows.Add(dr);
 
                         }
                         drt = gridviewdt.NewRow();
-                        drt[0] = "Total";
+                        drt[0] = "TOTAL";
                         drt[1] = totalcheckedcount;
-                        drt[2] = buffcount;
-                        drt[3] = reworkcount;
+                        drt[2] = pass1count;
+                        drt[3] = pass2count;
+                        drt[4] = buffcount;
+                        drt[5] = holdcoun;
                      
                         gridviewdt.Rows.Add(drt);
                         break;
@@ -725,23 +748,28 @@ namespace SmartMIS.Report
                             }).ToArray();
 
                             totalcheckedcount += data.Count();
-                          
-                            reworkcount += data.Count(d => d.status == 22);
-                            buffcount += data.Count(d => d.status == 21);
+
+                            pass1count += data.Count(d => d.status == 51);
+                            pass2count += data.Count(d => d.status == 52);
+                            buffcount += data.Count(d => d.status == 53);
+                            holdcoun += data.Count(d => d.status == 54);
 
                             dr[0] = data[0].description;
                             dr[1] = data.Count();
-                            dr[2] = (data.Count(d => d.status == 21) * 100 / Convert.ToInt32(dr[1])) + "%";
-                            dr[3] = (data.Count(d => d.status == 22) * 100 / Convert.ToInt32(dr[1])) + "%";
-                        
+                            dr[2] = (data.Count(d => d.status == 51) * 100 / Convert.ToInt32(dr[1])) + "%";
+                            dr[3] = (data.Count(d => d.status == 52) * 100 / Convert.ToInt32(dr[1])) + "%";
+                            dr[4] = (data.Count(d => d.status == 53) * 100 / Convert.ToInt32(dr[1])) + "%";
+                            dr[5] = (data.Count(d => d.status == 54) * 100 / Convert.ToInt32(dr[1])) + "%";
 
                             gridviewdt.Rows.Add(dr);
                         }
                         drt = gridviewdt.NewRow();
-                        drt[0] = "Total";
+                        drt[0] = "TOTAL";
                         drt[1] = totalcheckedcount;
-                        drt[2] = (buffcount * 100 / totalcheckedcount) + "%";
-                        drt[3] = (reworkcount * 100 / totalcheckedcount) + "%";
+                        drt[2] = (pass1count * 100 / totalcheckedcount) + "%";
+                        drt[3] = (pass2count * 100 / totalcheckedcount) + "%";
+                        drt[4] = (buffcount * 100 / totalcheckedcount) + "%";
+                        drt[5] = (holdcoun * 100 / totalcheckedcount) + "%";
                         gridviewdt.Rows.Add(drt);
                         break;
                 }
@@ -776,20 +804,34 @@ namespace SmartMIS.Report
         }
         protected void VIRecipeWiseTotalMinor_Click(object sender, EventArgs e)
         {
-            if (((LinkButton)sender).ID == "VIRecipeWiseTotaBUFFLink")
+            if (((LinkButton)sender).ID == "VIRecipeWisePASS1")
             {
                 GridViewRow gridViewRow = (GridViewRow)((DataControlFieldCell)((LinkButton)sender).Parent).Parent;
                 string recipeCode = (((Label)gridViewRow.Cells[1].FindControl("VISizeWiseTyreTypeLabel")).Text);
                 // hide by sarita
                 //fillBarCodeDetailGridView(recipeCode.ToString(), "23");
-                fillBarCodeDetailGridView(recipeCode.ToString(),"21");
+                fillBarCodeDetailGridView(recipeCode.ToString(),"51");
             }
-           else if (((LinkButton)sender).ID == "VIRecipeWiseREPAIR")
+            else if (((LinkButton)sender).ID == "VIRecipeWisePASS2")
             {
                 GridViewRow gridViewRow = (GridViewRow)((DataControlFieldCell)((LinkButton)sender).Parent).Parent;
                 string recipeCode = (((Label)gridViewRow.Cells[1].FindControl("VISizeWiseTyreTypeLabel")).Text);
 
-                fillBarCodeDetailGridView(recipeCode.ToString(), "22");
+                fillBarCodeDetailGridView(recipeCode.ToString(), "52");
+            }
+            else if (((LinkButton)sender).ID == "VIRecipeWiseBUFF")
+            {
+                GridViewRow gridViewRow = (GridViewRow)((DataControlFieldCell)((LinkButton)sender).Parent).Parent;
+                string recipeCode = (((Label)gridViewRow.Cells[1].FindControl("VISizeWiseTyreTypeLabel")).Text);
+
+                fillBarCodeDetailGridView(recipeCode.ToString(), "53");
+            }
+            else if (((LinkButton)sender).ID == "VIRecipeWiseToHOLD")
+            {
+                GridViewRow gridViewRow = (GridViewRow)((DataControlFieldCell)((LinkButton)sender).Parent).Parent;
+                string recipeCode = (((Label)gridViewRow.Cells[1].FindControl("VISizeWiseTyreTypeLabel")).Text);
+
+                fillBarCodeDetailGridView(recipeCode.ToString(), "54");
             }
             else if (((LinkButton)sender).ID == "VIRecipeWiseNotOkTotal")
             {
@@ -1001,10 +1043,14 @@ namespace SmartMIS.Report
         protected void displayType_SelectedIndexChanged(object sender, EventArgs e)
         {
             getdisplaytype = displayType.SelectedItem.ToString();
-            if (FaultTypeDropDownList.SelectedValue == "REPAIR")
-                status = 32;
+            if (FaultTypeDropDownList.SelectedValue == "PASS-1")
+                status = 51;
+            if (FaultTypeDropDownList.SelectedValue == "PASS-2")
+                status = 52;
             if (FaultTypeDropDownList.SelectedValue == "BUFF")
-                status = 33;
+                status = 53;
+            if (FaultTypeDropDownList.SelectedValue == "HOLD")
+                status = 54;
 
             if (((DropDownList)sender).ID == "FaultTypeDropDownList")
                 FaultAreaDropDownList.SelectedIndex = 0;
@@ -1072,7 +1118,7 @@ namespace SmartMIS.Report
                     convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8), dtandTime, 108) <= '22:59:59.999' 
                     THEN 'B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999')
                     or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'C' END),firstname as InspectorName,convert(char(10), dtandTime, 105) AS VIDate, convert(char(8), dtandTime, 108) AS VITime
-                    from vvisualInspectionPCR where  wcID in (select iD from wcmaster where vistage=2 and processID=9) AND dtandTime>='" + from_date + "' AND dtandTime<'" + to_date + "' order by viTime asc";
+                    from vvisualInspectionPCR where  wcID in (select iD from wcmaster where vistage=2 and processID=9) and status in (51,52,53,54) AND dtandTime>='" + from_date + "' AND dtandTime<'" + to_date + "' order by viTime asc";
                     myConnection.reader = myConnection.comm.ExecuteReader(CommandBehavior.CloseConnection);
                     dt.Load(myConnection.reader);
                     myConnection.conn.Close();
@@ -1126,7 +1172,7 @@ namespace SmartMIS.Report
                                   from r0w4 in t.DefaultIfEmpty()
                                   select new string[] { serial_number++.ToString()}
                                   .Concat(r0w1.ItemArray.Concat
-                                  (r0w2 != null ? r0w2.ItemArray.Skip(1) : new object[] { "", "", "", "" })
+                                  (r0w2 != null ? r0w2.ItemArray.Skip(1) : new object[] { "", "", "", "","" })
                                   .Concat(r0w3 != null ? r0w3.ItemArray.Skip(1) : new object[] { "", "", "", "", "", "", "" })).
                                   Concat(r0w4 != null ? r0w4.ItemArray.Skip(1) : new object[] { ""}).ToArray();
 
@@ -1141,7 +1187,7 @@ namespace SmartMIS.Report
                         Response.ClearHeaders();
                         Response.ClearContent();
                         Response.Buffer = true;
-                        Response.AddHeader("content-disposition", "attachment;filename=SecodPCRVisualInspectionReport.xls");
+                        Response.AddHeader("content-disposition", "attachment;filename=PCRMinorReport.xls");
                         Response.ContentType = "application/vnd.ms-excel";
 
                         StringWriter stringWrite = new StringWriter();

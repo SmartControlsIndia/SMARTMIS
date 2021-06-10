@@ -1,6 +1,33 @@
 <%@ Page Title="" Language="C#" MasterPageFile="~/smartMISMaster.Master" AutoEventWireup="true" CodeBehind="PCRInspectionsummaryReport.aspx.cs" Inherits="SmartMIS.Report.PCRInspectionsummaryReport" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="masterContentPlaceHolder" runat="server">
-    <style>
+    <style type="text/css">
+        
+        table.TBMTable th {
+    background-color: #15497C !important;
+    background: -moz-linear-gradient(top, #E8EDFF, #C3DDE0)!important;
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#15497C), to(#15497C))!important;
+    border: solid 1px #A9C6C9;
+    font-family: Verdana;
+    font-size: 12px;
+    padding: 5px;
+    color: white;
+        }
+        
+        
+        
+        table.TBMTable td {
+    background-color: #15497C;
+    background: -moz-linear-gradient(top, #E8EDFF, #E8EDFF);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#E8EDFF), to(#E8EDFF));
+    border: solid 1px #A9C6C9;
+    font-family: Verdana;
+    font-size: 12px;
+    color: #333333;
+    padding: 2px;
+    text-align: center;
+}
+        
+        
         .durationclass
     {
         display:none;
@@ -329,6 +356,9 @@
                    <asp:ListItem Text="2016">2016</asp:ListItem>
                    <asp:ListItem Text="2017">2017</asp:ListItem>
                    <asp:ListItem Text="2018">2018</asp:ListItem>
+                    <asp:ListItem Text="2019">2019</asp:ListItem>
+                     <asp:ListItem Text="2020">2020</asp:ListItem>
+                      <asp:ListItem Text="2021">2021</asp:ListItem>
              </asp:DropDownList> 
                              </td>
                              
@@ -356,6 +386,9 @@
                    <asp:ListItem Text="2016">2016</asp:ListItem>
                    <asp:ListItem Text="2017">2017</asp:ListItem>
                    <asp:ListItem Text="2018">2018</asp:ListItem>
+                    <asp:ListItem Text="2019">2019</asp:ListItem>
+                     <asp:ListItem Text="2020">2020</asp:ListItem>
+                      <asp:ListItem Text="2021">2021</asp:ListItem>
              </asp:DropDownList> 
              
                              </td>
@@ -419,8 +452,7 @@
         HeaderStyle-HorizontalAlign="Center" EmptyDataRowStyle-BackColor="Gray" 
             ShowHeader="true"  EmptyDataRowStyle-Width="100%" EmptyDataRowStyle-HorizontalAlign="Center"
               Width="100%" EmptyDataText="No Records Found"
-            ShowFooter="false"  
-       >
+            ShowFooter="false">
      <Columns>
             
                                 </Columns>

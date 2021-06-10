@@ -473,14 +473,7 @@ namespace SmartMIS.Report
                 foreach (var arr in head_array)
                 gridviewdt.Columns.Add(arr, typeof(string));
                 createGridView(gridviewdt, ExcelGridView);
-                string query = @"select wcname AS visualWCName, description AS TyreSize, gtbarCode AS BarCode,
-                    defectStatusName AS Status, remarks,
-                    shift=(CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND 
-                    convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'A' WHEN 
-                    convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8), dtandTime, 108) <= '22:59:59.999' 
-                    THEN 'B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999')
-                    or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'C' END),firstname as InspectorName,
-                     ssORnss=(CASE WHEN ssORnss='1' THEN 'ss' WHEN ssORnss='2' THEN 'nss' WHEN ssORnss='0' THEN '' END),convert(char(10), dtandTime, 103) AS VIDate, convert(char(8), dtandTime, 108) AS VITime from vTBRVisualInspectionReport where  wcID in (select iD from wcmaster where vistage=2 and processID=6) AND dtandTime>='" + rToDate + "' AND dtandTime<'" + rFromDate + "'  order by dtandtime asc";
+                string query = @"select wcname AS visualWCName, description AS TyreSize, gtbarCode AS BarCode,Status =(CASE WHEN DefectStatusN='OTHER' THEN defectStatusName WHEN DefectStatusN='BUFF' THEN DefectStatusN+'-'+defectStatusName WHEN DefectStatusN='REPAIR' THEN DefectStatusN+'-'+defectStatusName WHEN DefectStatusN='CAMOFLAUGE' THEN DefectStatusN+'-'+defectStatusName  END), remarks,shift=(CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'A' WHEN convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8), dtandTime, 108) <= '22:59:59.999' THEN 'B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999') or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'C' END),firstname as InspectorName, ssORnss=(CASE WHEN ssORnss='1' THEN 'ss' WHEN ssORnss='2' THEN 'nss' WHEN ssORnss='0' THEN '' END),convert(char(10), dtandTime, 103) AS VIDate, convert(char(8), dtandTime, 108) AS VITime from vTBRVisualInspectionReportNeww where  wcID in (select iD from wcmaster where vistage=2 and processID=6) AND dtandTime>='" + rToDate + "' AND dtandTime<'" + rFromDate + "'  order by dtandtime asc";
 
 
                 myConnection.open(ConnectionOption.SQL);

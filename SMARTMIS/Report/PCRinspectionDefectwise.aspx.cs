@@ -119,7 +119,72 @@ namespace SmartMIS.Report
             ddlRecipe.DataBind();
         }
 
-        
+        protected void FillddlFault(object sender, EventArgs e)
+        {
+            string cat = ddlCategory.SelectedItem.Text;
+            if (cat == "Major")
+            {
+                //Create DataTable this can be from database also.
+                DataTable dtName = new DataTable();
+
+                //Add Columns to Table
+                dtName.Columns.Add(new DataColumn("DisplayMember"));
+                dtName.Columns.Add(new DataColumn("ValueMember"));
+
+                //Now Add Values
+                dtName.Rows.Add("Select", "0");
+                dtName.Rows.Add("Erratic Hold", "55");
+                dtName.Rows.Add("Major Hold", "56");
+                dtName.Rows.Add("Pass-3", "57");
+               // dtName.Rows.Add("Pass-4", "58");
+                
+
+                //At Last Bind datatable to dropdown.
+                ddlFault.DataSource = dtName;
+                ddlFault.DataTextField = dtName.Columns["DisplayMember"].ToString();
+                ddlFault.DataValueField = dtName.Columns["ValueMember"].ToString();
+                ddlFault.DataBind();
+            
+            }
+            else if (cat == "Minor")
+            {
+                //Create DataTable this can be from database also.
+                DataTable dtName = new DataTable();
+
+                //Add Columns to Table
+                dtName.Columns.Add(new DataColumn("DisplayMember"));
+                dtName.Columns.Add(new DataColumn("ValueMember"));
+
+                //Now Add Values
+                dtName.Rows.Add("Select", "0");
+                dtName.Rows.Add("Pass-1", "51");
+                dtName.Rows.Add("Pass-2", "52");
+                dtName.Rows.Add("Buff", "53");
+                dtName.Rows.Add("Hold", "54");
+
+
+                //At Last Bind datatable to dropdown.
+                ddlFault.DataSource = dtName;
+                ddlFault.DataTextField = dtName.Columns["DisplayMember"].ToString();
+                ddlFault.DataValueField = dtName.Columns["ValueMember"].ToString();
+                ddlFault.DataBind();
+
+            }
+            else {
+                //Create DataTable this can be from database also.
+                DataTable dtName = new DataTable();
+
+                //Add Columns to Table
+                dtName.Columns.Add(new DataColumn("DisplayMember"));
+                dtName.Columns.Add(new DataColumn("ValueMember"));
+
+                //At Last Bind datatable to dropdown.
+                ddlFault.DataSource = dtName;
+                ddlFault.DataTextField = dtName.Columns["DisplayMember"].ToString();
+                ddlFault.DataValueField = dtName.Columns["ValueMember"].ToString();
+                ddlFault.DataBind();
+            }
+        }
 
         
         private void showReportWcWise(string fromDate, string toDate, string type)
@@ -145,9 +210,9 @@ namespace SmartMIS.Report
                         ShowWarning.Text = "<table style=\"padding:4px;\"><tr><td width=20%><img src='../images/exclamation.png' height=\"30\" /></td><td width=80%><strong> <font color=#9F6000>You cannot select more  than 1 month!!!</font></strong></td></tr></table>";
                     }
                 gridviewdt.Columns.Add("WcName", typeof(string));
-                gridviewdt.Columns.Add("SizeName", typeof(string));
-                gridviewdt.Columns.Add("No.Inspected", typeof(string));
-                gridviewdt.Columns.Add("DefectCount", typeof(string));
+                gridviewdt.Columns.Add("Size Name", typeof(string));
+                gridviewdt.Columns.Add("No.of Inspected", typeof(string));
+                gridviewdt.Columns.Add("Defect Count", typeof(string));
                // gridviewdt.Columns.Add("Percentage", typeof(string));
 
                 myConnection.open(ConnectionOption.SQL);
@@ -170,36 +235,37 @@ namespace SmartMIS.Report
                 if (ddlFault.SelectedItem.Text != "Select")
                 {
                     int category = 0; int category1 = 0; int category2 = 0;
-                    if (ddlFault.SelectedItem.Text == "Buff" && ddlCategory.SelectedItem.Text == "Minor")
-                    { 
-                        category = 21;
-                        category1 = 2;
-                    }
-                    else  if (ddlFault.SelectedItem.Text == "Buff" && ddlCategory.SelectedItem.Text == "Major")
-                    {
-                        category = 32;//null
-                        category1 = 2;
-                    }
-                    else if (ddlFault.SelectedItem.Text == "Scrap" && ddlCategory.SelectedItem.Text == "Minor")
-                    {
-                        category = 23;//null
-                        category1 = 3;
-                    }
-                    else if (ddlFault.SelectedItem.Text == "Scrap" && ddlCategory.SelectedItem.Text == "Major")
-                    {
-                        category = 33;
-                        category1 = 3;
-                    }
-                    else if (ddlFault.SelectedItem.Text == "OK" && ddlCategory.SelectedItem.Text=="Minor")
-                    {
-                        category = 2;
-                        category1 = 3;
-                    }
-                    else if (ddlFault.SelectedItem.Text == "OK" && ddlCategory.SelectedItem.Text == "Major")
-                    {
-                        category = 31;
-                        category1 = 3;
-                    }
+                    //if (ddlFault.SelectedItem.Text == "Buff" && ddlCategory.SelectedItem.Text == "Minor")
+                    //{ 
+                    //    category = 21;
+                    //    category1 = 2;
+                    //}
+                    //else  if (ddlFault.SelectedItem.Text == "Buff" && ddlCategory.SelectedItem.Text == "Major")
+                    //{
+                    //    category = 32;//null
+                    //    category1 = 2;
+                    //}
+                    //else if (ddlFault.SelectedItem.Text == "Scrap" && ddlCategory.SelectedItem.Text == "Minor")
+                    //{
+                    //    category = 23;//null
+                    //    category1 = 3;
+                    //}
+                    //else if (ddlFault.SelectedItem.Text == "Scrap" && ddlCategory.SelectedItem.Text == "Major")
+                    //{
+                    //    category = 33;
+                    //    category1 = 3;
+                    //}
+                    //else if (ddlFault.SelectedItem.Text == "OK" && ddlCategory.SelectedItem.Text=="Minor")
+                    //{
+                    //    category = 2;
+                    //    category1 = 3;
+                    //}
+                    //else if (ddlFault.SelectedItem.Text == "OK" && ddlCategory.SelectedItem.Text == "Major")
+                    //{
+                    //    category = 31;
+                    //    category1 = 3;
+                    //}
+                    category = Convert.ToInt32(ddlFault.SelectedValue.ToString());
                     var distinctdefectvalues = tbldt.AsEnumerable().Where(x => x.Field<int>("status") == category  )
                         .GroupBy(row => new
                         {
@@ -683,9 +749,9 @@ namespace SmartMIS.Report
                 durationQuery = "dtandtime>='" + fromDate + " 07:00:00' and dtandtime<'" + toDate + " 07:00:00'";
 
                
-                gridviewdt.Columns.Add("SizeName", typeof(string));
-                gridviewdt.Columns.Add("No.Inspected", typeof(string));
-                gridviewdt.Columns.Add("DefectCount", typeof(string));
+                gridviewdt.Columns.Add("Size Name", typeof(string));
+                gridviewdt.Columns.Add("No.Of Inspected", typeof(string));
+                gridviewdt.Columns.Add("Defect Count", typeof(string));
                 //gridviewdt.Columns.Add("Percentage", typeof(string));
 
 
@@ -711,36 +777,37 @@ namespace SmartMIS.Report
                 if (ddlFault.SelectedItem.Text != "Select")
                 {
                     int category = 0; int category1 = 0; int category2 = 0;
-                    if (ddlFault.SelectedItem.Text == "Buff" && ddlCategory.SelectedItem.Text == "Minor")
-                    {
-                        category = 21;
-                        category1 = 2;
-                    }
-                    else if (ddlFault.SelectedItem.Text == "Buff" && ddlCategory.SelectedItem.Text == "Major")
-                    {
-                        category = 32;//null
-                        category1 = 2;
-                    }
-                    else if (ddlFault.SelectedItem.Text == "Scrap" && ddlCategory.SelectedItem.Text == "Minor")
-                    {
-                        category = 23;//null
-                        category1 = 3;
-                    }
-                    else if (ddlFault.SelectedItem.Text == "Scrap" && ddlCategory.SelectedItem.Text == "Major")
-                    {
-                        category = 33;
-                        category1 = 3;
-                    }
-                    else if (ddlFault.SelectedItem.Text == "OK" && ddlCategory.SelectedItem.Text == "Minor")
-                    {
-                        category = 2;
-                        category1 = 3;
-                    }
-                    else if (ddlFault.SelectedItem.Text == "OK" && ddlCategory.SelectedItem.Text == "Major")
-                    {
-                        category = 31;
-                        category1 = 3;
-                    }
+                    //if (ddlFault.SelectedItem.Text == "Buff" && ddlCategory.SelectedItem.Text == "Minor")
+                    //{
+                    //    category = 21;
+                    //    category1 = 2;
+                    //}
+                    //else if (ddlFault.SelectedItem.Text == "Buff" && ddlCategory.SelectedItem.Text == "Major")
+                    //{
+                    //    category = 32;//null
+                    //    category1 = 2;
+                    //}
+                    //else if (ddlFault.SelectedItem.Text == "Scrap" && ddlCategory.SelectedItem.Text == "Minor")
+                    //{
+                    //    category = 23;//null
+                    //    category1 = 3;
+                    //}
+                    //else if (ddlFault.SelectedItem.Text == "Scrap" && ddlCategory.SelectedItem.Text == "Major")
+                    //{
+                    //    category = 33;
+                    //    category1 = 3;
+                    //}
+                    //else if (ddlFault.SelectedItem.Text == "OK" && ddlCategory.SelectedItem.Text == "Minor")
+                    //{
+                    //    category = 2;
+                    //    category1 = 3;
+                    //}
+                    //else if (ddlFault.SelectedItem.Text == "OK" && ddlCategory.SelectedItem.Text == "Major")
+                    //{
+                    //    category = 31;
+                    //    category1 = 3;
+                    //}
+                    category =Convert.ToInt32( ddlFault.SelectedValue.ToString());
                     var distinctdefectvalues = tbldt.AsEnumerable().Where(x => x.Field<int>("status") == category)
                         .GroupBy(row => new
                         {
@@ -1194,6 +1261,11 @@ namespace SmartMIS.Report
                     Label2.Visible = true;
                 }
                 else if (getType == "Select" && ddlCategory.SelectedItem.Text != "Select")
+                {
+                    Label2.Text = "Please Select all Fields";
+                    Label2.Visible = true;
+                }
+                else if (getType != "Select" && ddlCategory.SelectedItem.Text == "Select")
                 {
                     Label2.Text = "Please Select all Fields";
                     Label2.Visible = true;

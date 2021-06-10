@@ -392,7 +392,7 @@ namespace SmartMIS.Report
                                 totalcheckedcount += data.Count();
 
                                 okcount += data.Count(d => d.status == 1);
-                                NotOkCount += data.Count(d => d.status != 1);
+                                NotOkCount += data.Count(d => d.status == 4);
 
                                 reworkcount += data.Count(d => d.status == 2);
                                 ncmrcount += data.Count(d => d.status == 3);
@@ -402,7 +402,7 @@ namespace SmartMIS.Report
                                 dr[0] = data[0].description;
                                 dr[1] = data.Count();
                                 dr[2] = data.Count(d => d.status == 1);
-                                dr[3] = data.Count(d => d.status != 1);
+                                dr[3] = data.Count(d => d.status == 4); //data.Count(d => d.status != 1);
                                 dr[4] = data.Count(d => d.status == 2);
                                 dr[5] = data.Count(d => d.status == 3);
                                 dr[6] = data.Count(d => d.status == 1 && (d.gradeto == 1 || d.gradeto == 2));
@@ -436,7 +436,7 @@ namespace SmartMIS.Report
 
                             totalcheckedcount += data.Count();
                             okcount += data.Count(d => d.status == 1);
-                            NotOkCount += data.Count(d => d.status != 1);
+                            NotOkCount += data.Count(d => d.status == 4);  //downgrade
                             reworkcount += data.Count(d => d.status == 2);
                             ncmrcount += data.Count(d => d.status == 3);
                             oeCount += data.Count(d => d.status == 1 && (d.gradeto == 1 || d.gradeto == 2));
@@ -445,7 +445,7 @@ namespace SmartMIS.Report
                             dr[0] = data[0].description;
                             dr[1] = data.Count();
                             dr[2] = (data.Count(d => d.status == 1) * 100 / Convert.ToInt32(dr[1])) + "%";
-                            dr[3] = (data.Count(d => d.status != 1) * 100 / Convert.ToInt32(dr[1])) + "%";
+                            dr[3] = (data.Count(d => d.status == 4) * 100 / Convert.ToInt32(dr[1])) + "%";
                             dr[4] = (data.Count(d => d.status == 2) * 100 / Convert.ToInt32(dr[1])) + "%";
                             dr[5] = (data.Count(d => d.status == 3) * 100 / Convert.ToInt32(dr[1])) + "%";
                             dr[6] = ( data.Count(d => d.status == 1 && (d.gradeto == 1 || d.gradeto == 2)) * 100 / Convert.ToInt32(dr[1])) + "%";
@@ -510,6 +510,13 @@ namespace SmartMIS.Report
                 string recipeCode = (((Label)gridViewRow.Cells[1].FindControl("VISizeWiseTyreTypeLabel")).Text);
 
                 fillBarCodeDetailGridView(recipeCode.ToString(), "2");
+            }
+            else if (((LinkButton)sender).ID == "VIRecipeWiseTotalDownGradeLink")
+            {
+                GridViewRow gridViewRow = (GridViewRow)((DataControlFieldCell)((LinkButton)sender).Parent).Parent;
+                string recipeCode = (((Label)gridViewRow.Cells[1].FindControl("VISizeWiseTyreTypeLabel")).Text);
+
+                fillBarCodeDetailGridView(recipeCode.ToString(), "4");
             }
             else if (((LinkButton)sender).ID == "VIRecipeWiseNotOkTotal")
             {
