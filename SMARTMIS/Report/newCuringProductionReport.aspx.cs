@@ -80,7 +80,8 @@ namespace SmartMIS
 
             // Set Table to take data from i.e. TBR/PCR
             processType = (getProcess.ToString() == "Curing PCR") ? "processID = 8" : (getProcess == "Curing TBR" ? "processID = 5" : "");
-
+           // OldSQLTable = (getProcess.ToString() == "Curing PCR") ? "vTbmPCR16Jan2021" : (getProcess == "Tyre Building TBR" ? "vTbmTBR" : "");
+          
             // Check if WorkCenters has been selected!!
             if (wcIDList.Count > 0)
             {

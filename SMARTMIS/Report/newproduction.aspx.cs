@@ -33,7 +33,7 @@ namespace SmartMIS
 
         DataTable reportdt = new DataTable();
 
-        string SQLTable, day, month, year, wcIDInQuery = "(";
+        string OldSQLTable,SQLTable, day, month, year, wcIDInQuery = "(";
         string duration, getType, getOperator;
         DateTime fromDate, toDate; 
     
@@ -83,7 +83,7 @@ namespace SmartMIS
 
             // Set Table to take data from i.e. TBR/PCR
             SQLTable = (getProcess.ToString() == "Tyre Building PCR") ? "vTbmPCR" : (getProcess == "Tyre Building TBR" ? "vTbmTBR" : "");
-
+            OldSQLTable = (getProcess.ToString() == "Tyre Building PCR") ? "vTbmPCR16Jan2021" : (getProcess == "Tyre Building TBR" ? "vTbmTBR" : "");
             // Check if WorkCenters has been selected!!
             if (wcIDList.Count > 0)
             {
@@ -221,9 +221,7 @@ namespace SmartMIS
                 
                 myConnection.open(ConnectionOption.SQL);
                 myConnection.comm = myConnection.conn.CreateCommand();
-
-                myConnection.comm.CommandText = "if exists(select * from " + SQLTable + " where WCID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + ") select 1 as DataExists else select 0 as DataExists";
-              
+                myConnection.comm.CommandText = "if exists(select * from " + SQLTable + " where WCID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + ") select 1 as DataExists else select 0 as DataExists"; 
                 myConnection.comm.CommandTimeout = 0;
                 myConnection.reader = myConnection.comm.ExecuteReader();
                 myConnection.reader.Read();
@@ -233,12 +231,31 @@ namespace SmartMIS
                 myConnection.comm.Dispose();
                 myConnection.close(ConnectionOption.SQL);
 
+
+               
                 if(!flag)
                 {
-                    ErrorMsg.Visible = true;
-                    ErrorMsg.Text = "<table style=\"padding:4px;\"><tr><td width=20%><img src='../images/exclamation.png' height=\"30\" /></td><td width=70%><strong> <font color=#9F6000>No data available for this "+duration+"!!!</font></strong></td></tr></table>";
-                    ScriptManager.RegisterClientScriptBlock(ErrorMsg, this.GetType(), "myScript", "javascript:closePopup();", true);
-                    return false;
+                    if (SQLTable == "vTbmPCR")
+                    {
+                        myConnection.open(ConnectionOption.SQL);
+                        myConnection.comm = myConnection.conn.CreateCommand();
+                        myConnection.comm.CommandText = "if exists(select * from " + OldSQLTable + " where WCID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + ") select 1 as DataExists else select 0 as DataExists";
+                        myConnection.comm.CommandTimeout = 0;
+                        myConnection.reader = myConnection.comm.ExecuteReader();
+                        myConnection.reader.Read();
+                        flag = Convert.ToBoolean(myConnection.reader[0]);
+
+                        myConnection.reader.Close();
+                        myConnection.comm.Dispose();
+                        myConnection.close(ConnectionOption.SQL);
+                    }
+                    if (!flag)
+                    {
+                        ErrorMsg.Visible = true;
+                        ErrorMsg.Text = "<table style=\"padding:4px;\"><tr><td width=20%><img src='../images/exclamation.png' height=\"30\" /></td><td width=70%><strong> <font color=#9F6000>No data available for this " + duration + "!!!</font></strong></td></tr></table>";
+                        ScriptManager.RegisterClientScriptBlock(ErrorMsg, this.GetType(), "myScript", "javascript:closePopup();", true);
+                        return false;
+                    }  
                 }
                
             }
@@ -276,20 +293,32 @@ namespace SmartMIS
                 myConnection.open(ConnectionOption.SQL);
                 myConnection.comm = myConnection.conn.CreateCommand();
 
-               // myConnection.comm.CommandText = "Select wcName, recipeCode,SAPMaterialCode, dtandTime from " + SQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + "AND " + durationQuery + " ORDER BY wcID, recipeCode, dtandTime";
-                myConnection.comm.CommandText = @" SELECT * FROM (
-                SELECT  wcID,wcName, recipeCode,SAPMaterialCode, dtandTime,
-                        ROW_NUMBER() OVER(PARTITION BY gtbarCode ORDER BY recipeCode) rn
+                  myConnection.comm.CommandText = @" SELECT * FROM ( SELECT  wcID,wcName, recipeCode,SAPMaterialCode, dtandTime, ROW_NUMBER() OVER(PARTITION BY gtbarCode ORDER BY recipeCode) rn
                     FROM " + SQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + "AND " + durationQuery + "   ) a WHERE rn = 1 ORDER BY wcID, recipeCode, dtandTime";
-                myWebService.writeLogs(myConnection.comm.CommandText, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
-           
+               
                 myConnection.reader = myConnection.comm.ExecuteReader();
                 wcdt.Load(myConnection.reader);
-
                 myConnection.reader.Close();
                 myConnection.comm.Dispose();
                 myConnection.close(ConnectionOption.SQL);
 
+
+                if (!(wcdt.Rows.Count > 0))
+                {
+                    // Get the Data based on WCName
+                    myConnection.open(ConnectionOption.SQL);
+                    myConnection.comm = myConnection.conn.CreateCommand();
+
+                    myConnection.comm.CommandText = @" SELECT * FROM ( SELECT  wcID,wcName, recipeCode,SAPMaterialCode, dtandTime, ROW_NUMBER() OVER(PARTITION BY gtbarCode ORDER BY recipeCode) rn
+                    FROM " + OldSQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + "AND " + durationQuery + "   ) a WHERE rn = 1 ORDER BY wcID, recipeCode, dtandTime";
+
+                    myConnection.reader = myConnection.comm.ExecuteReader();
+                    wcdt.Load(myConnection.reader);
+                    myConnection.reader.Close();
+                    myConnection.comm.Dispose();
+                    myConnection.close(ConnectionOption.SQL);
+                
+                }
 
                 wcdt.Columns.Remove("wcID");
                 wcdt.Columns.Remove("rn");
@@ -556,19 +585,31 @@ namespace SmartMIS
                 // Get the Data based on WCName
                 myConnection.open(ConnectionOption.SQL);
                 myConnection.comm = myConnection.conn.CreateCommand();
-
-                //myConnection.comm.CommandText = "Select recipeCode, SAPMaterialCode,dtandTime from " + SQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " ORDER BY recipeCode, dtandTime";
-                myConnection.comm.CommandText = @"SELECT * FROM (
-                SELECT  recipeCode, SAPMaterialCode,dtandTime,
-                        ROW_NUMBER() OVER(PARTITION BY gtbarCode ORDER BY wcName DESC) rn
+                 myConnection.comm.CommandText = @"SELECT * FROM ( SELECT  recipeCode, SAPMaterialCode,dtandTime, ROW_NUMBER() OVER(PARTITION BY gtbarCode ORDER BY wcName DESC) rn
                     FROM " + SQLTable + " WHERE  wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " ) a WHERE rn = 1 ORDER BY recipeCode, dtandTime";
                 
                 myConnection.reader = myConnection.comm.ExecuteReader();
                 wcdt.Load(myConnection.reader);
-
                 myConnection.reader.Close();
                 myConnection.comm.Dispose();
                 myConnection.close(ConnectionOption.SQL);
+
+                if (!(wcdt.Rows.Count > 0))
+                {
+                    // Get the Data based on WCName
+                    myConnection.open(ConnectionOption.SQL);
+                    myConnection.comm = myConnection.conn.CreateCommand();
+                    myConnection.comm.CommandText = @"SELECT * FROM ( SELECT  recipeCode, SAPMaterialCode,dtandTime, ROW_NUMBER() OVER(PARTITION BY gtbarCode ORDER BY wcName DESC) rn
+                    FROM " + OldSQLTable + " WHERE  wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " ) a WHERE rn = 1 ORDER BY recipeCode, dtandTime";
+
+                    myConnection.reader = myConnection.comm.ExecuteReader();
+                    wcdt.Load(myConnection.reader);
+                    myConnection.reader.Close();
+                    myConnection.comm.Dispose();
+                    myConnection.close(ConnectionOption.SQL);
+                
+                }
+               
                                 
                 var query = wcdt.AsEnumerable()
     .GroupBy(row => new
@@ -826,10 +867,8 @@ namespace SmartMIS
                 else
                 {
                     //myConnection.comm.CommandText = "Select (select sapCode from manningMaster where iD= manningID) as manningID, isnull( (select sapCode from manningMaster where iD= manningID2),'unknown') as manningID2,  isnull( (select sapCode from manningMaster where iD= manningID3),'unknown') as manningID3,   dtandTime,wcName from " + SQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + "  ORDER BY wcName,manningID, manningID2, manningID3, dtandTime asc";
-                    myConnection.comm.CommandText = @" SELECT *
-  FROM (  Select (select sapCode from manningMaster where iD= manningID) as manningID, isnull( (select sapCode from manningMaster where iD= manningID2),'unknown') as manningID2,  isnull( (select sapCode from manningMaster where iD= manningID3),'unknown') as manningID3,   dtandTime,wcName,
-   ROW_NUMBER() OVER(PARTITION BY gtbarCode  ORDER BY recipeCode) rn
-   from " + SQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + "   ) a WHERE rn = 1 ORDER BY wcName,manningID, manningID2, manningID3, dtandTime asc ";
+                    myConnection.comm.CommandText = @" SELECT * FROM (  Select (select sapCode from manningMaster where iD= manningID) as manningID, isnull( (select sapCode from manningMaster where iD= manningID2),'unknown') as manningID2,  isnull( (select sapCode from manningMaster where iD= manningID3),'unknown') as manningID3,   dtandTime,wcName,
+                    ROW_NUMBER() OVER(PARTITION BY gtbarCode  ORDER BY recipeCode) rn from " + SQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + "   ) a WHERE rn = 1 ORDER BY wcName,manningID, manningID2, manningID3, dtandTime asc ";
                 }
                 myConnection.reader = myConnection.comm.ExecuteReader();
                 wcdt.Load(myConnection.reader);
@@ -837,6 +876,34 @@ namespace SmartMIS
                 myConnection.reader.Close();
                 myConnection.comm.Dispose();
                 myConnection.close(ConnectionOption.SQL);
+
+                if (!(wcdt.Rows.Count > 0))
+                {
+                    // Get the Data based on WCName
+                    myConnection.open(ConnectionOption.SQL);
+                    myConnection.comm = myConnection.conn.CreateCommand();
+                    if (getOperator != "All")
+                    {
+                        // myConnection.comm.CommandText = "select " + SQLTable + ".wcName,dtandtime,mm.sapCode from " + SQLTable + "  inner join manningmaster mm on " + SQLTable + ".manningID2 = mm.iD  or " + SQLTable + ".manningID3 = mm.iD or " + SQLTable + ".manningID = mm.iD WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " and mm.sapcode = '" + getOperator + "'  ORDER BY wcName ,dtandTime asc";
+                        myConnection.comm.CommandText = @"SELECT * FROM ( select " + OldSQLTable + ".wcName,dtandtime,mm.sapCode,   ROW_NUMBER() OVER(PARTITION BY gtbarCode  ORDER BY recipeCode) rn from " + OldSQLTable + "  inner join manningmaster mm on " + OldSQLTable + ".manningID2 = mm.iD  or " + OldSQLTable + ".manningID3 = mm.iD or " + OldSQLTable + ".manningID = mm.iD WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " and mm.sapcode = '" + getOperator + "' )a where rn=1  ORDER BY wcName ,dtandTime asc";
+                    }
+                    else
+                    {
+                        //myConnection.comm.CommandText = "Select (select sapCode from manningMaster where iD= manningID) as manningID, isnull( (select sapCode from manningMaster where iD= manningID2),'unknown') as manningID2,  isnull( (select sapCode from manningMaster where iD= manningID3),'unknown') as manningID3,   dtandTime,wcName from " + SQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + "  ORDER BY wcName,manningID, manningID2, manningID3, dtandTime asc";
+                        myConnection.comm.CommandText = @" SELECT * FROM (  Select (select sapCode from manningMaster where iD= manningID) as manningID, isnull( (select sapCode from manningMaster where iD= manningID2),'unknown') as manningID2,  isnull( (select sapCode from manningMaster where iD= manningID3),'unknown') as manningID3,   dtandTime,wcName,
+                        ROW_NUMBER() OVER(PARTITION BY gtbarCode  ORDER BY recipeCode) rn from " + OldSQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + "   ) a WHERE rn = 1 ORDER BY wcName,manningID, manningID2, manningID3, dtandTime asc ";
+                    }
+                    myConnection.reader = myConnection.comm.ExecuteReader();
+                    wcdt.Load(myConnection.reader);
+
+                    myConnection.reader.Close();
+                    myConnection.comm.Dispose();
+                    myConnection.close(ConnectionOption.SQL);
+                
+                
+                }
+
+
 
                 // Get the Data based on ManningID
                 myConnection.open(ConnectionOption.SQL);
@@ -1287,9 +1354,7 @@ namespace SmartMIS
                 myConnection.comm = myConnection.conn.CreateCommand();
 
                // myConnection.comm.CommandText = "Select wcName, recipeCode,SAPMaterialCode, dtandTime from " + SQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + "AND " + durationQuery + " ORDER BY wcID, recipeCode, dtandTime asc";
-                myConnection.comm.CommandText = @" SELECT * FROM (
-                SELECT  wcID,wcName, recipeCode,SAPMaterialCode, dtandTime,
-                        ROW_NUMBER() OVER(PARTITION BY gtbarCode ORDER BY recipeCode) rn
+                myConnection.comm.CommandText = @" SELECT * FROM ( SELECT  wcID,wcName, recipeCode,SAPMaterialCode, dtandTime, ROW_NUMBER() OVER(PARTITION BY gtbarCode ORDER BY recipeCode) rn
                     FROM " + SQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + "AND " + durationQuery + "   ) a WHERE rn = 1 ORDER BY wcID, recipeCode, dtandTime asc";
                
                 myConnection.reader = myConnection.comm.ExecuteReader();
@@ -1299,6 +1364,23 @@ namespace SmartMIS
                 myConnection.comm.Dispose();
                 myConnection.close(ConnectionOption.SQL);
 
+
+                if (!(dt.Rows.Count > 0))
+                {
+                    myConnection.open(ConnectionOption.SQL);
+                    myConnection.comm = myConnection.conn.CreateCommand();
+
+                    // myConnection.comm.CommandText = "Select wcName, recipeCode,SAPMaterialCode, dtandTime from " + SQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + "AND " + durationQuery + " ORDER BY wcID, recipeCode, dtandTime asc";
+                    myConnection.comm.CommandText = @" SELECT * FROM ( SELECT  wcID,wcName, recipeCode,SAPMaterialCode, dtandTime, ROW_NUMBER() OVER(PARTITION BY gtbarCode ORDER BY recipeCode) rn
+                    FROM " + OldSQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + "AND " + durationQuery + "   ) a WHERE rn = 1 ORDER BY wcID, recipeCode, dtandTime asc";
+
+                    myConnection.reader = myConnection.comm.ExecuteReader();
+                    dt.Load(myConnection.reader);
+                    myConnection.reader.Close();
+                    myConnection.comm.Dispose();
+                    myConnection.close(ConnectionOption.SQL);
+               
+                }
 
                 dt.Columns.Remove("wcID");
                 dt.Columns.Remove("rn");
@@ -1508,9 +1590,7 @@ namespace SmartMIS
                 myConnection.comm = myConnection.conn.CreateCommand();
 
                 ///myConnection.comm.CommandText = "Select wcName, recipeCode, SAPMaterialCode,dtandTime from " + SQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + "AND " + durationQuery + " ORDER BY wcID, recipeCode, dtandTime asc";
-                myConnection.comm.CommandText = @"SELECT * FROM (
-               SELECT  wcID,recipeCode, SAPMaterialCode,dtandTime,
-                 ROW_NUMBER() OVER(PARTITION BY gtbarCode ORDER BY wcName asc) rn
+                myConnection.comm.CommandText = @"SELECT * FROM ( SELECT  wcID,recipeCode, SAPMaterialCode,dtandTime, ROW_NUMBER() OVER(PARTITION BY gtbarCode ORDER BY wcName asc) rn
                   FROM " + SQLTable + " WHERE  wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " ) a WHERE rn = 1 ORDER BY wcID,recipeCode, dtandTime asc";
                 myConnection.comm.CommandTimeout = 60;
                 
@@ -1520,6 +1600,27 @@ namespace SmartMIS
                 myConnection.reader.Close();
                 myConnection.comm.Dispose();
                 myConnection.close(ConnectionOption.SQL);
+
+                if (!(dt.Rows.Count > 0))
+                {
+                    myConnection.open(ConnectionOption.SQL);
+                    myConnection.comm = myConnection.conn.CreateCommand();
+
+                    ///myConnection.comm.CommandText = "Select wcName, recipeCode, SAPMaterialCode,dtandTime from " + SQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + "AND " + durationQuery + " ORDER BY wcID, recipeCode, dtandTime asc";
+                    myConnection.comm.CommandText = @"SELECT * FROM ( SELECT  wcID,recipeCode, SAPMaterialCode,dtandTime, ROW_NUMBER() OVER(PARTITION BY gtbarCode ORDER BY wcName asc) rn
+                  FROM " + OldSQLTable + " WHERE  wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " ) a WHERE rn = 1 ORDER BY wcID,recipeCode, dtandTime asc";
+                    myConnection.comm.CommandTimeout = 60;
+
+                    myConnection.reader = myConnection.comm.ExecuteReader();
+                    dt.Load(myConnection.reader);
+
+                    myConnection.reader.Close();
+                    myConnection.comm.Dispose();
+                    myConnection.close(ConnectionOption.SQL);        
+                
+                }
+
+
 
                 var query = dt.AsEnumerable()
     .GroupBy(row => new
@@ -1712,19 +1813,11 @@ namespace SmartMIS
                 myConnection.comm = myConnection.conn.CreateCommand();
                 if (getOperator != "All")
                 {
-                   // myConnection.comm.CommandText = "select " + SQLTable + ".wcName,dtandtime,mm.sapCode from " + SQLTable + "  inner join manningmaster mm on " + SQLTable + ".manningID2 = mm.iD  or " + SQLTable + ".manningID3 = mm.iD or " + SQLTable + ".manningID = mm.iD WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " and mm.sapcode = '" + getOperator + "'  ORDER BY wcName ,dtandTime asc";
-                    myConnection.comm.CommandText = @"SELECT * FROM ( select " + SQLTable + ".wcName,dtandtime,mm.sapCode,   ROW_NUMBER() OVER(PARTITION BY gtbarCode  ORDER BY recipeCode) rn from " + SQLTable + "  inner join manningmaster mm on " + SQLTable + ".manningID2 = mm.iD  or " + SQLTable + ".manningID3 = mm.iD or " + SQLTable + ".manningID = mm.iD WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " and mm.sapcode = '" + getOperator + "' )a where rn=1  ORDER BY wcName ,dtandTime asc";
-              
+                  myConnection.comm.CommandText = @"SELECT * FROM ( select " + SQLTable + ".wcName,dtandtime,mm.sapCode,   ROW_NUMBER() OVER(PARTITION BY gtbarCode  ORDER BY recipeCode) rn from " + SQLTable + "  inner join manningmaster mm on " + SQLTable + ".manningID2 = mm.iD  or " + SQLTable + ".manningID3 = mm.iD or " + SQLTable + ".manningID = mm.iD WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " and mm.sapcode = '" + getOperator + "' )a where rn=1  ORDER BY wcName ,dtandTime asc";
                 }
                 else
                 {
-                   myConnection.comm.CommandText = "Select (select sapCode from manningMaster where iD= manningID) as manningID, isnull( (select sapCode from manningMaster where iD= manningID2),'unknown') as manningID2,  isnull( (select sapCode from manningMaster where iD= manningID3),'unknown') as manningID3,   dtandTime,wcName from " + SQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + "  ORDER BY wcName,manningID, manningID2, manningID3, dtandTime asc";
-                    //myConnection.comm.CommandText = "Select manningID, isnull(manningID2,'1306') as manningID2, isnull(manningID3,'1306') as manningID3, dtandTime,wcName from " + SQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + "AND " + durationQuery + " " + sqlquery + " ORDER BY  wcName,manningID, manningID2, manningID3, dtandTime asc";
-                // myConnection.comm.CommandText = @" SELECT *
-  //FROM (  Select (select sapCode from manningMaster where iD= manningID) as manningID, isnull( (select sapCode from manningMaster where iD= manningID2),'unknown') as manningID2,  isnull( (select sapCode from manningMaster where iD= manningID3),'unknown') as manningID3,   dtandTime,wcName,
-  // ROW_NUMBER() OVER(PARTITION BY gtbarCode  ORDER BY recipeCode) rn
-   //from " + SQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + "   ) a WHERE rn = 1 ORDER BY wcName,manningID, manningID2, manningID3, dtandTime asc ";
-                
+                   myConnection.comm.CommandText = "Select (select sapCode from manningMaster where iD= manningID) as manningID, isnull( (select sapCode from manningMaster where iD= manningID2),'unknown') as manningID2,  isnull( (select sapCode from manningMaster where iD= manningID3),'unknown') as manningID3,   dtandTime,wcName from " + SQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + "  ORDER BY wcName,manningID, manningID2, manningID3, dtandTime asc";  
                 }
                 myWebService.writeLogs(myConnection.comm.CommandText, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
         
@@ -1736,6 +1829,28 @@ namespace SmartMIS
                 myConnection.comm.Dispose();
                 myConnection.close(ConnectionOption.SQL);
 
+                if (!(wcdt.Rows.Count > 0))
+                {
+                    myConnection.open(ConnectionOption.SQL);
+                    myConnection.comm = myConnection.conn.CreateCommand();
+                    if (getOperator != "All")
+                    {
+                        myConnection.comm.CommandText = @"SELECT * FROM ( select " + OldSQLTable + ".wcName,dtandtime,mm.sapCode,   ROW_NUMBER() OVER(PARTITION BY gtbarCode  ORDER BY recipeCode) rn from " + OldSQLTable + "  inner join manningmaster mm on " + OldSQLTable + ".manningID2 = mm.iD  or " + OldSQLTable + ".manningID3 = mm.iD or " + OldSQLTable + ".manningID = mm.iD WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " and mm.sapcode = '" + getOperator + "' )a where rn=1  ORDER BY wcName ,dtandTime asc";
+                    }
+                    else
+                    {
+                        myConnection.comm.CommandText = "Select (select sapCode from manningMaster where iD= manningID) as manningID, isnull( (select sapCode from manningMaster where iD= manningID2),'unknown') as manningID2,  isnull( (select sapCode from manningMaster where iD= manningID3),'unknown') as manningID3,   dtandTime,wcName from " + OldSQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + "  ORDER BY wcName,manningID, manningID2, manningID3, dtandTime asc";
+                    }
+                    
+                    myConnection.comm.CommandTimeout = 60;
+                    myConnection.reader = myConnection.comm.ExecuteReader();
+                    wcdt.Load(myConnection.reader);
+
+                    myConnection.reader.Close();
+                    myConnection.comm.Dispose();
+                    myConnection.close(ConnectionOption.SQL);
+                
+                }
                 // Get the Data based on ManningID
                 myConnection.open(ConnectionOption.SQL);
                 myConnection.comm = myConnection.conn.CreateCommand();
@@ -2062,12 +2177,9 @@ namespace SmartMIS
                 myConnection.comm = myConnection.conn.CreateCommand();
 
                // myConnection.comm.CommandText = "Select wcName, recipeCode,SAPMaterialCode, dtandTime from " + SQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " ORDER BY wcID, recipeCode, dtandTime asc";
-                myConnection.comm.CommandText = @" SELECT * FROM (
-                SELECT  wcName, recipeCode,SAPMaterialCode, dtandTime,gtbarCode,
-                        ROW_NUMBER() OVER(PARTITION BY gtbarCode  ORDER BY wcID, recipeCode, dtandTime asc) rn
+                myConnection.comm.CommandText = @" SELECT * FROM ( SELECT  wcName, recipeCode,SAPMaterialCode, dtandTime,gtbarCode, ROW_NUMBER() OVER(PARTITION BY gtbarCode  ORDER BY wcID, recipeCode, dtandTime asc) rn
                     FROM " + SQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + "AND " + durationQuery + "   ) a WHERE rn = 1 ORDER BY wcName, recipeCode, dtandTime asc";
             
-                
                 myConnection.reader = myConnection.comm.ExecuteReader();
                 myConnection.comm.CommandTimeout = 60;
                 dt.Load(myConnection.reader);
@@ -2075,6 +2187,29 @@ namespace SmartMIS
                 myConnection.reader.Close();
                 myConnection.comm.Dispose();
                 myConnection.close(ConnectionOption.SQL);
+
+                if (!(dt.Rows.Count > 0))
+                {
+                    
+                    myConnection.open(ConnectionOption.SQL);
+                    myConnection.comm = myConnection.conn.CreateCommand();
+
+                    // myConnection.comm.CommandText = "Select wcName, recipeCode,SAPMaterialCode, dtandTime from " + SQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " ORDER BY wcID, recipeCode, dtandTime asc";
+                    myConnection.comm.CommandText = @" SELECT * FROM ( SELECT  wcName, recipeCode,SAPMaterialCode, dtandTime,gtbarCode, ROW_NUMBER() OVER(PARTITION BY gtbarCode  ORDER BY wcID, recipeCode, dtandTime asc) rn
+                    FROM " + OldSQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + "AND " + durationQuery + "   ) a WHERE rn = 1 ORDER BY wcName, recipeCode, dtandTime asc";
+
+
+                    myConnection.reader = myConnection.comm.ExecuteReader();
+                    myConnection.comm.CommandTimeout = 60;
+                    dt.Load(myConnection.reader);
+
+                    myConnection.reader.Close();
+                    myConnection.comm.Dispose();
+                    myConnection.close(ConnectionOption.SQL);
+                   
+                }
+
+
 
                 var query = dt.AsEnumerable()
     .GroupBy(row => new
@@ -2283,9 +2418,7 @@ namespace SmartMIS
 
               //  myConnection.comm.CommandText = "Select wcName, recipeCode, SAPMaterialCode,dtandTime from " + SQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " ORDER BY wcID, recipeCode, dtandTime asc";
 
-                myConnection.comm.CommandText = @"SELECT * FROM (
-                SELECT  wcID,wcName,recipeCode, SAPMaterialCode,dtandTime,
-                        ROW_NUMBER() OVER(PARTITION BY gtbarCode ORDER BY wcName asc) rn
+                myConnection.comm.CommandText = @"SELECT * FROM ( SELECT  wcID,wcName,recipeCode, SAPMaterialCode,dtandTime, ROW_NUMBER() OVER(PARTITION BY gtbarCode ORDER BY wcName asc) rn
                     FROM " + SQLTable + " WHERE  wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " ) a WHERE rn = 1 ORDER BY wcID,recipeCode, dtandTime asc";
 
                 myConnection.comm.CommandTimeout = 60;
@@ -2295,6 +2428,23 @@ namespace SmartMIS
                 myConnection.reader.Close();
                 myConnection.comm.Dispose();
                 myConnection.close(ConnectionOption.SQL);
+
+                if (!(dt.Rows.Count > 0))
+                {
+                    myConnection.open(ConnectionOption.SQL);
+                    myConnection.comm = myConnection.conn.CreateCommand();
+
+                    myConnection.comm.CommandText = @"SELECT * FROM ( SELECT  wcID,wcName,recipeCode, SAPMaterialCode,dtandTime, ROW_NUMBER() OVER(PARTITION BY gtbarCode ORDER BY wcName asc) rn
+                    FROM " + OldSQLTable + " WHERE  wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " ) a WHERE rn = 1 ORDER BY wcID,recipeCode, dtandTime asc";
+
+                    myConnection.comm.CommandTimeout = 60;
+                    myConnection.reader = myConnection.comm.ExecuteReader();
+                    dt.Load(myConnection.reader);
+
+                    myConnection.reader.Close();
+                    myConnection.comm.Dispose();
+                    myConnection.close(ConnectionOption.SQL);
+                }
 
                 var query = dt.AsEnumerable()
     .GroupBy(row => new
@@ -2437,8 +2587,7 @@ namespace SmartMIS
         {
             try
             {
-               
-
+              
                 DataTable wcdt = new DataTable();
                 DataTable manningdt = new DataTable();
                 DataTable dt = new DataTable();
@@ -2450,7 +2599,6 @@ namespace SmartMIS
                     dt.Columns.Add("MachineName", typeof(string));
                     dt.Columns.Add("operator", typeof(string));
                     dt.Columns.Add("dtandTime", typeof(DateTime));
-
                     gridviewdt.Columns.Add("MachineName", typeof(string));
                     gridviewdt.Columns.Add("operator1", typeof(string));
 
@@ -2462,7 +2610,6 @@ namespace SmartMIS
                     dt.Columns.Add("operator2", typeof(string));
                     dt.Columns.Add("operator3", typeof(string));
                     dt.Columns.Add("dtandTime", typeof(DateTime));
-
 
                     gridviewdt.Columns.Add("MachineName", typeof(string));
                     gridviewdt.Columns.Add("operator1", typeof(string));
@@ -2479,36 +2626,52 @@ namespace SmartMIS
                 string fromDate = getYear.ToString() + "-01-01 07:00:00";
                 string toDate = (getYear + 1).ToString() + "-01-01 07:00:00";
 
-
                  myConnection.open(ConnectionOption.SQL);
-                myConnection.comm = myConnection.conn.CreateCommand();
-
-               
+                 myConnection.comm = myConnection.conn.CreateCommand();
+  
                 if (getOperator != "All")
                 {
-
                   //  myConnection.comm.CommandText = "select " + SQLTable + ".wcName,dtandtime,mm.sapCode from " + SQLTable + "  inner join manningmaster mm on " + SQLTable + ".manningID2 = mm.iD  or " + SQLTable + ".manningID3 = mm.iD or " + SQLTable + ".manningID = mm.iD WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " and mm.sapcode = '" + getOperator + "'  ORDER BY wcName ,dtandTime asc";
                     myConnection.comm.CommandText = @"SELECT * FROM ( select " + SQLTable + ".wcName,dtandtime,mm.sapCode,   ROW_NUMBER() OVER(PARTITION BY gtbarCode  ORDER BY recipeCode) rn from " + SQLTable + "  inner join manningmaster mm on " + SQLTable + ".manningID2 = mm.iD  or " + SQLTable + ".manningID3 = mm.iD or " + SQLTable + ".manningID = mm.iD WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " and mm.sapcode = '" + getOperator + "' )a where rn=1  ORDER BY wcName ,dtandTime asc";
-                  
                 }
                 else
                 {
                     myConnection.comm.CommandText = "Select (select sapCode from manningMaster where iD= manningID) as manningID, isnull( (select sapCode from manningMaster where iD= manningID2),'unknown') as manningID2,  isnull( (select sapCode from manningMaster where iD= manningID3),'unknown') as manningID3,   dtandTime,wcName from " + SQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + "  ORDER BY wcName,manningID, manningID2, manningID3, dtandTime asc";
-               
-                // myConnection.comm.CommandText = @" SELECT *
-  //FROM (  Select (select sapCode from manningMaster where iD= manningID) as manningID, isnull( (select sapCode from manningMaster where iD= manningID2),'unknown') as manningID2,  isnull( (select sapCode from manningMaster where iD= manningID3),'unknown') as manningID3,   dtandTime,wcName,
-  // ROW_NUMBER() OVER(PARTITION BY gtbarCode  ORDER BY recipeCode) rn
- //  from " + SQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + "   ) a WHERE rn = 1 ORDER BY wcName,manningID, manningID2, manningID3, dtandTime asc ";
-                
                 }
                 myConnection.comm.CommandTimeout = 60;
-                //myConnection.comm.CommandTimeout = 0;
                 myConnection.reader = myConnection.comm.ExecuteReader();
                 wcdt.Load(myConnection.reader);
-
                 myConnection.reader.Close();
                 myConnection.comm.Dispose();
                 myConnection.close(ConnectionOption.SQL);
+
+                if (!(wcdt.Rows.Count > 0))
+                {
+
+
+                    myConnection.open(ConnectionOption.SQL);
+                    myConnection.comm = myConnection.conn.CreateCommand();
+
+                    if (getOperator != "All")
+                    {
+                        //  myConnection.comm.CommandText = "select " + SQLTable + ".wcName,dtandtime,mm.sapCode from " + SQLTable + "  inner join manningmaster mm on " + SQLTable + ".manningID2 = mm.iD  or " + SQLTable + ".manningID3 = mm.iD or " + SQLTable + ".manningID = mm.iD WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " and mm.sapcode = '" + getOperator + "'  ORDER BY wcName ,dtandTime asc";
+                        myConnection.comm.CommandText = @"SELECT * FROM ( select " + OldSQLTable + ".wcName,dtandtime,mm.sapCode,   ROW_NUMBER() OVER(PARTITION BY gtbarCode  ORDER BY recipeCode) rn from " + OldSQLTable + "  inner join manningmaster mm on " + OldSQLTable + ".manningID2 = mm.iD  or " + OldSQLTable + ".manningID3 = mm.iD or " + OldSQLTable + ".manningID = mm.iD WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " and mm.sapcode = '" + getOperator + "' )a where rn=1  ORDER BY wcName ,dtandTime asc";
+                    }
+                    else
+                    {
+                        myConnection.comm.CommandText = "Select (select sapCode from manningMaster where iD= manningID) as manningID, isnull( (select sapCode from manningMaster where iD= manningID2),'unknown') as manningID2,  isnull( (select sapCode from manningMaster where iD= manningID3),'unknown') as manningID3,   dtandTime,wcName from " + OldSQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + "  ORDER BY wcName,manningID, manningID2, manningID3, dtandTime asc";
+                    }
+                    myConnection.comm.CommandTimeout = 60;
+                    myConnection.reader = myConnection.comm.ExecuteReader();
+                    wcdt.Load(myConnection.reader);
+                    myConnection.reader.Close();
+                    myConnection.comm.Dispose();
+                    myConnection.close(ConnectionOption.SQL);
+                
+                
+                }
+
+
 
                 // Get the Data based on ManningID
                 myConnection.open(ConnectionOption.SQL);
@@ -2825,8 +2988,7 @@ namespace SmartMIS
                 myWebService.writeLogs(exp.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
             }
         }
-      
-       
+          
         
         #endregion
 

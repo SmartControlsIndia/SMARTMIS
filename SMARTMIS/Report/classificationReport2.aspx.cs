@@ -331,7 +331,7 @@ namespace SmartMIS.Report
 FROM (	select wcID, curingRecipeID, status, defectID, 
  ROW_NUMBER() OVER (PARTITION BY gtbarcode ORDER BY wcID) AS RowNumber
 from TBRVisualInspection 
-where  dtandTime>'" + rToDate + "' and dtandTime<='" + rFromDate + "' AND wcID IN ('244')) As a Where a.RowNumber=1";
+where  dtandTime>'" + rToDate + "' and dtandTime<='" + rFromDate + "' AND wcID IN ('244','245')) As a Where a.RowNumber=1";
             
             myConnection.reader = myConnection.comm.ExecuteReader();
             dt_vi.Load(myConnection.reader);
@@ -345,7 +345,7 @@ where  dtandTime>'" + rToDate + "' and dtandTime<='" + rFromDate + "' AND wcID I
             myConnection.open(ConnectionOption.SQL);
             myConnection.comm = myConnection.conn.CreateCommand();
 
-            myConnection.comm.CommandText = "select Distinct iD, name AS wc_name from wcMaster where name IN ('7010')";
+            myConnection.comm.CommandText = "select Distinct iD, name AS wc_name from wcMaster where name IN ('7010','7011')";
             myConnection.reader = myConnection.comm.ExecuteReader();
             dt_workcenter.Load(myConnection.reader);
 
@@ -423,7 +423,7 @@ where  dtandTime>'" + rToDate + "' and dtandTime<='" + rFromDate + "' AND wcID I
 FROM (	select   shift=(CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'A' WHEN convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8), dtandTime, 108) <= '22:59:59.999' THEN 'B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999') or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'C' END),
                     description, wcName, CAST(dtandTime AS DATE) AS getdate, convert(char(8), dtandTime, 108) AS gettime, firstName + ' ' + lastName As builderName,gtbarcode, defectName, defectstatusName, remarks,
 					 ROW_NUMBER() OVER (PARTITION BY gtbarcode ORDER BY dtandTime desc) AS RowNumber
-                    from vTBRVisualInspectionReport  where dtandTime>'" + rToDate + "' and dtandTime<='" + rFromDate + "' AND  wcName = '7010' )As a Where a.RowNumber=1";
+                    from vTBRVisualInspectionReport  where dtandTime>'" + rToDate + "' and dtandTime<='" + rFromDate + "' AND  wcName in('7010','7011') )As a Where a.RowNumber=1";
 
 
                 myConnection.open(ConnectionOption.SQL);
@@ -435,6 +435,15 @@ FROM (	select   shift=(CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 A
                 myConnection.reader.Close();
                 myConnection.comm.Dispose();
                 myConnection.conn.Close();
+
+
+                foreach (DataRow dtRow in dt.Rows)
+                {
+                        if(dtRow["wcName"].ToString()=="7011")
+                        {
+                            dtRow["defectName"] = "";
+                        }
+                }
 
                 if (dt.Rows.Count != 0)
                 {

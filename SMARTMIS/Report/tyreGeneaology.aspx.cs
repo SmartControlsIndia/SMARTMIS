@@ -247,6 +247,8 @@ namespace SmartMIS
                     flag = TyreType.TBR;
                 else if (myWebService.IsRecordExist("tbmpcr", "gtbarCode", "WHERE gtbarCode = '" + gtBarcode + "'", out notifyIcon) == true)
                     flag = TyreType.PCR;
+                else if (myWebService.IsRecordExist("tbmpcr16Jan2021", "gtbarCode", "WHERE gtbarCode = '" + gtBarcode + "'", out notifyIcon) == true)
+                    flag = TyreType.PCR;
                 else
                     flag = TyreType.None;
            
@@ -325,8 +327,21 @@ namespace SmartMIS
             {
                 try
                 {
-                    tgUniBalGridView.DataSource = myWebService.fillGridView("SELECT DISTINCT tireType as recipeCode, machineName as wcName FROM " + tableName + " WHERE (barCode = '" + gtBarcode + "')", ConnectionOption.SQL);
-                    tgUniBalGridView.DataBind();
+
+                    DataTable dtUni =myWebService.fillGridView("SELECT DISTINCT tireType as recipeCode, machineName as wcName FROM " + tableName + " WHERE (barCode = '" + gtBarcode + "')", ConnectionOption.SQL);
+                    if (dtUni.Rows.Count > 0)
+                    {
+                        tgUniBalGridView.DataSource = dtUni;
+                        tgUniBalGridView.DataBind();
+                    }
+                    else
+                    {
+                        tableName = "ProductionDataTUO_3de2020";
+                        DataTable dtUni1 = myWebService.fillGridView("SELECT DISTINCT tireType as recipeCode, machineName as wcName FROM " + tableName + " WHERE (barCode = '" + gtBarcode + "')", ConnectionOption.SQL);
+                        tgUniBalGridView.DataSource = dtUni1;
+                        tgUniBalGridView.DataBind();
+                    }
+                   
                 }
                 catch (Exception ex)
                 {
@@ -445,9 +460,26 @@ namespace SmartMIS
             private void fillVIReport(string gtBarcode, string tableName)
         {
             try
-            {
-                tgVIGridView.DataSource = myWebService.fillGridView("SELECT DISTINCT wcID, wcName FROM " + tableName + " WHERE (gtbarCode = '" + gtBarcode + "')", ConnectionOption.SQL);
-                tgVIGridView.DataBind();
+            { //
+
+               
+                DataTable dtnew= myWebService.fillGridView("SELECT DISTINCT wcID, wcName FROM " + tableName + " WHERE (gtbarCode = '" + gtBarcode + "')", ConnectionOption.SQL);
+                if (dtnew.Rows.Count > 0)
+                {
+                    tgVIGridView.DataSource = dtnew;
+                    tgVIGridView.DataBind();
+                }
+                else {
+
+                    if (tableName == "vVisualInspectionPCR")
+                    {
+                        tableName = "vVisualInspectionPCR16Jan2021";
+                        DataTable dtnew1 = myWebService.fillGridView("SELECT DISTINCT wcID, wcName FROM " + tableName + " WHERE (gtbarCode = '" + gtBarcode + "')", ConnectionOption.SQL);
+                        tgVIGridView.DataSource = dtnew1;
+                        tgVIGridView.DataBind();
+                    }
+                }
+                
             }
             catch (Exception ex)
             {
@@ -492,8 +524,33 @@ namespace SmartMIS
         {
             try
             {
-                tgCuringGridView.DataSource = myWebService.fillGridView("SELECT iD, pressbarCode,SerialNo as TyreSerialNo,RIGHT( pressbarCode,8) as CavityNO,case when  pressbarCode like'%L%' then  SUBSTRING(mouldNo, 0, CHARINDEX('#', mouldNo)) when pressbarCode like'%R%' then  SUBSTRING(mouldNo, CHARINDEX('#', mouldNo)  + 1, LEN(mouldNo)) end as mouldNo, recipeCode, manningID, sapCode, firstName, lastName, wcID, wcName, dtandTime FROM " + tableName + " WHERE (gtbarCode = '" + gtBarcode + "')", ConnectionOption.SQL);
-                tgCuringGridView.DataBind();
+                 
+                DataTable dt  = myWebService.fillGridView("SELECT iD, pressbarCode,SerialNo as TyreSerialNo,RIGHT( pressbarCode,8) as CavityNO,case when  pressbarCode like'%L%' then  SUBSTRING(mouldNo, 0, CHARINDEX('#', mouldNo)) when pressbarCode like'%R%' then  SUBSTRING(mouldNo, CHARINDEX('#', mouldNo)  + 1, LEN(mouldNo)) end as mouldNo, recipeCode, manningID, sapCode, firstName, lastName, wcID, wcName, dtandTime FROM " + tableName + " WHERE (gtbarCode = '" + gtBarcode + "')", ConnectionOption.SQL);
+
+                if (dt.Rows.Count > 0)
+                {
+                    tgCuringGridView.DataSource = dt;
+                    tgCuringGridView.DataBind();
+                }
+                else
+                {
+                    if (tableName == "vCuringPCR")
+                    {
+                        tableName = "vCuringpcr16Jan2021";
+                        DataTable dtNew = myWebService.fillGridView("SELECT iD, pressbarCode,SerialNo as TyreSerialNo,RIGHT( pressbarCode,8) as CavityNO,case when  pressbarCode like'%L%' then  SUBSTRING(mouldNo, 0, CHARINDEX('#', mouldNo)) when pressbarCode like'%R%' then  SUBSTRING(mouldNo, CHARINDEX('#', mouldNo)  + 1, LEN(mouldNo)) end as mouldNo, recipeCode, manningID, sapCode, firstName, lastName, wcID, wcName, dtandTime FROM " + tableName + " WHERE (gtbarCode = '" + gtBarcode + "')", ConnectionOption.SQL);
+                        tgCuringGridView.DataSource = dtNew;
+                        tgCuringGridView.DataBind();
+                    }
+                    else
+                    {
+                        tableName = "vCuringtbr11sep2019";
+                        DataTable dtNew = myWebService.fillGridView("SELECT iD, pressbarCode,SerialNo as TyreSerialNo,RIGHT( pressbarCode,8) as CavityNO,case when  pressbarCode like'%L%' then  SUBSTRING(mouldNo, 0, CHARINDEX('#', mouldNo)) when pressbarCode like'%R%' then  SUBSTRING(mouldNo, CHARINDEX('#', mouldNo)  + 1, LEN(mouldNo)) end as mouldNo, recipeCode, manningID, sapCode, firstName, lastName, wcID, wcName, dtandTime FROM " + tableName + " WHERE (gtbarCode = '" + gtBarcode + "')", ConnectionOption.SQL);
+                        tgCuringGridView.DataSource = dtNew;
+                        tgCuringGridView.DataBind();
+                    }
+                   
+                }
+                
             }
             catch(Exception exp)
             {
@@ -874,10 +931,25 @@ namespace SmartMIS
         {
             try
             {
-                //PCR2ndGridview
-                PCRGridView1.DataSource = myWebService.fillGridView("SELECT iD, curingRecpeName, manningID, sapCode, firstName, lastName, wcName,statusName, defectName,dtandTime FROM " + tableName + " WHERE (gtbarCode = '" + gtBarcode + "')", ConnectionOption.SQL);
-                PCRGridView1.DataBind();
-               
+                //PCR2ndGridview  
+
+               DataTable dtnew=   myWebService.fillGridView("SELECT iD, curingRecpeName, manningID, sapCode, firstName, lastName, wcName,statusName, defectName,dtandTime FROM " + tableName + " WHERE (gtbarCode = '" + gtBarcode + "')", ConnectionOption.SQL);
+               if (dtnew.Rows.Count > 0)
+               {
+                   PCRGridView1.DataSource = dtnew;
+                   PCRGridView1.DataBind();
+               }
+               else
+               {
+                   if (tableName == "vVisualInspectionPCR2nd")
+                   {
+                       tableName = "vVisualInspectionPCR2nd_3dec2020";
+                       PCRGridView1.DataSource = dtnew;
+                       PCRGridView1.DataBind();
+                   }
+                   
+               }
+              
             }
             catch (Exception exp)
             {
@@ -902,10 +974,22 @@ namespace SmartMIS
                 }
                 else
                 {
+                    //vTbmPCR16Jan2021
                    // tgTBMGridView.DataSource = myWebService.fillGridView("SELECT iD, recipeCode, manningID, sapCode, firstName, lastName,(select top 1 weight from PCRBuddeScannedTyreDetail where gtbarcode='" + gtBarcode + "' order by dtandtime desc) as gtWeight, mheID, wcID, wcName, dtandTime FROM " + tableName + " WHERE (gtbarCode = '" + gtBarcode + "')", ConnectionOption.SQL);
-                    tgTBMGridView.DataSource = myWebService.fillGridView("SELECT vTbmPCR.iD, recipeCode, vTbmPCR.manningID, sapCode, firstName, lastName,GTRejection.status,(select top 1 weight from PCRBuddeScannedTyreDetail where gtbarcode='" + gtBarcode + "' order by dtandtime desc ) as gtWeight, mheID, vTbmPCR.wcID, wcName, vTbmPCR.dtandTime FROM vTbmPCR left join GTRejection on vTbmPCR.gtbarCode=GTRejection.GTBarcode WHERE (vTbmPCR.gtbarCode = '" + gtBarcode + "')", ConnectionOption.SQL);
-                  
-                    tgTBMGridView.DataBind();
+
+                    DataTable dt = myWebService.fillGridView("SELECT vTbmPCR.iD, recipeCode, vTbmPCR.manningID, sapCode, firstName, lastName,GTRejection.status,(select top 1 weight from PCRBuddeScannedTyreDetail where gtbarcode='" + gtBarcode + "' order by dtandtime desc ) as gtWeight, mheID, vTbmPCR.wcID, wcName, vTbmPCR.dtandTime FROM vTbmPCR left join GTRejection on vTbmPCR.gtbarCode=GTRejection.GTBarcode WHERE (vTbmPCR.gtbarCode = '" + gtBarcode + "')", ConnectionOption.SQL);
+                    if (dt.Rows.Count > 0)
+                    {
+                        tgTBMGridView.DataSource = dt;
+                        tgTBMGridView.DataBind();
+                    }
+                    else
+                    {
+                        DataTable dt1 = myWebService.fillGridView("SELECT vTbmPCR16Jan2021.iD, recipeCode, vTbmPCR16Jan2021.manningID, sapCode, firstName, lastName,GTRejection.status,(select top 1 weight from PCRBuddeScannedTyreDetail where gtbarcode='" + gtBarcode + "' order by dtandtime desc ) as gtWeight, mheID, vTbmPCR16Jan2021.wcID, wcName, vTbmPCR16Jan2021.dtandTime FROM vTbmPCR16Jan2021 left join GTRejection on vTbmPCR16Jan2021.gtbarCode=GTRejection.GTBarcode WHERE (vTbmPCR16Jan2021.gtbarCode = '" + gtBarcode + "')", ConnectionOption.SQL);
+                        tgTBMGridView.DataSource = dt1;
+                        tgTBMGridView.DataBind();
+                    }
+                    
                 }
             }
             catch(Exception exp)
@@ -1048,9 +1132,6 @@ namespace SmartMIS
                         }
                         dr["dtandTime"] = myConnection.reader[1].ToString();
                     }
-
-
-
                 }
                 else if (tyreType == TyreType.TBR)
                 {
@@ -1072,11 +1153,8 @@ namespace SmartMIS
                         }
                         dr["dtandTime"] = myConnection.reader[1].ToString();
                     }
-
-
-
                 }
-               
+                flag.Rows.Add(dr);
             }
             catch (Exception exp)
             {
@@ -1088,9 +1166,72 @@ namespace SmartMIS
                 myConnection.comm.Dispose();
                 myConnection.close(ConnectionOption.SQL);
             }
-            flag.Rows.Add(dr);
+          
+
+            if (!(flag.Rows.Count > 0))
+            {
+
+                try
+                {
+                    myConnection.open(ConnectionOption.SQL);
+                    myConnection.comm = myConnection.conn.CreateCommand();
+                    if (tyreType == TyreType.PCR)
+                    {
+                        myConnection.comm.CommandText = "SELECT uniformitygrade,testTime FROM ProductionDataTUO_3de2020 WHERE (barCode = '" + tempgtbarcode + "')";
+
+                        myConnection.reader = myConnection.comm.ExecuteReader(CommandBehavior.CloseConnection);
+
+                        while (myConnection.reader.Read())
+                        {
+                            a = myConnection.reader[0].ToString();
+                            if (a != "E")
+                            {
+                                dr["status"] = "OK";
+                            }
+                            else
+                            {
+                                dr[4] = "NOT OK";
+                            }
+                            dr["dtandTime"] = myConnection.reader[1].ToString();
+                        }
+                    }
+                    else if (tyreType == TyreType.TBR)
+                    {
+                        myConnection.comm.CommandText = "SELECT totalRank as status,dtandTime FROM vtbrrunoutData WHERE (barCode = '" + tempgtbarcode + "')";
 
 
+                        myConnection.reader = myConnection.comm.ExecuteReader(CommandBehavior.CloseConnection);
+
+                        while (myConnection.reader.Read())
+                        {
+                            a = myConnection.reader[0].ToString();
+                            if (a == "A" || a == "B")
+                            {
+                                dr["status"] = "OK";
+                            }
+                            else
+                            {
+                                dr[4] = "NOT OK";
+                            }
+                            dr["dtandTime"] = myConnection.reader[1].ToString();
+                        }
+                    }
+                    flag.Rows.Add(dr);
+                }
+                catch (Exception exp)
+                {
+
+                }
+                finally
+                {
+                    myConnection.reader.Close();
+                    myConnection.comm.Dispose();
+                    myConnection.close(ConnectionOption.SQL);
+                }
+          
+            
+            
+            }
             return flag;
         }
         //added by sarita
@@ -1169,40 +1310,33 @@ namespace SmartMIS
             flag.Columns.Add("SerialNo", typeof(string));
             flag.Columns.Add("Remark", typeof(string));
             flag.Columns.Add("dtandTime", typeof(string));
-           
-
-
+            
             try
             {
                 myConnection.open(ConnectionOption.SQL);
                 myConnection.comm = myConnection.conn.CreateCommand();
-
                 myConnection.comm.CommandText = "select sapCode,firstName,lastName,statusName as defectstatusName,ssornssName as faultSideName,defectlocationName as faultAreaName,defectname as faultName, reasonName,dtandTime from vVisualInspectionPCR WHERE (gtbarCode = '" + gtbarCode + "') AND (wcName = '" + wcName + "')";
-
                 myConnection.reader = myConnection.comm.ExecuteReader(CommandBehavior.CloseConnection);
-
-                while (myConnection.reader.Read())
-                {
-                    DataRow dr = flag.NewRow();
-
-                    dr["sapCode"] = myConnection.reader[0].ToString();
-                    dr["firstName"] = myConnection.reader[1].ToString();
-                    dr["lastName"] = myConnection.reader[2].ToString();
-                    dr["defectStatusName"] = myConnection.reader[3].ToString();
-                    dr["faultSideName"] = myConnection.reader[4].ToString();
-                    dr["faultAreaName"] = myConnection.reader[5].ToString();
-                    dr["faultName"] = myConnection.reader[6].ToString();
-                    dr["reasonName"] = myConnection.reader[7].ToString();
-                    dr["SerialNo"] = "--";
-                    dr["Remark"] = "--";
-                    dr["dtandTime"] = myConnection.reader[8].ToString();
-                    flag.Rows.Add(dr);
-
-                }
+        
+                    while (myConnection.reader.Read())
+                    {
+                        DataRow dr = flag.NewRow();
+                        dr["sapCode"] = myConnection.reader[0].ToString();
+                        dr["firstName"] = myConnection.reader[1].ToString();
+                        dr["lastName"] = myConnection.reader[2].ToString();
+                        dr["defectStatusName"] = myConnection.reader[3].ToString();
+                        dr["faultSideName"] = myConnection.reader[4].ToString();
+                        dr["faultAreaName"] = myConnection.reader[5].ToString();
+                        dr["faultName"] = myConnection.reader[6].ToString();
+                        dr["reasonName"] = myConnection.reader[7].ToString();
+                        dr["SerialNo"] = "--";
+                        dr["Remark"] = "--";
+                        dr["dtandTime"] = myConnection.reader[8].ToString();
+                        flag.Rows.Add(dr);
+                    }
             }
             catch (Exception exp)
             {
-
             }
             finally
             {
@@ -1210,7 +1344,42 @@ namespace SmartMIS
                 myConnection.comm.Dispose();
                 myConnection.close(ConnectionOption.SQL);
             }
+            if (!(flag.Rows.Count > 0))
+            {
+                try
+                {
+                    myConnection.open(ConnectionOption.SQL);
+                    myConnection.comm = myConnection.conn.CreateCommand();
+                    myConnection.comm.CommandText = "select sapCode,firstName,lastName,statusName as defectstatusName,ssornssName as faultSideName,defectlocationName as faultAreaName,defectname as faultName, reasonName,dtandTime from vVisualInspectionPCR16Jan2021 WHERE (gtbarCode = '" + gtbarCode + "') AND (wcName = '" + wcName + "')";
+                    myConnection.reader = myConnection.comm.ExecuteReader(CommandBehavior.CloseConnection);
 
+                    while (myConnection.reader.Read())
+                    {
+                        DataRow dr = flag.NewRow();
+                        dr["sapCode"] = myConnection.reader[0].ToString();
+                        dr["firstName"] = myConnection.reader[1].ToString();
+                        dr["lastName"] = myConnection.reader[2].ToString();
+                        dr["defectStatusName"] = myConnection.reader[3].ToString();
+                        dr["faultSideName"] = myConnection.reader[4].ToString();
+                        dr["faultAreaName"] = myConnection.reader[5].ToString();
+                        dr["faultName"] = myConnection.reader[6].ToString();
+                        dr["reasonName"] = myConnection.reader[7].ToString();
+                        dr["SerialNo"] = "--";
+                        dr["Remark"] = "--";
+                        dr["dtandTime"] = myConnection.reader[8].ToString();
+                        flag.Rows.Add(dr);
+                    }
+                }
+                catch (Exception exp)
+                {
+                }
+                finally
+                {
+                    myConnection.reader.Close();
+                    myConnection.comm.Dispose();
+                    myConnection.close(ConnectionOption.SQL);
+                }
+            }
 
             return flag;
         }
@@ -1270,7 +1439,49 @@ namespace SmartMIS
                 myConnection.close(ConnectionOption.SQL);
             }
 
+            if (!(flag.Rows.Count > 0))
+            {
 
+                try
+                {
+                    myConnection.open(ConnectionOption.SQL);
+                    myConnection.comm = myConnection.conn.CreateCommand();
+
+                    myConnection.comm.CommandText = "select sapCode,firstName,lastName,statusName as defectstatusName,defectlocationName as faultAreaName,defectname as faultName, curingRecpeName,dtandTime from vVisualInspectionPCR2nd_3dec2020 WHERE (gtbarCode = '" + gtbarCode + "') AND (wcName = '" + wcName + "')";
+
+                    myConnection.reader = myConnection.comm.ExecuteReader(CommandBehavior.CloseConnection);
+
+                    while (myConnection.reader.Read())
+                    {
+                        DataRow dr = flag.NewRow();
+
+                        dr["sapCode"] = myConnection.reader[0].ToString();
+                        dr["firstName"] = myConnection.reader[1].ToString();
+                        dr["lastName"] = myConnection.reader[2].ToString();
+                        dr["defectStatusName"] = myConnection.reader[3].ToString();
+                        dr["faultSideName"] = myConnection.reader[4].ToString();
+                        dr["faultAreaName"] = myConnection.reader[5].ToString();
+                        dr["faultName"] = myConnection.reader[6].ToString();
+                        dr["reasonName"] = myConnection.reader[7].ToString();
+                        dr["SerialNo"] = "--";
+                        dr["Remark"] = "--";
+                        dr["dtandTime"] = myConnection.reader[8].ToString();
+                        flag.Rows.Add(dr);
+
+                    }
+                }
+                catch (Exception exp)
+                {
+
+                }
+                finally
+                {
+                    myConnection.reader.Close();
+                    myConnection.comm.Dispose();
+                    myConnection.close(ConnectionOption.SQL);
+                }
+            
+            }
             return flag;
         }
         private DataTable fillTBRVisualInspectionReport(string wcName, string gtbarCode)

@@ -110,8 +110,10 @@ namespace SmartMIS.Report
                         myConnection.open(ConnectionOption.SQL);
                         myConnection.comm = myConnection.conn.CreateCommand();
 
-                        myConnection.comm.CommandText = "select wcID, curingRecipeID, status, defectStatusID As defectID from VInspectionPCR where ((dtandTime>=" + rToDate + " AND wcID in (select iD from wcmaster where vistage=3 and processID=9) and status in (55,56,57,58)";
-                        myConnection.reader = myConnection.comm.ExecuteReader();
+                        //myConnection.comm.CommandText = "select wcID, curingRecipeID, status, defectStatusID As defectID from VInspectionPCR where ((dtandTime>=" + rToDate + " AND wcID in (select iD from wcmaster where vistage=3 and processID=9) and status in (55,56,57,58)";
+
+                        myConnection.comm.CommandText = @"select wcID,curingRecipeID,status,defectID from (select wcID,gtbarCode, curingRecipeID, status, defectStatusID As defectID ,row_number() over (partition by gtbarCode order by dtandTime desc) as rono from VInspectionPCR where ((dtandTime>=" + rToDate + " AND wcID in (select iD from wcmaster where vistage=3 and processID=9) and status in (55,56,57,58)) as t where rono = 1";
+                         myConnection.reader = myConnection.comm.ExecuteReader();
                         dt_vi.Load(myConnection.reader);
 
                         myConnection.reader.Close();
@@ -1093,20 +1095,33 @@ namespace SmartMIS.Report
 
                     myConnection.open(ConnectionOption.SQL);
                     myConnection.comm = myConnection.conn.CreateCommand();
-                    myConnection.comm.CommandText = @"select wcname AS visualWCName, description AS TyreSize, gtbarCode AS BarCode,
-                    StatusName AS Status, defectLocationName as defectAreaName, defectname, remarks, 
-                    shift=(CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND 
-                    convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'A' WHEN 
+//                    myConnection.comm.CommandText = @"select wcname AS visualWCName, description AS TyreSize, gtbarCode AS BarCode,
+//                    StatusName AS Status, defectLocationName as defectAreaName, defectname, remarks, 
+//                    shift=(CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND 
+//                    convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'A' WHEN 
+//                    convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8), dtandTime, 108) <= '22:59:59.999' 
+//                    THEN 'B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999')
+//                    or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'C' END),firstname as InspectorName,convert(char(10), dtandTime, 105) AS VIDate, convert(char(8), dtandTime, 108) AS VITime
+//                    from vvisualInspectionPCR where  wcID in (select iD from wcmaster where vistage=3 and processID=9) and status in (55,56,57) AND dtandTime>='" + from_date + "' AND dtandTime<'" + to_date + "' order by VITime asc";
+
+                    myConnection.comm.CommandText = @"select visualWCName,TyreSize,BarCode,Status,defectAreaName,defectname,remarks,shift,InspectorName,VIDate, VITime,dtandTime from ( select wcname AS visualWCName, description AS TyreSize, gtbarCode AS BarCode, StatusName AS Status, defectLocationName as defectAreaName, defectname, dtandTime,remarks, 
+                    shift=(CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'A' WHEN 
                     convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8), dtandTime, 108) <= '22:59:59.999' 
                     THEN 'B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999')
-                    or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'C' END),firstname as InspectorName,convert(char(10), dtandTime, 105) AS VIDate, convert(char(8), dtandTime, 108) AS VITime
-                    from vvisualInspectionPCR where  wcID in (select iD from wcmaster where vistage=3 and processID=9) and status in (55,56,57) AND dtandTime>='" + from_date + "' AND dtandTime<'" + to_date + "' order by VITime asc";
+                    or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'C' END),firstname as InspectorName,convert(char(10), dtandTime, 105) AS VIDate, convert(char(8), dtandTime, 108) AS VITime ,row_number() over (partition by gtbarCode order by dtandTime asc) as rono
+                    from vvisualInspectionPCR where  wcID in (select iD from wcmaster where vistage=3 and processID=9) and status in (55,56,57) AND dtandTime>='" + from_date + "' AND dtandTime<'" + to_date + "') as t where rono = 1  order by dtandTime asc";
+                    
+                    
+                  
                     myConnection.reader = myConnection.comm.ExecuteReader(CommandBehavior.CloseConnection);
                     dt.Load(myConnection.reader);
                     myConnection.conn.Close();
                     myConnection.comm.Dispose();
                     myConnection.reader.Close();
-                    string tempfromdt = Convert.ToDateTime(from_date).AddDays(-60).ToString();
+
+                    dt.Columns.RemoveAt(11);
+
+                    string tempfromdt = Convert.ToDateTime(from_date).AddDays(-10).ToString();
                     myConnection.open(ConnectionOption.SQL);
                     myConnection.comm = myConnection.conn.CreateCommand();
                     myConnection.comm.CommandText = "SELECT gtbarCode AS cur_gtbarcode, wcName As PressNo,RIGHT(pressbarcode,8) as cavityNo, case when  pressbarCode like'%L%' then  SUBSTRING(mouldNo, 0, CHARINDEX('#', mouldNo)) when pressbarCode like'%R%' then  SUBSTRING(mouldNo, CHARINDEX('#', mouldNo)  + 1, LEN(mouldNo)) end as  mouldNo, convert(char(10), dtandTime, 105) AS Cure_Date, convert(char(8), dtandTime, 108) AS Cure_Time FROM vCuringpcr WHERE dtandTime>='" + tempfromdt + "' AND dtandTime<'" + to_date + "'";

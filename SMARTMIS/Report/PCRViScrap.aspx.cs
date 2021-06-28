@@ -321,20 +321,26 @@ namespace SmartMIS.Report
                                 dr[0] = data[0].RecipeName;
                                 for (int i = 1; i < dt_vi_Header.Rows.Count+1; i++)
                                 {
-                                  
+
+                                   // dr[i] = data.AsEnumerable().Where(l => l.Field<string>("DefectName") == dt_vi_Header.Rows[i - 1][0].ToString()).Count();
+
+
+
+                                    int dnew = 0;
                                     for (int j = 0; j < data.Count(); j++)
-                                    {
+                                    { 
                                         if (dt_vi_Header.Rows[i - 1][0].ToString() == data[j].DefectName.ToString())
                                         {
-                                            dr[i] = "1";
-                                            break;
+                                            dnew = dnew + 1;
+                                           
+                                            //break;
                                         }
                                         else
                                         {
-                                            dr[i] = "";
+                                            //dr[i] = "";
                                         }
                                     }
-                                   
+                                    dr[i] = dnew.ToString()=="0"?"":dnew.ToString();
                                 }
 
                                 dr[dt_vi_Header.Rows.Count + 1] = data.Count();
@@ -469,7 +475,7 @@ namespace SmartMIS.Report
                            to_date = formattoDate(tuoReportMasterToDateTextBox.Text);
 
 
-                    string[] head_array = new string[] { "S. No.", "visualWCName", "TyreSize", "Barcode", "Status", "DefectAreaName", "Defectname", "Remark", "shift", "InspectorName", "VIDate", "VITime", "PressNo", "cavityName", "MouldNo", "Cure_Date", "Cure_Time", "tbmWCName", "TBM_Date", "TBM_Time", "BuilderName", "BuilderName2", "BuilderName3", "TrimMachine", ""};//, "Tyre_Weight" };
+                    string[] head_array = new string[] { "S. No.", "visualWCName", "TyreSize", "Barcode", "Status", "DefectAreaName", "Defectname", "Remark", "shift", "InspectorName", "VIDate", "VITime", "PressNo", "cavityName", "MouldNo", "Cure_Date", "Cure_Time", "tbmWCName", "TBM_Date", "TBM_Time", "BuilderName", "BuilderName2", "BuilderName3", "SpecWeight", "TrimMachine", "" };//, "Tyre_Weight" };
                     foreach (var arr in head_array)
                         gridviewdt.Columns.Add(arr, typeof(string));
 
@@ -479,14 +485,24 @@ namespace SmartMIS.Report
 
                     myConnection.open(ConnectionOption.SQL);
                     myConnection.comm = myConnection.conn.CreateCommand();
-                    myConnection.comm.CommandText = @"select wcname AS visualWCName, description AS TyreSize, gtbarCode AS BarCode,
+                   // myConnection.comm.CommandText = @"select wcname AS visualWCName, description AS TyreSize, gtbarCode AS BarCode,
+                   // StatusName AS Status, defectLocationName as defectAreaName, defectname, remarks, 
+                   // shift=(CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND 
+                   // convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'A' WHEN 
+                  //  convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8), dtandTime, 108) <= '22:59:59.999' 
+                   // THEN 'B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999')
+                   // or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'C' END),firstname as InspectorName,convert(char(10), dtandTime, 105) AS VIDate, convert(char(8), dtandTime, 108) AS VITime
+                   // from vvisualInspectionPCR where  wcID in (select iD from wcmaster where processID=9 and iD=283) and status in (33) AND dtandTime>='" + from_date + "' AND dtandTime<'" + to_date + "' order by viTime asc";
+
+                    myConnection.comm.CommandText = @" select visualWCName,TyreSize,BarCode,Status,defectAreaName,defectname,remarks,shift,InspectorName,VIDate, VITime from ( select wcname AS visualWCName, description AS TyreSize, gtbarCode AS BarCode,
                     StatusName AS Status, defectLocationName as defectAreaName, defectname, remarks, 
                     shift=(CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND 
                     convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'A' WHEN 
                     convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8), dtandTime, 108) <= '22:59:59.999' 
                     THEN 'B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999')
-                    or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'C' END),firstname as InspectorName,convert(char(10), dtandTime, 105) AS VIDate, convert(char(8), dtandTime, 108) AS VITime
-                    from vvisualInspectionPCR where  wcID in (select iD from wcmaster where processID=9 and iD=283) and status in (33) AND dtandTime>='" + from_date + "' AND dtandTime<'" + to_date + "' order by viTime asc";
+                    or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'C' END),firstname as InspectorName,convert(char(10), dtandTime, 105) AS VIDate, convert(char(8), dtandTime, 108) AS VITime,row_number() over (partition by gtbarCode order by dtandTime desc) as rono  from vvisualInspectionPCR where wcID in (select iD from wcmaster where processID=9 and iD=283) and status in (33) AND (dtandTime > '" + from_date + "' and dtandTime<'" + to_date + "')) as t where rono = 1 order by VITime asc";
+                    
+                                       
                     myConnection.reader = myConnection.comm.ExecuteReader(CommandBehavior.CloseConnection);
                     dt.Load(myConnection.reader);
                    // myWebService.writeLogs(myConnection.comm.CommandText, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
@@ -494,7 +510,7 @@ namespace SmartMIS.Report
                     myConnection.conn.Close();
                     myConnection.comm.Dispose();
                     myConnection.reader.Close();
-                    string tempfromdt = Convert.ToDateTime(from_date).AddDays(-10).ToString();
+                    string tempfromdt = Convert.ToDateTime(from_date).AddDays(-90).ToString();
                     myConnection.open(ConnectionOption.SQL);
                     myConnection.comm = myConnection.conn.CreateCommand();
                     myConnection.comm.CommandText = "SELECT gtbarCode AS cur_gtbarcode,wcName As PressNo,RIGHT(pressbarcode,8) as cavityNo, case when  pressbarCode like'%L%' then  SUBSTRING(mouldNo, 0, CHARINDEX('#', mouldNo)) when pressbarCode like'%R%' then  SUBSTRING(mouldNo, CHARINDEX('#', mouldNo)  + 1, LEN(mouldNo)) end as  mouldNo, convert(char(10), dtandTime, 105) AS Cure_Date, convert(char(8), dtandTime, 108) AS Cure_Time FROM vCuringpcr WHERE dtandTime>='" + tempfromdt + "' AND dtandTime<'" + to_date + "'";
@@ -509,7 +525,7 @@ namespace SmartMIS.Report
                     myConnection.open(ConnectionOption.SQL);
                     myConnection.comm = myConnection.conn.CreateCommand();
                     //myConnection.comm.CommandText = "SELECT gtbarCode AS tbm_gtbarcode, wcName AS tbmWCName, convert(char(10), dtandTime, 105) AS TBM_Date, convert(char(8), dtandTime, 108) AS TBM_Time, firstName + ' ' + lastName As BuilderName FROM vTbmpcr WHERE dtandTime>='" + tempfromdt + "' AND dtandTime<'" + to_date + "'";
-                    myConnection.comm.CommandText = "SELECT gtbarCode AS tbm_gtbarcode, wcName AS tbmWCName, convert(char(10), dtandTime, 105) AS TBM_Date, convert(char(8), dtandTime, 108) AS TBM_Time, firstName + ' ' + lastName As BuilderName, isnull( (select firstName from manningMaster where iD= manningID2),'unknown') as BuilderName2, isnull( (select firstName from manningMaster where iD= manningID3),'unknown') as BuilderName3 FROM vTbmpcr WHERE dtandTime>='" + tempfromdt + "' AND dtandTime<'" + to_date + "'";
+                    myConnection.comm.CommandText = "SELECT gtbarCode AS tbm_gtbarcode, wcName AS tbmWCName, convert(char(10), dtandTime, 105) AS TBM_Date, convert(char(8), dtandTime, 108) AS TBM_Time, firstName + ' ' + lastName As BuilderName, isnull( (select firstName from manningMaster where iD= manningID2),'unknown') as BuilderName2, isnull( (select firstName from manningMaster where iD= manningID3),'unknown') as BuilderName3,SpecWeight FROM vTbmpcr WHERE dtandTime>='" + tempfromdt + "' AND dtandTime<'" + to_date + "'";
                     myConnection.reader = myConnection.comm.ExecuteReader(CommandBehavior.CloseConnection);
                    // myWebService.writeLogs(myConnection.comm.CommandText, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
           
@@ -564,7 +580,7 @@ namespace SmartMIS.Report
                               select new string[] { serial_number++.ToString() }
                               .Concat(r0w1.ItemArray.Concat
                               (r0w2 != null ? r0w2.ItemArray.Skip(1) : new object[] { "", "", "", "", "" })
-                              .Concat(r0w3 != null ? r0w3.ItemArray.Skip(1) : new object[] { "", "", "", "", "", "", "" })).
+                              .Concat(r0w3 != null ? r0w3.ItemArray.Skip(1) : new object[] { "", "", "", "", "", "", "","" })).
                               Concat(r0w4 != null ? r0w4.ItemArray.Skip(1) : new object[] { "" }).ToArray();
 
                     foreach (object[] values in row)
