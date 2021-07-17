@@ -210,6 +210,13 @@
     <Compile Include="Report\ManualProductionReport.aspx.designer.cs">
       <DependentUpon>ManualProductionReport.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Report\NCMRNewReport.aspx.cs">
+      <DependentUpon>NCMRNewReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\NCMRNewReport.aspx.designer.cs">
+      <DependentUpon>NCMRNewReport.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Report\NewoperatorReport.aspx.cs">
       <DependentUpon>NewoperatorReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1588,6 +1595,7 @@
     <Content Include="Report\CuringProductionReportNew.aspx" />
     <Content Include="Report\DownTimeReport.aspx" />
     <Content Include="Report\ManualProductionReport.aspx" />
+    <Content Include="Report\NCMRNewReport.aspx" />
     <Content Include="Report\NewoperatorReport.aspx" />
     <Content Include="Report\PCR2ndLiveVI.aspx" />
     <Content Include="Report\PCRinspectionDefectwise.aspx" />

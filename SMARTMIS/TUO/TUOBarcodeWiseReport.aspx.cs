@@ -136,7 +136,8 @@ namespace SmartMIS.TUO
                         wherequery = "'0000" + frombarcode + "'," + string.Join(",", Enumerable.Range(1, tocount).Select(i => "'0000" + (frombarcode + i) + "'").ToArray());
                     else if (frombarcode.ToString().Length == 5)
                         wherequery = "'00000" + frombarcode + "'," + string.Join(",", Enumerable.Range(1, tocount).Select(i => "'00000" + (frombarcode + i) + "'").ToArray());
-
+                    else if (frombarcode.ToString().Length == 9)
+                        wherequery = "'0" + frombarcode + "'," + string.Join(",", Enumerable.Range(1, tocount).Select(i => "'0" + (frombarcode + i) + "'").ToArray());
 
                 }
 

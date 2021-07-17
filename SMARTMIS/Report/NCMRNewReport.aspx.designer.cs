@@ -11,43 +11,52 @@
 namespace SmartMIS.Report {
     
     
-    public partial class classificationReport2 {
+    public partial class NCMRNewReport {
         
         /// <summary>
-        /// ExportExcel control.
+        /// PCRVIScriptManager control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton ExportExcel;
+        protected global::System.Web.UI.ScriptManager PCRVIScriptManager;
         
         /// <summary>
-        /// TBRVI2ScriptManager control.
+        /// showDownload control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.ScriptManager TBRVI2ScriptManager;
+        protected global::System.Web.UI.WebControls.Label showDownload;
         
         /// <summary>
-        /// upProgClaimantSearch control.
+        /// ShowWarning control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdateProgress upProgClaimantSearch;
+        protected global::System.Web.UI.WebControls.Label ShowWarning;
         
         /// <summary>
-        /// curingOperatorPlanningUpdatePanel control.
+        /// DropDownListDuration control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel curingOperatorPlanningUpdatePanel;
+        protected global::System.Web.UI.WebControls.DropDownList DropDownListDuration;
+        
+        /// <summary>
+        /// reportMasterFromDateTextBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::SmartMIS.UserControl.calenderTextBox reportMasterFromDateTextBox;
         
         /// <summary>
         /// tuoReportMasterFromDateTextBox control.
@@ -68,6 +77,51 @@ namespace SmartMIS.Report {
         protected global::SmartMIS.UserControl.calenderTextBox tuoReportMasterToDateTextBox;
         
         /// <summary>
+        /// DropDownListMonth control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DropDownListMonth;
+        
+        /// <summary>
+        /// DropDownListYear control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DropDownListYear;
+        
+        /// <summary>
+        /// DropDownList2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList DropDownList2;
+        
+        /// <summary>
+        /// ddlRecipe control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlRecipe;
+        
+        /// <summary>
+        /// pcrDDldesign control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList pcrDDldesign;
+        
+        /// <summary>
         /// ViewButton control.
         /// </summary>
         /// <remarks>
@@ -77,48 +131,39 @@ namespace SmartMIS.Report {
         protected global::System.Web.UI.WebControls.Button ViewButton;
         
         /// <summary>
-        /// displayType control.
+        /// ExportExcel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList displayType;
+        protected global::System.Web.UI.WebControls.LinkButton ExportExcel;
         
         /// <summary>
-        /// gvpanel control.
+        /// lbltext control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel gvpanel;
+        protected global::System.Web.UI.WebControls.Label lbltext;
         
         /// <summary>
-        /// MainGridView control.
+        /// grdinspectionsummary control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView MainGridView;
+        protected global::System.Web.UI.WebControls.GridView grdinspectionsummary;
         
         /// <summary>
-        /// ExcelPanel control.
+        /// GridView1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel ExcelPanel;
-        
-        /// <summary>
-        /// ExcelGridView control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView ExcelGridView;
+        protected global::System.Web.UI.WebControls.GridView GridView1;
     }
 }

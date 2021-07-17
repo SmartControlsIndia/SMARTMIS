@@ -608,7 +608,10 @@ namespace SmartMIS
             DataTable channel_Table = new DataTable(wcName + "_channel");
 
             tgCuringChartDataSet.Tables.Add(y_axis_Table);
-            tgCuringChartDataSet.Tables.Add(channel_Table); 
+            tgCuringChartDataSet.Tables.Add(channel_Table);
+
+            myWebService.writeLogs("Before", System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+               
             #region Y_Axis
            
             OleDbDataReader readertest ;
@@ -628,14 +631,16 @@ namespace SmartMIS
                     DBPath = "\\\\10.250.11.51\\SmartSCADA\\Projects\\PCRCuring\\ConfigFiles\\ConfigDB.mdb;Jet OLEDB:Database Password=smart26062007";
                     conntest = new OleDbConnection("provider=Microsoft.Jet.OLEDB.4.0;" + "Data Source=" + DBPath);
                 }
-                
+                myWebService.writeLogs("DBPath"+DBPath, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
                     // "D:\\SmartSCADADATA\\Smart\\SmartSCADA\\Projects\\TBRCuring\\ConfigFiles\\ConfigDB.mdb;Jet OLEDB:Database Password=smart26062007";
                
                
                 cmd = conntest.CreateCommand();
                 conntest.Open();
+                myWebService.writeLogs("Start Data", System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
                 cmd.CommandText = "Select trendspan, name, TitleText from y_axis WHERE trendname = '" + wcName + "'";
                 var readerdata = cmd.ExecuteReader();
+                myWebService.writeLogs("End Data", System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
                 y_axis_Table.Load(readerdata);//readertest = cmd.ExecuteReader();
                 cmd.Connection = conntest;
                
@@ -740,7 +745,7 @@ namespace SmartMIS
             {
                 try
                 {
-                    //myWebService.writeLogs(fileName, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+                    myWebService.writeLogs(fileName+"filenameexists", System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
                     myReader = new StreamReader(fileName);
                   
                     //Split the first line into the columns       
@@ -751,7 +756,7 @@ namespace SmartMIS
 
                     flag.Columns.Add("TimeStamp", typeof(System.DateTime));
                     tempflag.Columns.Add("TimeStamp", typeof(System.DateTime));
-                   // myWebService.writeLogs(channel_Table.Rows.ToString(), System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+                    myWebService.writeLogs(channel_Table.Rows.ToString(), System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
 
                     foreach (DataRow row in channel_Table.Rows)
                     {
@@ -765,7 +770,7 @@ namespace SmartMIS
                         flag.Columns.Add(coloumnCount.ToString());
                         tempflag.Columns.Add(coloumnCount.ToString());
                         coloumnCount++;
-                       //myWebService.writeLogs(coloumnCount.ToString(), System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+                       myWebService.writeLogs(coloumnCount.ToString(), System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
 
                     }
 
@@ -797,13 +802,13 @@ namespace SmartMIS
                     myReader.Close();
                     myReader.Dispose();
 
-                   // DataRow[] results = flag.Select("TimeStamp >= #" + dtandTime + "# AND TimeStamp	< #" + dtandTime.AddMinutes(timeInterval) + "#");
+                    DataRow[] results = flag.Select("TimeStamp >= #" + dtandTime + "# AND TimeStamp	< #" + dtandTime.AddMinutes(timeInterval) + "#");
 
-                    DataRow[] results = flag.Select("TimeStamp >= #" + dtandTime.ToString() + "#");
+                    //DataRow[] results = flag.Select("TimeStamp >= #" + dtandTime.ToString() + "#");
                     foreach (DataRow row in results)
                     {
                         tempflag.Rows.Add(row.ItemArray);
-                        //myWebService.writeLogs(results.ToString(), System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+                        myWebService.writeLogs(results.ToString(), System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
                     }
                 }
 

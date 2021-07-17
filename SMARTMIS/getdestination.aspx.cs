@@ -84,12 +84,19 @@ namespace SmartMIS
 
                         else if (station == "2")
                         {
-                           
+                            bool isunloadbarcode2 = getunloadbarcode(gtbarcode);
                             weight = "";
                             if (gtbarcode.Contains("?"))
                             {
                                 Response.Write("station=" + station + "&ID=" + parcellID + "&destination=??");
                                 finaldestination = "??";
+                            }
+                            else if (isunloadbarcode2)
+                            {
+                                Response.Write("station=" + station + "&ID=" + parcellID + "&destination=11");
+                                finaldestination = "11";
+                                mywebservice.writeLogs("finaldestination=11", System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+
                             }
                            else
                             {
@@ -153,13 +160,14 @@ namespace SmartMIS
                                                                
                                 getGradeShearographyArea(gtbarcode);
 
+                                bool isunloadbarcode = getunloadbarcode(gtbarcode);
                                 if (NCMRConfig.Rows.Count > 0)
                                 {
                                     if (GradeShearography.Rows.Count > 0 && (GradeShearography.Rows[0]["Grade"].ToString() == "A"))
                                     {
                                         #region
                                         //exiting code
-
+                                        
                                         weight = "";
                                         if (gtbarcode.Contains("?"))
                                         {
@@ -167,13 +175,20 @@ namespace SmartMIS
                                             finaldestination = "11";
                                             mywebservice.writeLogs("finaldestination=11", System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
                                         }
+                                        else if (isunloadbarcode)
+                                        {
+                                            Response.Write("station=" + station + "&ID=" + parcellID + "&destination=11");
+                                            finaldestination = "11";
+                                            mywebservice.writeLogs("finaldestination=11", System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+
+                                        }
                                         else
                                         {
                                             getVIConfig();
                                             int aa = 0;
                                             string gtrecipe = getrecipe(gtbarcode);
                                             mywebservice.writeLogs(gtrecipe + "_gtrecipe_" + gtbarcode, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
-                                            bool isunloadbarcode = getunloadbarcode(gtbarcode);
+                                          //  bool isunloadbarcode = getunloadbarcode(gtbarcode);
                                             mywebservice.writeLogs(isunloadbarcode + "_isunloadbarcode_" + gtbarcode, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
                                             bool flag = mywebservice.IsRecordExist("BuddeScannedTyreDetail", "gtbarcode", "where gtbarcode='" + gtbarcode + "' and destination='01' and stationNo=3", out aa);
                                             mywebservice.writeLogs("flag_" + flag, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
@@ -211,7 +226,7 @@ namespace SmartMIS
                                             }
                                             mywebservice.writeLogs("tyretesting=" + tyretesting + "&recipewisecountervalue=" + recipewisecountervalue + "&isunloadbarcode=" + isunloadbarcode, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
 
-                                            if ((tyretesting != 0 && !flag && (recipewisecountervalue >= 100 / tyretesting)) || isunloadbarcode)
+                                            if ((tyretesting != 0 && !flag && (recipewisecountervalue >= 100 / tyretesting)))// || isunloadbarcode)
                                             {
                                                 try
                                                 {
@@ -238,10 +253,10 @@ namespace SmartMIS
 
                                                     if (tempdestination == 0)
                                                     {
-                                                        Response.Write("station=" + station + "&ID=" + parcellID + "&destination=11");
+                                                        Response.Write("station=" + station + "&ID=" + parcellID + "&destination=01");  // old &destination=11");
                                                         stationwisetempcount = stationwiseCounter[10];
                                                         stationwiseCounter[10] = stationwisetempcount + 1;
-                                                        finaldestination = "11";
+                                                        finaldestination = "01";  // old finaldestination = "11";
                                                         mywebservice.writeLogs("tempdestination == 0station=" + station + "&ID=" + parcellID + "&destination=" + destination + "", System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
                                                     }
                                                     else if (destination < 10)
@@ -286,7 +301,7 @@ namespace SmartMIS
                                 {
                                     #region
                                     //exiting code
-
+                                    bool isunloadbarcode1 = getunloadbarcode(gtbarcode);
                                     weight = "";
                                     if (gtbarcode.Contains("?"))
                                     {
@@ -294,13 +309,20 @@ namespace SmartMIS
                                         finaldestination = "11";
                                         mywebservice.writeLogs("finaldestination=11", System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
                                     }
+                                    else if (isunloadbarcode1)
+                                    {
+                                        Response.Write("station=" + station + "&ID=" + parcellID + "&destination=11");
+                                        finaldestination = "11";
+                                        mywebservice.writeLogs("finaldestination=11", System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+                                  
+                                    }
                                     else
                                     {
                                         getVIConfig();
                                         int aa = 0;
                                         string gtrecipe = getrecipe(gtbarcode);
                                         mywebservice.writeLogs(gtrecipe + "_gtrecipe_" + gtbarcode, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
-                                        bool isunloadbarcode = getunloadbarcode(gtbarcode);
+                                       // bool isunloadbarcode = getunloadbarcode(gtbarcode);
                                         mywebservice.writeLogs(isunloadbarcode + "_isunloadbarcode_" + gtbarcode, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
                                         bool flag = mywebservice.IsRecordExist("BuddeScannedTyreDetail", "gtbarcode", "where gtbarcode='" + gtbarcode + "' and destination='01' and stationNo=3", out aa);
                                         mywebservice.writeLogs("flag_" + flag, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
@@ -338,7 +360,7 @@ namespace SmartMIS
                                         }
                                         mywebservice.writeLogs("tyretesting=" + tyretesting + "&recipewisecountervalue=" + recipewisecountervalue + "&isunloadbarcode=" + isunloadbarcode, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
 
-                                        if ((tyretesting != 0 && !flag && (recipewisecountervalue >= 100 / tyretesting)) || isunloadbarcode)
+                                        if ((tyretesting != 0 && !flag && (recipewisecountervalue >= 100 / tyretesting)))  //|| isunloadbarcode) //sachin : comment code due to new requirement
                                         {
                                             try
                                             {
@@ -365,10 +387,10 @@ namespace SmartMIS
 
                                                 if (tempdestination == 0)
                                                 {
-                                                    Response.Write("station=" + station + "&ID=" + parcellID + "&destination=11");
+                                                    Response.Write("station=" + station + "&ID=" + parcellID + "&destination=01"); // old &destination=11")
                                                     stationwisetempcount = stationwiseCounter[10];
                                                     stationwiseCounter[10] = stationwisetempcount + 1;
-                                                    finaldestination = "11";
+                                                    finaldestination = "01";//old finaldestination = "11";
                                                     mywebservice.writeLogs("tempdestination == 0station=" + station + "&ID=" + parcellID + "&destination=" + destination + "", System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
                                                 }
                                                 else if (destination < 10)
@@ -479,6 +501,30 @@ namespace SmartMIS
             }
 
         }
+
+        //private void getUnloadingArea(string gtbarcode)
+        //{
+        //    try
+        //    {
+        //        GradeShearography.Clear();
+        //        myConnection.open(ConnectionOption.SQL);
+        //        myConnection.comm = myConnection.conn.CreateCommand();
+        //        myConnection.comm.CommandText = "select top 1 * from UnloadBarcode where barcode='" + gtbarcode + "' order by id desc";
+        //        myConnection.reader = myConnection.comm.ExecuteReader();
+        //        GradeShearography.Load(myConnection.reader);
+        //        mywebservice.writeLogs("getUnloadingArea", System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+        //    }
+        //    catch (Exception exc)
+        //    {
+        //        mywebservice.writeLogs(exc.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+        //    }
+        //    finally
+        //    {
+        //        myConnection.reader.Close();
+        //        myConnection.comm.Dispose();
+        //        myConnection.conn.Close();
+        //    }
+        //}
 
 
         private void deleteShreographyTemptable(string gtbarcode)

@@ -540,7 +540,8 @@ namespace SmartMIS.Report
                     myConnection.open(ConnectionOption.SQL);
                     myConnection.comm = myConnection.conn.CreateCommand();
                     //myConnection.comm.CommandText = "SELECT gtbarCode AS tbm_gtbarcode, wcName AS tbmWCName, convert(char(10), dtandTime, 105) AS TBM_Date, convert(char(8), dtandTime, 108) AS TBM_Time, firstName + ' ' + lastName As BuilderName FROM vTbmpcr WHERE dtandTime>='" + tempfromdt + "' AND dtandTime<'" + to_date + "'";
-                    myConnection.comm.CommandText = "SELECT gtbarCode AS trim_gtbarcode, wcName AS trimWCName from  trimmingdata WHERE dtandTime>='" + tempfromdt + "' AND dtandTime<'" + to_date + "'";
+                   // myConnection.comm.CommandText = "SELECT gtbarCode AS trim_gtbarcode, wcName AS trimWCName from  trimmingdata WHERE dtandTime>='" + tempfromdt + "' AND dtandTime<'" + to_date + "'";
+                    myConnection.comm.CommandText = @"WITH Ranked As (SELECT gtbarCode AS trim_gtbarcode, wcName AS trimWCName, ROW_NUMBER() OVER (PARTITION BY gtbarcode ORDER BY dtandTime desc) AS RowNumber from  trimmingdata WHERE dtandTime>='" + tempfromdt + "' AND dtandTime<'" + to_date + "')select Ranked.trim_gtbarcode,Ranked.trimWCName from Ranked where Ranked.RowNumber='1'";
                     myConnection.reader = myConnection.comm.ExecuteReader(CommandBehavior.CloseConnection);
                    // myWebService.writeLogs(myConnection.comm.CommandText, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
           

@@ -475,7 +475,8 @@ namespace SmartMIS.Report
                 createGridView(gridviewdt, ExcelGridView);
                 string query = @"select wcname AS visualWCName, description AS TyreSize, gtbarCode AS BarCode,Status =(CASE WHEN DefectStatusN='OTHER' THEN defectStatusName WHEN DefectStatusN='BUFF' THEN DefectStatusN+'-'+defectStatusName WHEN DefectStatusN='REPAIR' THEN DefectStatusN+'-'+defectStatusName WHEN DefectStatusN='CAMOFLAUGE' THEN DefectStatusN+'-'+defectStatusName  END), remarks,shift=(CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'A' WHEN convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8), dtandTime, 108) <= '22:59:59.999' THEN 'B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999') or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'C' END),firstname as InspectorName, ssORnss=(CASE WHEN ssORnss='1' THEN 'ss' WHEN ssORnss='2' THEN 'nss' WHEN ssORnss='0' THEN '' END),convert(char(10), dtandTime, 103) AS VIDate, convert(char(8), dtandTime, 108) AS VITime from vTBRVisualInspectionReportNeww where  wcID in (select iD from wcmaster where vistage=2 and processID=6) AND dtandTime>='" + rToDate + "' AND dtandTime<'" + rFromDate + "'  order by dtandtime asc";
 
-
+                //string query = @"WITH Ranked
+//AS (select wcname AS visualWCName, description AS TyreSize, gtbarCode AS BarCode,Status =(CASE WHEN DefectStatusN='OTHER' THEN defectStatusName WHEN DefectStatusN='BUFF' THEN DefectStatusN+'-'+defectStatusName WHEN DefectStatusN='REPAIR' THEN DefectStatusN+'-'+defectStatusName WHEN DefectStatusN='CAMOFLAUGE' THEN DefectStatusN+'-'+defectStatusName  END), remarks,shift=(CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'A' WHEN convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8), dtandTime, 108) <= '22:59:59.999' THEN 'B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999') or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'C' END),firstname as InspectorName, ssORnss=(CASE WHEN ssORnss='1' THEN 'ss' WHEN ssORnss='2' THEN 'nss' WHEN ssORnss='0' THEN '' END),convert(char(10), dtandTime, 103) AS VIDate, convert(char(8), dtandTime, 108) AS VITime, ROW_NUMBER() OVER (PARTITION BY gtbarcode ORDER BY dtandTime desc) AS RowNumber from vTBRVisualInspectionReportNeww where  wcID in (select iD from wcmaster where vistage=2 and processID=6) and dtandTime > '" + rToDate + "' and dtandtime<'" + rFromDate + "' ) select Ranked.visualWCName,Ranked.TyreSize,Ranked.BarCode,Ranked.Status,Ranked.remarks,Ranked.shift,Ranked.InspectorName,Ranked.ssORnss,Ranked.VIDate,Ranked.VITime  from Ranked where RowNumber=1 ";
                 myConnection.open(ConnectionOption.SQL);
                 myConnection.comm = myConnection.conn.CreateCommand();
                 myConnection.comm.CommandText = query;
@@ -489,7 +490,7 @@ namespace SmartMIS.Report
                 if (dt.Rows.Count != 0)
                 {
                     //string InQuery = "('" + string.Join("','", (string[])dt.AsEnumerable().Select(x => x.Field<string>("gtbarcode").ToString()).ToArray()) + "')"; // InQuery.TrimEnd(',');
-                    string tempdtandtime = Convert.ToDateTime(rToDate).AddDays(-3).ToString();
+                    string tempdtandtime = Convert.ToDateTime(rToDate).AddDays(-30).ToString();
                     SqlConnection con = new SqlConnection();
                     con.ConnectionString = ConfigurationManager.ConnectionStrings["mySQLConnection"].ToString();
                     con.Open();
@@ -513,14 +514,26 @@ namespace SmartMIS.Report
                     myConnection.reader.Close();
 
 
-                    string query1 = @"select  gtbarCode AS FirstBarCode, wcname AS FirstvisualWCName, description AS FirstTyreSize,
+//                    string query1 = @"select  gtbarCode AS FirstBarCode, wcname AS FirstvisualWCName, description AS FirstTyreSize,
+//                    DefectStatusName AS FirstStatus, defectAreaName as FirstdefectAreaName, defectname as Firstdefectname, remarks as Firstremarks, 
+//                    FirstShift=(CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND 
+//                    convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'A' WHEN 
+//                    convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8), dtandTime, 108) <= '22:59:59.999' 
+//                    THEN 'B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999')
+//                    or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'C' END),firstname as FirstInspectorName
+//                    from vTBRVisualInspectionReport where WCID IN (select ID from wcmaster where vistage=1 and processID=6) AND dtandTime>='" + tempdtandtime + "' AND dtandTime<'" + rFromDate + "'";
+
+
+                    string query1= @"WITH Ranked
+AS (select  gtbarCode AS FirstBarCode, wcname AS FirstvisualWCName, description AS FirstTyreSize,
                     DefectStatusName AS FirstStatus, defectAreaName as FirstdefectAreaName, defectname as Firstdefectname, remarks as Firstremarks, 
                     FirstShift=(CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND 
                     convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'A' WHEN 
                     convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8), dtandTime, 108) <= '22:59:59.999' 
                     THEN 'B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999')
                     or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'C' END),firstname as FirstInspectorName
-                    from vTBRVisualInspectionReport where WCID IN (select ID from wcmaster where vistage=1 and processID=6) AND dtandTime>='" + tempdtandtime + "' AND dtandTime<'" + rFromDate + "' AND status<>'1'";
+                    , ROW_NUMBER() OVER (PARTITION BY gtbarcode ORDER BY dtandTime desc) AS RowNumber from vTBRVisualInspectionReport where WCID IN (select ID from wcmaster where vistage=1 and processID=6) AND dtandTime>='" + tempdtandtime + "' AND dtandTime<'" + rFromDate + "') select Ranked.FirstBarCode,Ranked.FirstvisualWCName,Ranked.FirstTyreSize,Ranked.FirstStatus,Ranked.FirstdefectAreaName,Ranked.Firstdefectname,Ranked.Firstremarks,Ranked.FirstShift,Ranked.FirstInspectorName  from Ranked where RowNumber=1";
+
 
 
                     myConnection.open(ConnectionOption.SQL);

@@ -2,7 +2,7 @@
 
 <asp:Content ID="TBRVISummaryReportContent" runat="server" ContentPlaceHolderID="masterContentPlaceHolder">
 <script type="text/javascript" language="javascript" src="../Script/download.js"></script>
-<style>
+<style type="text/css">
 .button:hover
 {
     background-color: #15497C;
