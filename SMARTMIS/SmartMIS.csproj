@@ -252,6 +252,13 @@
     <Compile Include="Report\PCRpaintingReport.aspx.designer.cs">
       <DependentUpon>PCRpaintingReport.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Report\PCRTRIMMINGREPORT.aspx.cs">
+      <DependentUpon>PCRTRIMMINGREPORT.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\PCRTRIMMINGREPORT.aspx.designer.cs">
+      <DependentUpon>PCRTRIMMINGREPORT.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Report\PCRViScrap.aspx.cs">
       <DependentUpon>PCRViScrap.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -301,6 +308,13 @@
     <Compile Include="Report\SLI_PCRVISummaryReport.aspx.designer.cs">
       <DependentUpon>SLI_PCRVISummaryReport.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Report\TbrPaintingReport.aspx.cs">
+      <DependentUpon>TbrPaintingReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\TbrPaintingReport.aspx.designer.cs">
+      <DependentUpon>TbrPaintingReport.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Report\TBRVISecondline.aspx.cs">
       <DependentUpon>TBRVISecondline.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -328,6 +342,13 @@
     </Compile>
     <Compile Include="Report\waveformReport.aspx.designer.cs">
       <DependentUpon>waveformReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\waveformReportNew.aspx.cs">
+      <DependentUpon>waveformReportNew.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\waveformReportNew.aspx.designer.cs">
+      <DependentUpon>waveformReportNew.aspx</DependentUpon>
     </Compile>
     <Compile Include="Report\WebForm2.aspx.cs">
       <DependentUpon>WebForm2.aspx</DependentUpon>
@@ -1601,6 +1622,7 @@
     <Content Include="Report\PCRinspectionDefectwise.aspx" />
     <Content Include="Report\PCRInspectionsummaryReport.aspx" />
     <Content Include="Report\PCRpaintingReport.aspx" />
+    <Content Include="Report\PCRTRIMMINGREPORT.aspx" />
     <Content Include="Report\PCRViScrap.aspx" />
     <Content Include="Report\PCRVISummaryReport.aspx" />
     <Content Include="Report\PCRVISummaryReport2.aspx" />
@@ -1620,6 +1642,7 @@
     <Content Include="Report\SLI_PCRVISummaryReport.aspx" />
     <Content Include="Report\SmartFinalFinish.aspx" />
     <Content Include="Report\TBMProductionReport.aspx" />
+    <Content Include="Report\TbrPaintingReport.aspx" />
     <Content Include="Report\TBRVISecondline.aspx" />
     <Content Include="Report\TBRvisualinspection2.aspx" />
     <Content Include="Report\TBRVISummaryReport.aspx" />
@@ -1632,6 +1655,7 @@
     <Content Include="Report\VISummaryReport.aspx" />
     <Content Include="Report\GTRejection.aspx" />
     <Content Include="Report\waveformReport.aspx" />
+    <Content Include="Report\waveformReportNew.aspx" />
     <Content Include="Report\WebForm2.aspx" />
     <Content Include="Report\WeighingReport.aspx" />
     <Content Include="Report\xrayreport.aspx" />

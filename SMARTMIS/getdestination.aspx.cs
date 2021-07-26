@@ -64,15 +64,16 @@ namespace SmartMIS
                         {
                             if (gtbarcode.Contains("?"))
                             {
-                                Response.Write("station=" + station + "&ID=" + parcellID + "&destination=??");
-                                finaldestination = "??";
+                                //Response.Write("station=" + station + "&ID=" + parcellID + "&destination=??");
+                                Response.Write("station=" + station + "&ID=" + parcellID + "&destination=02");
+                                finaldestination = "02";//  modified by sachin - 2021-07-22 //finaldestination = "??";
                             }
                             else
                             {
 
                                 finaldestination = "0" + getdata(gtbarcode, stationNO);
                                 if (finaldestination.Contains("?"))
-                                    finaldestination = "??";
+                                    finaldestination = "02";//  modified by sachin - 2021-07-22 //finaldestination = "??";
                                 Response.Write("station=" + station + "&ID=" + parcellID + "&destination=" + finaldestination + "");
 
                             }

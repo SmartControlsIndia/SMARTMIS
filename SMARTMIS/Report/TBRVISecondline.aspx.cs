@@ -1051,13 +1051,24 @@ namespace SmartMIS.Report
                     myConnection.comm = myConnection.conn.CreateCommand();
                     if (shiftDropdownlist.SelectedItem.Text != "ALL")
                     {
+//                        myConnection.comm.CommandText = @"select wcname AS visualWCName, description AS TyreSize, gtbarCode AS BarCode,
+//                    DefectStatusName AS Status,  defectAreaName, defectname,
+//                    shift=(CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND 
+//                    convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'A' WHEN 
+//                    convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8), dtandTime, 108) <= '22:59:59.999' 
+//                    THEN 'B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999')
+//                    or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'C' END),firstname as InspectorName,convert(char(10), dtandTime, 110) AS VIDate, convert(char(8), dtandTime, 108) AS VITime from vTBRVISecondLine where WCID IN (select ID from wcmaster where vistage=3 and processID=6) AND dtandTime>='" + from_date + "' AND dtandTime<'" + to_date + "' AND statusID<>'1' and (CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'A' WHEN  convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8),dtandTime, 108) <= '22:59:59.999' THEN 'B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999') or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'C' END) ='" + shiftDropdownlist.SelectedItem.Text + "'"; 
+                  
+
+
+
                         myConnection.comm.CommandText = @"select wcname AS visualWCName, description AS TyreSize, gtbarCode AS BarCode,
                     DefectStatusName AS Status,  defectAreaName, defectname,
                     shift=(CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND 
                     convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'A' WHEN 
                     convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8), dtandTime, 108) <= '22:59:59.999' 
                     THEN 'B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999')
-                    or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'C' END),firstname as InspectorName,convert(char(10), dtandTime, 110) AS VIDate, convert(char(8), dtandTime, 108) AS VITime from vTBRVISecondLine where WCID IN (select ID from wcmaster where vistage=3 and processID=6) AND dtandTime>='" + from_date + "' AND dtandTime<'" + to_date + "' AND statusID<>'1' and (CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'A' WHEN  convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8),dtandTime, 108) <= '22:59:59.999' THEN 'B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999') or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'C' END) ='"+shiftDropdownlist.SelectedItem.Text+"'"; 
+                    or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'C' END),firstname as InspectorName,convert(char(10), dtandTime, 110) AS VIDate, convert(char(8), dtandTime, 108) AS VITime from vTBRVISecondLine where WCID IN (select ID from wcmaster where vistage=3 and processID=6) AND dtandTime>='" + from_date + "' AND dtandTime<'" + to_date + "' and (CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'A' WHEN  convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8),dtandTime, 108) <= '22:59:59.999' THEN 'B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999') or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'C' END) ='"+shiftDropdownlist.SelectedItem.Text+"'"; 
                     }
                     else
                     {
@@ -1068,7 +1079,7 @@ namespace SmartMIS.Report
                     convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8), dtandTime, 108) <= '22:59:59.999' 
                     THEN 'B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999')
                     or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'C' END),firstname as InspectorName,convert(char(10), dtandTime, 110) AS VIDate, convert(char(8), dtandTime, 108) AS VITime
-                    from vTBRVISecondLine where WCID IN (select ID from wcmaster where vistage=3 and processID=6) AND dtandTime>='" + from_date + "' AND dtandTime<'" + to_date + "' AND statusID<>'1'";
+                    from vTBRVISecondLine where WCID IN (select ID from wcmaster where vistage=3 and processID=6) AND dtandTime>='" + from_date + "' AND dtandTime<'" + to_date + "'";// MODIFIED DATE : 2021-07-24 -- AND statusID<>'1'
                     }
                     myConnection.reader = myConnection.comm.ExecuteReader(CommandBehavior.CloseConnection);
                     dt.Load(myConnection.reader);

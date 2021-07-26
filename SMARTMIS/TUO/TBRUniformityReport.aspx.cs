@@ -73,18 +73,9 @@ namespace SmartMIS.Report
                     string ntoDate = toDate.ToString("dd/MMM/yyyy") + " 07:00:00";
 
                     showReportDateMonthWise(nfromDate, ntoDate, getType);
-                    //HeaderText.Text = "<div width=30% class=\"infobox\"><table width=100%><tr><td width=11%>" + getProcess.ToString() + "</td><td width=63%><strong>Curing Production Report</strong></td><td width=12% align=right>Date : " + getDate + "</td><td width=16% align=right> Type : " + getType.ToString() + "</td></tr></table></div>";
                     break;
 
-                //  fromDate = DateTime.Parse(formatDate(getfromdate));
-
-                //  toDate = DateTime.Parse(formatDate(gettodate));
-
-                // string nfromDate = fromDate.ToString("dd/MMM/yyyy") + " 07:00:00";
-                //string  ntoDate = toDate.AddDays(1).ToString("dd/MMM/yyyy") + " 07:00:00";
-
-
-
+               
                 case "Month":
 
                     nfromDate = getYear.ToString() + "-" + getMonth + "-01 07:00:00";
@@ -99,11 +90,9 @@ namespace SmartMIS.Report
 
 
                     showReportDateMonthWise(nfromDate, ntoDate, getType);
-                    // HeaderText.Text = "<div width=30% class=\"infobox\"><table width=100%><tr><td width=11%>" + getProcess.ToString() + "</td><td width=60%><strong>Curing Production Report</strong></td><td width=14% align=right>Month : " + System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Convert.ToInt32(getMonth)) + " " + getYear + "</td><td width=16% align=right> Type : " + getType.ToString() + "</td></tr></table></div>";
-
+                   
                     break;
 
-                //HeaderText.Text = " &nbsp;&nbsp; &nbsp; MachineType-" + ddlMachineType.SelectedItem.Text + " &nbsp; FromDate-" + txtfrom.Text + " &nbsp; To-" + txtto.Text;
             }
         }
                   
@@ -390,15 +379,7 @@ INNER JOIN dbo.wcMaster ON shd.wcid = dbo.wcMaster.iD where shd.dtandTime >= '" 
                             }
                             //gridviewdt.Rows.Add(dr);
 
-
                         }
-
-                       
-
-
-
-
-
                     }
                     if (gridviewdt.Rows.Count - 1 <= 0)
                     {
@@ -468,12 +449,10 @@ INNER JOIN dbo.wcMaster ON shd.wcid = dbo.wcMaster.iD where shd.dtandTime >= '" 
 
                     }
                 }
-                //myConnection.comm.CommandText = "Select wcName, recipeCode, dtandTime from vTbmTBR WHERE wcID IN " + wcIDInQuery.ToString() + " AND dtandTime >= '" + fromDate + "' AND dtandTime < '" + toDate + "' and recipeCode is not null ORDER BY wcID, recipeCode, dtandTime asc";
-
+               
                 MainGridView.DataSource = gridviewdt;
                 MainGridView.DataBind();
                 MainGridView.Visible = true;
-                //gvpanel.Visible = true;
                 IEnumerable<GridViewRow> rows = MainGridView.Rows.Cast<GridViewRow>().Where(row => row.Cells[0].Text == "GrandTotal");
                 IEnumerable<GridViewRow> rows1 = MainGridView.Rows.Cast<GridViewRow>().Where(row => row.Cells[1].Text == "Percentage");
                 IEnumerable<GridViewRow> rows2 = MainGridView.Rows.Cast<GridViewRow>()
@@ -493,65 +472,17 @@ INNER JOIN dbo.wcMaster ON shd.wcid = dbo.wcMaster.iD where shd.dtandTime >= '" 
                 MainGridView.Rows[MainGridView.Rows.Count - 1].BackColor = System.Drawing.ColorTranslator.FromHtml("#E0E0E0");
 
 
-               
-                
-                //Excel Datatable
-                //Created:2-12-2016
-                //Sarita
                 exldt = gridviewdt.Copy();
-                // exldt = gridviewdt.Copy();
                 exldt.Columns[0].DataType = typeof(string);
                 exldt.Columns[1].DataType = typeof(string);
                 exldt.Columns[2].DataType = typeof(string);
-                //exldt.Columns[3].DataType = typeof(Double);
-                //exldt.Columns[4].DataType = typeof(Double);
-                //exldt.Columns[5].DataType = typeof(Double);
-                //exldt.Columns[6].DataType = typeof(Double);
-                //exldt.Columns[7].DataType = typeof(Double);
-                //exldt.Columns[8].DataType = typeof(Double);
-
-                //exldt.Columns[13].DataType = typeof(Double);
-                //exldt.Load(gridviewdt.CreateDataReader(), System.Data.LoadOption.OverwriteChanges);
-
-
-
 
                 ViewState["dt"] = exldt;
             }
             catch (Exception exp)
-            {
-               // myWebService.writeLogs(exp.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
-            }
+            {    }
         }
        
-        //public string formatDate(String date)
-        //{
-        //    string flag = "";
-
-        //    string day, month, year;
-        //    if (date != null)
-        //    {
-        //        string[] tempDate = date.Split(new char[] { '/' });
-        //        try
-        //        {
-        //            if (tempDate.Length > 2)
-        //            {
-        //            }
-        //            else
-        //            { tempDate = date.Split(new char[] { '-' }); }
-        //            day = tempDate[0].ToString().Trim();
-        //            month = tempDate[1].ToString().Trim();
-        //            year = tempDate[2].ToString().Trim();
-        //            flag = day + "/" + month + "/" + year + " " + "07" + ":" + "00" + ":" + "00";
-
-        //        }
-        //        catch (Exception exp)
-        //        {
-        //            myWebService.writeLogs(exp.Message, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
-        //        }
-        //    }
-        //    return flag;
-        //}
         public string formatDate(string date)
         {
             string flag = "";
@@ -619,10 +550,6 @@ INNER JOIN dbo.wcMaster ON shd.wcid = dbo.wcMaster.iD where shd.dtandTime >= '" 
         }
         protected void expToExcel_Click(object sender, EventArgs e)
         {
-
-
-            // getdisplaytype = optionDropDownList.SelectedItem.Text;
-
             DataTable dt = (DataTable)ViewState["dt"];
             Response.Clear();
             Response.ClearHeaders();
@@ -633,7 +560,6 @@ INNER JOIN dbo.wcMaster ON shd.wcid = dbo.wcMaster.iD where shd.dtandTime >= '" 
 
             ExcelPackage pck = new ExcelPackage();
             ExcelWorksheet ws = pck.Workbook.Worksheets.Add("Uniformityreport");
-
 
             //" &nbsp;&nbsp; Date- " + txtdate.Text + " &nbsp; Recipe-" + ddlsizewise.SelectedItem.Text + " &nbsp; Machine-" + ddlMachinewise.SelectedItem.Text;
             using (ExcelRange r = ws.Cells["A1:I1"])
@@ -646,16 +572,8 @@ INNER JOIN dbo.wcMaster ON shd.wcid = dbo.wcMaster.iD where shd.dtandTime >= '" 
                 r.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(23, 55, 93));
             }
 
-
             ws.Cells["A3"].LoadFromDataTable((DataTable)ViewState["dt"], true, OfficeOpenXml.Table.TableStyles.Light1);
             ws.Cells.AutoFitColumns();
-
-
-
-
-
-
-
             var ms = new MemoryStream();
             pck.SaveAs(ms);
             ms.WriteTo(Response.OutputStream);
@@ -663,56 +581,7 @@ INNER JOIN dbo.wcMaster ON shd.wcid = dbo.wcMaster.iD where shd.dtandTime >= '" 
             Response.Flush();
             Response.End();
 
-
         }
-        //protected void DropDownListDuration_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    if (DropDownListDuration.SelectedValue == "1")
-        //    {
-        //        pnldate1.Visible = true;
-        //        pnlDateRange1.Visible = false;
-        //        pnlmonth1.Visible = false;
-        //        pnlyearly1.Visible = false;
-        //    }
-        //    else if (DropDownListDuration.SelectedValue == "2")
-        //    {
-        //        pnldate1.Visible = false;
-        //        pnlDateRange1.Visible = true;
-        //        pnlmonth1.Visible = false;
-        //        pnlyearly1.Visible = false;
-        //    }
-        //    else if (DropDownListDuration.SelectedValue == "3")
-        //    {
-        //        pnldate1.Visible = false;
-        //        pnlDateRange1.Visible = false;
-        //        pnlmonth1.Visible = true;
-        //        pnlyearly1.Visible = false;
-        //    }
-        //    else if (DropDownListDuration.SelectedValue == "4")
-        //    {
-        //        pnldate1.Visible = false;
-        //        pnlDateRange1.Visible = false;
-        //        pnlmonth1.Visible = false;
-        //        pnlyearly1.Visible = true;
-        //        gvpanel.Visible = true;
-        //    }
-        //}
-
-        //protected void ddlMachineType_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    if (ddlMachineType.SelectedValue == "1")
-        //    {
-        //        Divmachine.Visible = true;
-        //        DivUniformity.Visible = false;
-        //    }
-        //    else if (ddlMachineType.SelectedValue == "2")
-        //    {
-        //        Divmachine.Visible = false;
-        //        DivUniformity.Visible = true;
-
-        //    }
-        //}
-
        
     }
 }

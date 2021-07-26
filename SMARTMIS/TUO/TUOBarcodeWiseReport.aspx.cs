@@ -405,12 +405,8 @@ namespace SmartMIS.TUO
                     //  fillSizedropdownlist();
 
 
-
-
                     List<string> conditions = new List<string>();
                     string query = "";
-
-
 
 
                     if (GradeDropDownList.SelectedItem.Text != "All")
@@ -444,9 +440,6 @@ namespace SmartMIS.TUO
                             myConnection.reader.Close();
                         myConnection.comm.Dispose();
                     }
-
-
-
 
                     try
                     {
@@ -524,8 +517,6 @@ namespace SmartMIS.TUO
                             myConnection.reader.Close();
                         myConnection.comm.Dispose();
                     }
-
-
 
 
                     //Get TBM details
