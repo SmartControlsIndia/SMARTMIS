@@ -200,7 +200,7 @@ shift AS SHIFT ,gtbarcode AS BARCODE,recipeCode AS RECIPE ,SAPCODE,wcName as MAC
 
             myConnection.open(ConnectionOption.SQL);
             myConnection.comm = myConnection.conn.CreateCommand();
-            myConnection.comm.CommandText = "Select DISTINCT id as rID,name from recipemaster where description != '0' and description !='' and tyreSize!=''and processID = 8";
+            myConnection.comm.CommandText = "Select DISTINCT id as rID,name from recipemaster where description != '0' and description !='' and tyreSize!=''and processID = 4";
             myConnection.reader = myConnection.comm.ExecuteReader();
             d_dt.Load(myConnection.reader);
             ddlRecipe.DataSource = d_dt;
