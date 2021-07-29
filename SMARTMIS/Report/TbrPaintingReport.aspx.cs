@@ -51,6 +51,7 @@ namespace SmartMIS.Report
             string tyredesign = "";// processDropDownList.SelectedItem.Text;
             string duration = "";
             var datetimebt = "";
+            string DateTYpe = "";
             string getfromdate = reportMasterFromDateTextBox.Text;
 
             switch (DropDownListDuration.SelectedItem.Value)
@@ -61,7 +62,7 @@ namespace SmartMIS.Report
 
                     string nfromDate = fromDate.ToString("yyyy-MM-dd") + " 07:00:00";
                     string ntoDate = toDate.ToString("yyyy-MM-dd") + " 07:00:00";
-                    showReportDateMonthWise(nfromDate, ntoDate, recipe, tyredesign);
+                    showReportDateMonthWise(nfromDate, ntoDate, recipe, tyredesign, DateTYpe);
                     ShowWarning.Visible = false;
                     break;
                 case "DateFrom":
@@ -80,7 +81,7 @@ namespace SmartMIS.Report
 
                     else
                     {
-                        showReportDateMonthWise(nfromDate, ntoDate, recipe, tyredesign);
+                        showReportDateMonthWise(nfromDate, ntoDate, recipe, tyredesign, DateTYpe);
                         ShowWarning.Visible = false;
                     }
                     break;
@@ -93,15 +94,15 @@ namespace SmartMIS.Report
                     else
                     { datetimebt = getYear.ToString() + "-" + (getMonth) + "-31 07:00:00"; }
 
-                    ntoDate = datetimebt;
-                    showReportDateMonthWise(nfromDate, ntoDate, recipe, tyredesign);
+                    ntoDate = datetimebt; DateTYpe = "Month";
+                    showReportDateMonthWise(nfromDate, ntoDate, recipe, tyredesign,DateTYpe);
 
                     break;
 
 
             }
         }
-        protected void showReportDateMonthWise(string nfromDate, string ntoDate, string recipe, string tyredesign)
+        protected void showReportDateMonthWise(string nfromDate, string ntoDate, string recipe, string tyredesign, string DateTYpe)
         {
             string wcname = ddlmachine.SelectedItem.Text;
             string recipename = ddlRecipe.SelectedItem.Text;
@@ -114,7 +115,12 @@ namespace SmartMIS.Report
                 if (wcname != "ALL" && recipename != "All" && shift != "ALL")
                 {
                     myConnection.comm.CommandText = @"SELECT ROW_NUMBER() OVER(ORDER BY (SELECT 1)) AS SNo,convert(char(10), dtandtime, 105)  as DATE, convert(varchar(8), convert(time, dtandtime)) as TIME,
-shift AS SHIFT ,gtbarcode AS BARCODE,recipeCode AS RECIPE ,SAPCODE,wcName as MACHINENAME,CASE WHEN paintingRcode = '5' THEN 'NO' ELSE 'YES' END AS  PAINTING FROM vTBRPAINTINGDATANEW where dtandtime>='" + nfromDate + "' and dtandtime<'" + ntoDate + "' and wcName='" + wcname.TrimEnd() + "' and recipe='" + recipename + "' and shift='" + shift + "'order by dtandtime desc";// "select dbo.vCuringtbr.gtbarCode, dbo.vTbmtbR.recipeCode, convert(char(10), vCuringtbr.dtandtime, 105) AS Date,convert(char(10), vCuringtbr.dtandtime, 108) AS Time, dbo.vCuringtbr.wcName, dbo.vCuringtbr.shift FROM  dbo.vCuringtbr INNER JOIN dbo.vTbmtbR ON dbo.vCuringtbr.gtbarCode = dbo.vTbmtbR.gtbarCode  where dbo.vCuringtbr.dtandtime>='" + nfromDate + "' and dbo.vCuringtbr.dtandtime<'" + ntoDate + "' order by dbo.vCuringtbr.dtandtime desc";
+shift AS SHIFT ,gtbarcode AS BARCODE,recipeCode AS RECIPE ,SAPCODE,wcName as MACHINENAME,CASE WHEN paintingRcode = '5' THEN 'NO' ELSE 'YES' END AS  PAINTING FROM vTBRPAINTINGDATANEW where dtandtime>='" + nfromDate + "' and dtandtime<'" + ntoDate + "' and wcName='" + wcname.TrimEnd() + "' and name='" + recipename + "' and shift='" + shift + "'order by dtandtime desc";// "select dbo.vCuringtbr.gtbarCode, dbo.vTbmtbR.recipeCode, convert(char(10), vCuringtbr.dtandtime, 105) AS Date,convert(char(10), vCuringtbr.dtandtime, 108) AS Time, dbo.vCuringtbr.wcName, dbo.vCuringtbr.shift FROM  dbo.vCuringtbr INNER JOIN dbo.vTbmtbR ON dbo.vCuringtbr.gtbarCode = dbo.vTbmtbR.gtbarCode  where dbo.vCuringtbr.dtandtime>='" + nfromDate + "' and dbo.vCuringtbr.dtandtime<'" + ntoDate + "' order by dbo.vCuringtbr.dtandtime desc";
+                }
+                else if (wcname != "ALL" && recipename != "All" && shift == "ALL")
+                {
+                    myConnection.comm.CommandText = @"SELECT ROW_NUMBER() OVER(ORDER BY (SELECT 1)) AS SNo,convert(char(10), dtandtime, 105)  as DATE, convert(varchar(8), convert(time, dtandtime)) as TIME,
+shift AS SHIFT ,gtbarcode AS BARCODE,recipeCode AS RECIPE ,SAPCODE,wcName as MACHINENAME,CASE WHEN paintingRcode = '5' THEN 'NO' ELSE 'YES' END AS  PAINTING FROM vTBRPAINTINGDATANEW where dtandtime>='" + nfromDate + "' and dtandtime<'" + ntoDate + "' and wcName='" + wcname.TrimEnd() + "' and name='" + recipename + "' order by dtandtime desc";// "select dbo.vCuringtbr.gtbarCode, dbo.vTbmtbR.recipeCode, convert(char(10), vCuringtbr.dtandtime, 105) AS Date,convert(char(10), vCuringtbr.dtandtime, 108) AS Time, dbo.vCuringtbr.wcName, dbo.vCuringtbr.shift FROM  dbo.vCuringtbr INNER JOIN dbo.vTbmtbR ON dbo.vCuringtbr.gtbarCode = dbo.vTbmtbR.gtbarCode  where dbo.vCuringtbr.dtandtime>='" + nfromDate + "' and dbo.vCuringtbr.dtandtime<'" + ntoDate + "' order by dbo.vCuringtbr.dtandtime desc";
                 }
                 else if (wcname != "ALL" && recipename == "All" && shift != "ALL")
                 {
@@ -129,12 +135,12 @@ shift AS SHIFT ,gtbarcode AS BARCODE,recipeCode AS RECIPE ,SAPCODE,wcName as MAC
                 else if (wcname == "ALL" && recipename != "All" && shift == "ALL")
                 {
                     myConnection.comm.CommandText = @"SELECT ROW_NUMBER() OVER(ORDER BY (SELECT 1)) AS SNo,convert(char(10), dtandtime, 105)  as DATE, convert(varchar(8), convert(time, dtandtime)) as TIME,
-shift AS SHIFT ,gtbarcode AS BARCODE,recipeCode AS RECIPE ,SAPCODE,wcName as MACHINENAME,CASE WHEN paintingRcode = '5' THEN 'NO' ELSE 'YES' END AS  PAINTING FROM vTBRPAINTINGDATANEW where dtandtime>='" + nfromDate + "' and dtandtime<'" + ntoDate + "' and recipe='" + recipename + "'  order by dtandtime desc";// "select dbo.vCuringtbr.gtbarCode, dbo.vTbmtbR.recipeCode, convert(char(10), vCuringtbr.dtandtime, 105) AS Date,convert(char(10), vCuringtbr.dtandtime, 108) AS Time, dbo.vCuringtbr.wcName, dbo.vCuringtbr.shift FROM  dbo.vCuringtbr INNER JOIN dbo.vTbmtbR ON dbo.vCuringtbr.gtbarCode = dbo.vTbmtbR.gtbarCode  where dbo.vCuringtbr.dtandtime>='" + nfromDate + "' and dbo.vCuringtbr.dtandtime<'" + ntoDate + "' order by dbo.vCuringtbr.dtandtime desc";
+shift AS SHIFT ,gtbarcode AS BARCODE,recipeCode AS RECIPE ,SAPCODE,wcName as MACHINENAME,CASE WHEN paintingRcode = '5' THEN 'NO' ELSE 'YES' END AS  PAINTING FROM vTBRPAINTINGDATANEW where dtandtime>='" + nfromDate + "' and dtandtime<'" + ntoDate + "' and name='" + recipename + "'  order by dtandtime desc";// "select dbo.vCuringtbr.gtbarCode, dbo.vTbmtbR.recipeCode, convert(char(10), vCuringtbr.dtandtime, 105) AS Date,convert(char(10), vCuringtbr.dtandtime, 108) AS Time, dbo.vCuringtbr.wcName, dbo.vCuringtbr.shift FROM  dbo.vCuringtbr INNER JOIN dbo.vTbmtbR ON dbo.vCuringtbr.gtbarCode = dbo.vTbmtbR.gtbarCode  where dbo.vCuringtbr.dtandtime>='" + nfromDate + "' and dbo.vCuringtbr.dtandtime<'" + ntoDate + "' order by dbo.vCuringtbr.dtandtime desc";
                 }
                 else if (wcname == "ALL" && recipename != "All" && shift != "ALL")
                 {
                     myConnection.comm.CommandText = @"SELECT ROW_NUMBER() OVER(ORDER BY (SELECT 1)) AS SNo,convert(char(10), dtandtime, 105)  as DATE, convert(varchar(8), convert(time, dtandtime)) as TIME,
-shift AS SHIFT ,gtbarcode AS BARCODE,recipeCode AS RECIPE ,SAPCODE,wcName as MACHINENAME,CASE WHEN paintingRcode = '5' THEN 'NO' ELSE 'YES' END AS  PAINTING FROM vTBRPAINTINGDATANEW where dtandtime>='" + nfromDate + "' and dtandtime<'" + ntoDate + "' and recipe='" + recipename + "'  and shift='" + shift + "' order by dtandtime desc";// "select dbo.vCuringtbr.gtbarCode, dbo.vTbmtbR.recipeCode, convert(char(10), vCuringtbr.dtandtime, 105) AS Date,convert(char(10), vCuringtbr.dtandtime, 108) AS Time, dbo.vCuringtbr.wcName, dbo.vCuringtbr.shift FROM  dbo.vCuringtbr INNER JOIN dbo.vTbmtbR ON dbo.vCuringtbr.gtbarCode = dbo.vTbmtbR.gtbarCode  where dbo.vCuringtbr.dtandtime>='" + nfromDate + "' and dbo.vCuringtbr.dtandtime<'" + ntoDate + "' order by dbo.vCuringtbr.dtandtime desc";
+shift AS SHIFT ,gtbarcode AS BARCODE,recipeCode AS RECIPE ,SAPCODE,wcName as MACHINENAME,CASE WHEN paintingRcode = '5' THEN 'NO' ELSE 'YES' END AS  PAINTING FROM vTBRPAINTINGDATANEW where dtandtime>='" + nfromDate + "' and dtandtime<'" + ntoDate + "' and name='" + recipename + "'  and shift='" + shift + "' order by dtandtime desc";// "select dbo.vCuringtbr.gtbarCode, dbo.vTbmtbR.recipeCode, convert(char(10), vCuringtbr.dtandtime, 105) AS Date,convert(char(10), vCuringtbr.dtandtime, 108) AS Time, dbo.vCuringtbr.wcName, dbo.vCuringtbr.shift FROM  dbo.vCuringtbr INNER JOIN dbo.vTbmtbR ON dbo.vCuringtbr.gtbarCode = dbo.vTbmtbR.gtbarCode  where dbo.vCuringtbr.dtandtime>='" + nfromDate + "' and dbo.vCuringtbr.dtandtime<'" + ntoDate + "' order by dbo.vCuringtbr.dtandtime desc";
                 }
                 else if (wcname == "ALL" && recipename == "All" && shift != "ALL")
                 {
@@ -146,15 +152,33 @@ shift AS SHIFT ,gtbarcode AS BARCODE,recipeCode AS RECIPE ,SAPCODE,wcName as MAC
                     myConnection.comm.CommandText = @"SELECT ROW_NUMBER() OVER(ORDER BY (SELECT 1)) AS SNo,convert(char(10), dtandtime, 105)  as DATE, convert(varchar(8), convert(time, dtandtime)) as TIME,
 shift AS SHIFT ,gtbarcode AS BARCODE,recipeCode AS RECIPE ,SAPCODE,wcName as MACHINENAME,CASE WHEN paintingRcode = '5' THEN 'NO' ELSE 'YES' END AS  PAINTING FROM vTBRPAINTINGDATANEW where dtandtime>='" + nfromDate + "' and dtandtime<'" + ntoDate + "' order by dtandtime desc";// "select dbo.vCuringtbr.gtbarCode, dbo.vTbmtbR.recipeCode, convert(char(10), vCuringtbr.dtandtime, 105) AS Date,convert(char(10), vCuringtbr.dtandtime, 108) AS Time, dbo.vCuringtbr.wcName, dbo.vCuringtbr.shift FROM  dbo.vCuringtbr INNER JOIN dbo.vTbmtbR ON dbo.vCuringtbr.gtbarCode = dbo.vTbmtbR.gtbarCode  where dbo.vCuringtbr.dtandtime>='" + nfromDate + "' and dbo.vCuringtbr.dtandtime<'" + ntoDate + "' order by dbo.vCuringtbr.dtandtime desc";
 
-                } myConnection.reader = myConnection.comm.ExecuteReader();
-                rdt.Load(myConnection.reader);
-                if (rdt.Rows.Count > 0)
-                {
-                    grdCuringBarcode.DataSource = rdt;
-                    grdCuringBarcode.DataBind();
                 }
-                ViewState["dt"] = rdt;
-                rowCountLabel.Text = "Total Records: " + rdt.Rows.Count.ToString();
+                myConnection.comm.CommandTimeout = 300;
+                myConnection.reader = myConnection.comm.ExecuteReader();
+                rdt.Load(myConnection.reader);
+
+                if (DateTYpe == "Month")
+                {
+                    ViewState["dt"] = rdt;
+                    rowCountLabel.Text = "Total Records: " + rdt.Rows.Count.ToString();
+                    downlaodData();
+                }
+                else
+                {
+                    if (rdt.Rows.Count > 0)
+                    {
+                        grdCuringBarcode.DataSource = rdt;
+                        grdCuringBarcode.DataBind();
+                    }
+                    else
+                    {
+                        grdCuringBarcode.DataSource = rdt;
+                        grdCuringBarcode.DataBind();
+                    }
+                    ViewState["dt"] = rdt;
+                    rowCountLabel.Text = "Total Records: " + rdt.Rows.Count.ToString();
+                }
+               
 
             }
             catch (Exception ex)
@@ -169,6 +193,48 @@ shift AS SHIFT ,gtbarcode AS BARCODE,recipeCode AS RECIPE ,SAPCODE,wcName as MAC
                 myConnection.close(ConnectionOption.SQL);
             }
 
+        }
+
+        public void downlaodData()
+        {
+            if (ViewState["dt"] != null)
+            {
+                DataTable dt = (DataTable)ViewState["dt"];
+                Response.Clear();
+                Response.ClearHeaders();
+                Response.ClearContent();
+                Response.Buffer = true;
+                Response.AddHeader("content-disposition", "attachment;filename=TBRPAITINGReport.xls");
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+                ExcelPackage pck = new ExcelPackage();
+                ExcelWorksheet ws = pck.Workbook.Worksheets.Add("TBRPAITINGReport");
+                ws.Cells["A1"].Value = "TBR PAITING Report";
+
+                using (ExcelRange r = ws.Cells["A1:I1"])
+                {
+                    r.Merge = true;
+                    r.Style.Font.SetFromFont(new Font("Arial", 16, FontStyle.Italic));
+                    r.Style.Font.Color.SetColor(Color.White);
+                    r.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.CenterContinuous;
+                    r.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    r.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(23, 55, 93));
+                }
+
+
+                ws.Cells["A3"].LoadFromDataTable((DataTable)ViewState["dt"], true, OfficeOpenXml.Table.TableStyles.Light1);
+                ws.Cells.AutoFitColumns();
+
+
+                var ms = new MemoryStream();
+                pck.SaveAs(ms);
+                ms.WriteTo(Response.OutputStream);
+
+                Response.Flush();
+                Response.End();
+            }
+
+        
         }
         public string formatDate(String date)
         {
@@ -200,7 +266,7 @@ shift AS SHIFT ,gtbarcode AS BARCODE,recipeCode AS RECIPE ,SAPCODE,wcName as MAC
 
             myConnection.open(ConnectionOption.SQL);
             myConnection.comm = myConnection.conn.CreateCommand();
-            myConnection.comm.CommandText = "Select DISTINCT id as rID,name from recipemaster where description != '0' and description !='' and tyreSize!=''and processID = 4";
+            myConnection.comm.CommandText = "Select DISTINCT id as rID,name from recipemaster where description != '0' and description !='' and tyreSize!=''and processID = '4' order by name asc";
             myConnection.reader = myConnection.comm.ExecuteReader();
             d_dt.Load(myConnection.reader);
             ddlRecipe.DataSource = d_dt;
@@ -214,39 +280,42 @@ shift AS SHIFT ,gtbarcode AS BARCODE,recipeCode AS RECIPE ,SAPCODE,wcName as MAC
         }
         protected void expToExcel_Click(object sender, EventArgs e)
         {
-            DataTable dt = (DataTable)ViewState["dt"];
-            Response.Clear();
-            Response.ClearHeaders();
-            Response.ClearContent();
-            Response.Buffer = true;
-            Response.AddHeader("content-disposition", "attachment;filename=TBRPAITINGReport.xls");
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-
-            ExcelPackage pck = new ExcelPackage();
-            ExcelWorksheet ws = pck.Workbook.Worksheets.Add("TBRPAITINGReport");
-            ws.Cells["A1"].Value = "TBR PAITING Report";
-
-            using (ExcelRange r = ws.Cells["A1:I1"])
+            if (ViewState["dt"] != null)
             {
-                r.Merge = true;
-                r.Style.Font.SetFromFont(new Font("Arial", 16, FontStyle.Italic));
-                r.Style.Font.Color.SetColor(Color.White);
-                r.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.CenterContinuous;
-                r.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                r.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(23, 55, 93));
+                DataTable dt = (DataTable)ViewState["dt"];
+                Response.Clear();
+                Response.ClearHeaders();
+                Response.ClearContent();
+                Response.Buffer = true;
+                Response.AddHeader("content-disposition", "attachment;filename=TBRPAITINGReport.xls");
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+                ExcelPackage pck = new ExcelPackage();
+                ExcelWorksheet ws = pck.Workbook.Worksheets.Add("TBRPAITINGReport");
+                ws.Cells["A1"].Value = "TBR PAITING Report";
+
+                using (ExcelRange r = ws.Cells["A1:I1"])
+                {
+                    r.Merge = true;
+                    r.Style.Font.SetFromFont(new Font("Arial", 16, FontStyle.Italic));
+                    r.Style.Font.Color.SetColor(Color.White);
+                    r.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.CenterContinuous;
+                    r.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    r.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(23, 55, 93));
+                }
+
+
+                ws.Cells["A3"].LoadFromDataTable((DataTable)ViewState["dt"], true, OfficeOpenXml.Table.TableStyles.Light1);
+                ws.Cells.AutoFitColumns();
+
+
+                var ms = new MemoryStream();
+                pck.SaveAs(ms);
+                ms.WriteTo(Response.OutputStream);
+
+                Response.Flush();
+                Response.End();
             }
-
-
-            ws.Cells["A3"].LoadFromDataTable((DataTable)ViewState["dt"], true, OfficeOpenXml.Table.TableStyles.Light1);
-            ws.Cells.AutoFitColumns();
-
-
-            var ms = new MemoryStream();
-            pck.SaveAs(ms);
-            ms.WriteTo(Response.OutputStream);
-
-            Response.Flush();
-            Response.End();
 
         }
         protected void ddlRecipe_SelectedIndexChanged(object sender, EventArgs e)
