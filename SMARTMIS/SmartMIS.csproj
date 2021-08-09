@@ -308,6 +308,20 @@
     <Compile Include="Report\SLI_PCRVISummaryReport.aspx.designer.cs">
       <DependentUpon>SLI_PCRVISummaryReport.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Report\TBMPCRBarcodeReport.aspx.cs">
+      <DependentUpon>TBMPCRBarcodeReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\TBMPCRBarcodeReport.aspx.designer.cs">
+      <DependentUpon>TBMPCRBarcodeReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report\TBMTBRBARCODE.aspx.cs">
+      <DependentUpon>TBMTBRBARCODE.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\TBMTBRBARCODE.aspx.designer.cs">
+      <DependentUpon>TBMTBRBARCODE.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Report\TbrPaintingReport.aspx.cs">
       <DependentUpon>TbrPaintingReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1641,7 +1655,9 @@
     <Content Include="Report\ShreoDefectReport.aspx" />
     <Content Include="Report\SLI_PCRVISummaryReport.aspx" />
     <Content Include="Report\SmartFinalFinish.aspx" />
+    <Content Include="Report\TBMPCRBarcodeReport.aspx" />
     <Content Include="Report\TBMProductionReport.aspx" />
+    <Content Include="Report\TBMTBRBARCODE.aspx" />
     <Content Include="Report\TbrPaintingReport.aspx" />
     <Content Include="Report\TBRVISecondline.aspx" />
     <Content Include="Report\TBRvisualinspection2.aspx" />

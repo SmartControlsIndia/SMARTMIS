@@ -510,10 +510,11 @@ namespace SmartMIS.Report
                     myConnection.conn.Close();
                     myConnection.comm.Dispose();
                     myConnection.reader.Close();
-                    string tempfromdt = Convert.ToDateTime(from_date).AddDays(-90).ToString();
+                    string tempfromdt = Convert.ToDateTime(from_date).AddDays(-60).ToString();
                     myConnection.open(ConnectionOption.SQL);
                     myConnection.comm = myConnection.conn.CreateCommand();
                     myConnection.comm.CommandText = "SELECT gtbarCode AS cur_gtbarcode,wcName As PressNo,RIGHT(pressbarcode,8) as cavityNo, case when  pressbarCode like'%L%' then  SUBSTRING(mouldNo, 0, CHARINDEX('#', mouldNo)) when pressbarCode like'%R%' then  SUBSTRING(mouldNo, CHARINDEX('#', mouldNo)  + 1, LEN(mouldNo)) end as  mouldNo, convert(char(10), dtandTime, 105) AS Cure_Date, convert(char(8), dtandTime, 108) AS Cure_Time FROM vCuringpcr WHERE dtandTime>='" + tempfromdt + "' AND dtandTime<'" + to_date + "'";
+                    myConnection.comm.CommandTimeout = 160;
                     myConnection.reader = myConnection.comm.ExecuteReader(CommandBehavior.CloseConnection);
                    // myWebService.writeLogs(myConnection.comm.CommandText, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
           
@@ -526,6 +527,7 @@ namespace SmartMIS.Report
                     myConnection.comm = myConnection.conn.CreateCommand();
                     //myConnection.comm.CommandText = "SELECT gtbarCode AS tbm_gtbarcode, wcName AS tbmWCName, convert(char(10), dtandTime, 105) AS TBM_Date, convert(char(8), dtandTime, 108) AS TBM_Time, firstName + ' ' + lastName As BuilderName FROM vTbmpcr WHERE dtandTime>='" + tempfromdt + "' AND dtandTime<'" + to_date + "'";
                     myConnection.comm.CommandText = "SELECT gtbarCode AS tbm_gtbarcode, wcName AS tbmWCName, convert(char(10), dtandTime, 105) AS TBM_Date, convert(char(8), dtandTime, 108) AS TBM_Time, firstName + ' ' + lastName As BuilderName, isnull( (select firstName from manningMaster where iD= manningID2),'unknown') as BuilderName2, isnull( (select firstName from manningMaster where iD= manningID3),'unknown') as BuilderName3,SpecWeight FROM vTbmpcr WHERE dtandTime>='" + tempfromdt + "' AND dtandTime<'" + to_date + "'";
+                    myConnection.comm.CommandTimeout = 160;
                     myConnection.reader = myConnection.comm.ExecuteReader(CommandBehavior.CloseConnection);
                    // myWebService.writeLogs(myConnection.comm.CommandText, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
           
@@ -542,6 +544,7 @@ namespace SmartMIS.Report
                     //myConnection.comm.CommandText = "SELECT gtbarCode AS tbm_gtbarcode, wcName AS tbmWCName, convert(char(10), dtandTime, 105) AS TBM_Date, convert(char(8), dtandTime, 108) AS TBM_Time, firstName + ' ' + lastName As BuilderName FROM vTbmpcr WHERE dtandTime>='" + tempfromdt + "' AND dtandTime<'" + to_date + "'";
                    // myConnection.comm.CommandText = "SELECT gtbarCode AS trim_gtbarcode, wcName AS trimWCName from  trimmingdata WHERE dtandTime>='" + tempfromdt + "' AND dtandTime<'" + to_date + "'";
                     myConnection.comm.CommandText = @"WITH Ranked As (SELECT gtbarCode AS trim_gtbarcode, wcName AS trimWCName, ROW_NUMBER() OVER (PARTITION BY gtbarcode ORDER BY dtandTime desc) AS RowNumber from  trimmingdata WHERE dtandTime>='" + tempfromdt + "' AND dtandTime<'" + to_date + "')select Ranked.trim_gtbarcode,Ranked.trimWCName from Ranked where Ranked.RowNumber='1'";
+                    myConnection.comm.CommandTimeout = 160;
                     myConnection.reader = myConnection.comm.ExecuteReader(CommandBehavior.CloseConnection);
                    // myWebService.writeLogs(myConnection.comm.CommandText, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
           

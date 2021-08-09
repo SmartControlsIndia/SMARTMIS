@@ -93,11 +93,11 @@ namespace SmartMIS.Report
                 myConnection.comm = myConnection.conn.CreateCommand();
                 if(tyredesign=="PCR")
                 {
-                    myConnection.comm.CommandText = "select dbo.vCuringpcr.gtbarCode, dbo.vTbmPCR.recipeCode,convert(char(10), vCuringpcr.cycleUpdate, 105) AS CycleDate, convert(char(8), vCuringpcr.cycleUpdate, 108) AS cycleTime, dbo.vCuringpcr.wcName, dbo.vCuringpcr.shift FROM  dbo.vCuringpcr INNER JOIN dbo.vTbmPCR ON dbo.vCuringpcr.gtbarCode = dbo.vTbmPCR.gtbarCode  where cycleUpdate>='" + nfromDate + "' and cycleUpdate<'" + ntoDate + "' order by cycleUpdate desc"; 
+                    myConnection.comm.CommandText = "select dbo.vCuringpcr.gtbarCode, dbo.vTbmPCR.recipeCode,convert(char(10), vCuringpcr.cycleUpdate, 105) AS CycleDate, convert(char(8), vCuringpcr.cycleUpdate, 108) AS cycleTime, dbo.vCuringpcr.wcName, dbo.vCuringpcr.shift,vCuringpcr.pressbarCode as Cavity,convert(char(10), vCuringpcr.cycleUpdate, 105)  as SCAN_DATE, convert(varchar(8), vCuringpcr.cycleUpdate, 108) as SCAN_TIME FROM  dbo.vCuringpcr INNER JOIN dbo.vTbmPCR ON dbo.vCuringpcr.gtbarCode = dbo.vTbmPCR.gtbarCode  where cycleUpdate>='" + nfromDate + "' and cycleUpdate<'" + ntoDate + "' order by cycleUpdate desc"; 
                 }
                 else
                 {
-                    myConnection.comm.CommandText = "select dbo.vCuringtbr.gtbarCode, dbo.vTbmtbR.recipeCode, convert(char(10), vCuringtbr.dtandtime, 105) AS Date,convert(char(10), vCuringtbr.dtandtime, 108) AS Time, dbo.vCuringtbr.wcName, dbo.vCuringtbr.shift FROM  dbo.vCuringtbr INNER JOIN dbo.vTbmtbR ON dbo.vCuringtbr.gtbarCode = dbo.vTbmtbR.gtbarCode  where dbo.vCuringtbr.dtandtime>='" + nfromDate + "' and dbo.vCuringtbr.dtandtime<'" + ntoDate + "' order by dbo.vCuringtbr.dtandtime desc"; 
+                    myConnection.comm.CommandText = "select dbo.vCuringtbr.gtbarCode AS , dbo.vTbmtbR.recipeCode, convert(char(10), vCuringtbr.dtandtime, 105) AS SCAN_DATE,convert(char(10), vCuringtbr.dtandtime, 108) AS SCAN_TIME, dbo.vCuringtbr.wcName, dbo.vCuringtbr.shift,convert(char(10), vCuringtbr.cycleUpdate, 105)  as DATE, convert(varchar(8), vCuringtbr.cycleUpdate, 108) as TIME FROM  dbo.vCuringtbr INNER JOIN dbo.vTbmtbR ON dbo.vCuringtbr.gtbarCode = dbo.vTbmtbR.gtbarCode  where dbo.vCuringtbr.dtandtime>='" + nfromDate + "' and dbo.vCuringtbr.dtandtime<'" + ntoDate + "' order by dbo.vCuringtbr.dtandtime desc"; 
                 }
                 
                 myConnection.reader = myConnection.comm.ExecuteReader();
