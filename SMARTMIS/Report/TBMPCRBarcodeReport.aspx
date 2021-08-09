@@ -368,7 +368,7 @@
                </asp:DropDownList>
                 
         </td> 
-         <td style="font-weight:bold; font-family:Arial; font-size:small; width:15%" visible="true"><span class="masterLabel" >Status :</span>          
+         <%--<td style="font-weight:bold; font-family:Arial; font-size:small; width:15%" visible="true"><span class="masterLabel" >Status :</span>          
              
                <asp:DropDownList ID="ddlstatus" runat="server"  Width="100" Visible="true">
                   <asp:ListItem Text="OK">OK</asp:ListItem>
@@ -376,7 +376,7 @@
                    <asp:ListItem Text="SCRAP">SCRAP</asp:ListItem>
                </asp:DropDownList>
                 
-        </td> 
+        </td> --%>
             <td class="tablecolumn"></td>
 
 <td><strong><asp:Label ID="rowCountLabel" runat="server" Text="Label"></asp:Label></strong></td> 
