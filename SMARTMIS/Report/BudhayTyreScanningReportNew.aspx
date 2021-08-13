@@ -311,7 +311,15 @@
                         
 
              </td>
+               <td style="font-weight:bold; font-family:Arial; font-size:small; width:15%" visible="true"><span class="masterLabel" >Type :</span>          
              
+               <asp:DropDownList ID="ddlshift" runat="server"  Width="130" Visible="true">
+                  <asp:ListItem Text="Normal Barcode">Normal Barcode</asp:ListItem>
+                  <asp:ListItem Text="Technical Barcode">Technical Barcode</asp:ListItem>
+                  <asp:ListItem Text="Unknown Barcode">Unknown Barcode</asp:ListItem>
+               </asp:DropDownList>
+                
+        </td> 
                <td width="10%">
                    <asp:Button ID="reportMasterViewButton" runat="server" Text="View" OnClick="viewReport_Click" />
              </td>

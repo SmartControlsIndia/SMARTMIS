@@ -172,29 +172,65 @@ namespace SmartMIS.Report
                 myConnection.comm = myConnection.conn.CreateCommand();
 
                // myConnection.comm.CommandText = @" select distinct BTD.gtbarcode ,BTD.destination,isnull(BTD.recipeCode,'Unknown')as recipeCode,RM.SAPMaterialCode,RM.description,BTD.dtandTime from [BuddeScannedTyreDetail]  BTD inner join recipeMaster RM on BTD.recipeCode = RM.name where dtandtime>='" + fromDate + " 07:00:00' and dtandtime<'" + toDate + " 06:59:59' and BTD.stationNo='3' and BTD.destination not in('00','01')  order by BTD.destination asc ";
-                myConnection.comm.CommandText = @" SELECT gtbarcode,destination,recipeCode,recipeMaster.SAPMaterialCode,recipeMaster.description,dtandTime FROM( SELECT * FROM (  SELECT gtbarcode ,destination,isnull(recipeCode,'Unknown')as recipeCode,dtandTime,
+               
+
+                if (ddlshift.SelectedItem.Text == "Normal Barcode")
+                {
+                    myConnection.comm.CommandText = @" SELECT gtbarcode,destination,recipeCode,recipeMaster.SAPMaterialCode,recipeMaster.description,dtandTime FROM( SELECT * FROM (  SELECT gtbarcode ,destination,isnull(recipeCode,'Unknown')as recipeCode,dtandTime,
                         ROW_NUMBER() OVER(PARTITION BY gtbarcode ORDER BY destination asc) rn
-                    FROM [BuddeScannedTyreDetail] where dtandtime>='" + fromDate + " 07:00:00' and dtandtime<'" + toDate + " 06:59:59' and stationNo='3' and destination not in('00')  ) a WHERE rn = 1) DBNew  inner join recipeMaster on DBNew.recipeCode = recipeMaster.name where recipeCode !='Unknown' ORDER BY destination asc";
-                myConnection.reader = myConnection.comm.ExecuteReader();
-                wcdt.Load(myConnection.reader);
-                myWebService.writeLogs(myConnection.comm.CommandText, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+                    FROM [BuddeScannedTyreDetail] where dtandtime>='" + fromDate + " 07:00:00' and dtandtime<'" + toDate + " 06:59:59' and stationNo='3' and destination not in('00')  ) a WHERE rn = 1) DBNew  inner join recipeMaster on DBNew.recipeCode = recipeMaster.name  where recipeCode !='Unknown' ORDER BY destination asc";
+                    myConnection.reader = myConnection.comm.ExecuteReader();
+                    wcdt.Load(myConnection.reader);
+                    myWebService.writeLogs(myConnection.comm.CommandText, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
 
 
-               // myConnection.comm.CommandText = @"select distinct BTD.gtbarcode As BARCODE ,isnull(BTD.recipeCode,'Unknown')as  'RECIPE CODE',RM.description AS 'TIRE SIZE',RM.SAPMaterialCode AS SEPCODE,BTD.destination AS DESTINATION,convert(char(10),  BTD.dtandTime, 105) AS DATE,CONVERT(VARCHAR(8) ,  BTD.dtandTime , 108) AS [TIME],BTD.dtandtime from [BuddeScannedTyreDetail]  BTD inner join recipeMaster RM on BTD.recipeCode = RM.name where BTD.dtandtime>='" + fromDate + " 07:00:00' and BTD.dtandtime<'" + toDate + " 06:59:59' and BTD.stationNo='3' and BTD.destination not in('00','01')  order by BTD.dtandtime asc";
-                myConnection.comm.CommandText = @"SELECT gtbarcode As BARCODE,recipeCode as  'RECIPE CODE',recipeMaster.description AS 'TIRE SIZE',SAPMaterialCode AS SEPCODE,destination AS DESTINATION ,convert(char(10),  dtandTime, 105) AS DATE,CONVERT(VARCHAR(8) , dtandTime , 108) AS [TIME],dtandtime FROM ( SELECT * FROM (  SELECT gtbarcode ,destination,isnull(recipeCode,'Unknown')as recipeCode,dtandTime,
+                    // myConnection.comm.CommandText = @"select distinct BTD.gtbarcode As BARCODE ,isnull(BTD.recipeCode,'Unknown')as  'RECIPE CODE',RM.description AS 'TIRE SIZE',RM.SAPMaterialCode AS SEPCODE,BTD.destination AS DESTINATION,convert(char(10),  BTD.dtandTime, 105) AS DATE,CONVERT(VARCHAR(8) ,  BTD.dtandTime , 108) AS [TIME],BTD.dtandtime from [BuddeScannedTyreDetail]  BTD inner join recipeMaster RM on BTD.recipeCode = RM.name where BTD.dtandtime>='" + fromDate + " 07:00:00' and BTD.dtandtime<'" + toDate + " 06:59:59' and BTD.stationNo='3' and BTD.destination not in('00','01')  order by BTD.dtandtime asc";
+                    myConnection.comm.CommandText = @"SELECT gtbarcode As BARCODE,recipeCode as  'RECIPE CODE',recipeMaster.description AS 'TIRE SIZE',SAPMaterialCode AS SEPCODE,destination AS DESTINATION ,convert(char(10),  dtandTime, 105) AS DATE,CONVERT(VARCHAR(8) , dtandTime , 108) AS [TIME],dtandtime FROM ( SELECT * FROM (  SELECT gtbarcode ,destination,isnull(recipeCode,'Unknown')as recipeCode,dtandTime,
                         ROW_NUMBER() OVER(PARTITION BY gtbarcode ORDER BY dtandtime DESC) rn
-                    FROM [BuddeScannedTyreDetail] where dtandtime>='" + fromDate + " 07:00:00' and dtandtime<'" + toDate + " 06:59:59' and stationNo='3' and destination not in('00') ) a WHERE rn = 1) DBNew  inner join recipeMaster on DBNew.recipeCode = recipeMaster.name where recipeCode !='Unknown'  ORDER BY dtandTime";
-                myConnection.reader = myConnection.comm.ExecuteReader();
-                dtExport.Load(myConnection.reader);
-                myConnection.reader.Close();
-                ViewState["dt"] = dtExport;
+                    FROM [BuddeScannedTyreDetail] where dtandtime>='" + fromDate + " 07:00:00' and dtandtime<'" + toDate + " 06:59:59' and stationNo='3' and destination not in('00') ) a WHERE rn = 1) DBNew  inner join recipeMaster on DBNew.recipeCode = recipeMaster.name where recipeCode !='Unknown' ORDER BY dtandTime";   
+                    myConnection.reader = myConnection.comm.ExecuteReader();
+                    dtExport.Load(myConnection.reader);
+                    myConnection.reader.Close();
+                    ViewState["dt"] = dtExport;
+                }
+                else if (ddlshift.SelectedItem.Text == "Technical Barcode")
+                {
+                    myConnection.comm.CommandText = @"  SELECT gtbarcode,destination,recipeCode,recipeMaster.SAPMaterialCode,recipeMaster.description,dtandTime FROM ( SELECT gtbarcode ,destination,isnull(recipeCode,'Unknown')as recipeCode,dtandTime  
+                    FROM [BuddeScannedTyreDetail] where dtandtime>='" + fromDate + " 07:00:00' and dtandtime<'" + toDate + " 06:59:59' and stationNo='3' and destination in('11')  and gtbarcode !='??????????') DBNew  inner join recipeMaster on DBNew.recipeCode = recipeMaster.name  ORDER BY destination asc";
+                    myConnection.reader = myConnection.comm.ExecuteReader();
+                    wcdt.Load(myConnection.reader);
+                    myWebService.writeLogs(myConnection.comm.CommandText, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
 
+                    // myConnection.comm.CommandText = @"select distinct BTD.gtbarcode As BARCODE ,isnull(BTD.recipeCode,'Unknown')as  'RECIPE CODE',RM.description AS 'TIRE SIZE',RM.SAPMaterialCode AS SEPCODE,BTD.destination AS DESTINATION,convert(char(10),  BTD.dtandTime, 105) AS DATE,CONVERT(VARCHAR(8) ,  BTD.dtandTime , 108) AS [TIME],BTD.dtandtime from [BuddeScannedTyreDetail]  BTD inner join recipeMaster RM on BTD.recipeCode = RM.name where BTD.dtandtime>='" + fromDate + " 07:00:00' and BTD.dtandtime<'" + toDate + " 06:59:59' and BTD.stationNo='3' and BTD.destination not in('00','01')  order by BTD.dtandtime asc";
+                    myConnection.comm.CommandText = @"	SELECT gtbarcode As BARCODE,recipeCode as  'RECIPE CODE',recipeMaster.description AS 'TIRE SIZE',SAPMaterialCode AS SEPCODE,destination AS DESTINATION ,convert(char(10),  dtandTime, 105) AS DATE,CONVERT(VARCHAR(8) , dtandTime , 108) AS [TIME],dtandtime FROM ( SELECT * FROM (  SELECT gtbarcode ,destination,isnull(recipeCode,'Unknown')as recipeCode,dtandTime
+                    FROM [BuddeScannedTyreDetail] where dtandtime>='" + fromDate + " 07:00:00' and dtandtime<'" + toDate + " 06:59:59' and stationNo='3' and destination in('11')  and gtbarcode !='??????????') a) DBNew  inner join recipeMaster on DBNew.recipeCode = recipeMaster.name ORDER BY dtandTime";
+                    myConnection.reader = myConnection.comm.ExecuteReader();
+                    dtExport.Load(myConnection.reader);
+                    myConnection.reader.Close();
+                    ViewState["dt"] = dtExport;
+                
+                }
+                else if (ddlshift.SelectedItem.Text == "Unknown Barcode")
+                {
+                    myConnection.comm.CommandText = @"  SELECT gtbarcode,destination,recipeCode,recipeMaster.SAPMaterialCode,recipeMaster.description,dtandTime FROM ( SELECT gtbarcode ,destination,isnull(recipeCode,'Unknown')as recipeCode,dtandTime  
+                    FROM [BuddeScannedTyreDetail] where dtandtime>='" + fromDate + " 07:00:00' and dtandtime<'" + toDate + " 06:59:59' and stationNo='3' and destination in('11') and gtbarcode ='??????????') DBNew  inner join recipeMaster on DBNew.recipeCode = recipeMaster.name  ORDER BY destination asc";
+                    myConnection.reader = myConnection.comm.ExecuteReader();
+                    wcdt.Load(myConnection.reader);
+                    myWebService.writeLogs(myConnection.comm.CommandText, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+
+                    // myConnection.comm.CommandText = @"select distinct BTD.gtbarcode As BARCODE ,isnull(BTD.recipeCode,'Unknown')as  'RECIPE CODE',RM.description AS 'TIRE SIZE',RM.SAPMaterialCode AS SEPCODE,BTD.destination AS DESTINATION,convert(char(10),  BTD.dtandTime, 105) AS DATE,CONVERT(VARCHAR(8) ,  BTD.dtandTime , 108) AS [TIME],BTD.dtandtime from [BuddeScannedTyreDetail]  BTD inner join recipeMaster RM on BTD.recipeCode = RM.name where BTD.dtandtime>='" + fromDate + " 07:00:00' and BTD.dtandtime<'" + toDate + " 06:59:59' and BTD.stationNo='3' and BTD.destination not in('00','01')  order by BTD.dtandtime asc";
+                    myConnection.comm.CommandText = @"	SELECT gtbarcode As BARCODE,recipeCode as  'RECIPE CODE',recipeMaster.description AS 'TIRE SIZE',SAPMaterialCode AS SEPCODE,destination AS DESTINATION ,convert(char(10),  dtandTime, 105) AS DATE,CONVERT(VARCHAR(8) , dtandTime , 108) AS [TIME],dtandtime FROM ( SELECT * FROM (  SELECT gtbarcode ,destination,isnull(recipeCode,'Unknown')as recipeCode,dtandTime
+                    FROM [BuddeScannedTyreDetail] where dtandtime>='" + fromDate + " 07:00:00' and dtandtime<'" + toDate + " 06:59:59' and stationNo='3' and destination in('11')  and gtbarcode ='??????????') a) DBNew  inner join recipeMaster on DBNew.recipeCode = recipeMaster.name ORDER BY dtandTime";
+                    myConnection.reader = myConnection.comm.ExecuteReader();
+                    dtExport.Load(myConnection.reader);
+                    myConnection.reader.Close();
+                    ViewState["dt"] = dtExport;
+
+                }         
+              
                 myConnection.reader.Close();
                 myConnection.comm.Dispose();
                 myConnection.close(ConnectionOption.SQL);
-
-
-
 
                 var query = wcdt.AsEnumerable()
                                 .GroupBy(row => new
@@ -444,26 +480,49 @@ namespace SmartMIS.Report
                 myConnection.open(ConnectionOption.SQL);
                 myConnection.comm = myConnection.conn.CreateCommand();
 
-               // myConnection.comm.CommandText = @" select distinct BTD.gtbarcode ,BTD.destination,isnull(BTD.recipeCode,'Unknown')as recipeCode,RM.SAPMaterialCode,RM.description,BTD.dtandTime from [BuddeScannedTyreDetail]  BTD inner join recipeMaster RM on BTD.recipeCode = RM.name where dtandtime>='" + fromDate + "' and dtandtime<'" + toDate + "' and BTD.stationNo='3' and BTD.destination not in('00','01')  order by BTD.destination asc ";
-                //myConnection.reader = myConnection.comm.ExecuteReader();
-               // dt.Load(myConnection.reader);
-
-               // myConnection.comm.CommandText = @"select distinct BTD.gtbarcode As BARCODE ,isnull(BTD.recipeCode,'Unknown')as  'RECIPE CODE',RM.description AS 'TIRE SIZE',RM.SAPMaterialCode AS SEPCODE,BTD.destination AS DESTINATION,convert(char(10),  BTD.dtandTime, 105) AS DATE,CONVERT(VARCHAR(8) ,  BTD.dtandTime , 108) AS [TIME],BTD.dtandtime from [BuddeScannedTyreDetail]  BTD inner join recipeMaster RM on BTD.recipeCode = RM.name where BTD.dtandtime>='" + fromDate + "' and BTD.dtandtime<'" + toDate + "' and BTD.stationNo='3' and BTD.destination not in('00','01')  order by BTD.dtandtime asc";
-
-                myConnection.comm.CommandText = @" SELECT gtbarcode,destination,recipeCode,recipeMaster.SAPMaterialCode,recipeMaster.description,dtandTime FROM( SELECT * FROM (  SELECT gtbarcode ,destination,isnull(recipeCode,'Unknown')as recipeCode,dtandTime,
+                if (ddlshift.SelectedItem.Text == "Normal Barcode") 
+                {
+                    myConnection.comm.CommandText = @" SELECT gtbarcode,destination,recipeCode,recipeMaster.SAPMaterialCode,recipeMaster.description,dtandTime FROM( SELECT * FROM (  SELECT gtbarcode ,destination,isnull(recipeCode,'Unknown')as recipeCode,dtandTime,
                         ROW_NUMBER() OVER(PARTITION BY gtbarcode ORDER BY destination asc) rn
-                    FROM [BuddeScannedTyreDetail] where dtandtime>='" + fromDate + "' and dtandtime<'" + toDate + "' and stationNo='3' and destination not in('00')  ) a WHERE rn = 1) DBNew  inner join recipeMaster on DBNew.recipeCode = recipeMaster.name  where recipeCode !='Unknown' ORDER BY destination,recipeCode asc";
-                myConnection.reader = myConnection.comm.ExecuteReader();
-                dt.Load(myConnection.reader);
-                myWebService.writeLogs(myConnection.comm.CommandText, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+                    FROM [BuddeScannedTyreDetail] where dtandtime>='" + fromDate + "' and dtandtime<'" + toDate + "' and stationNo='3' and destination not in('00','11')  ) a WHERE rn = 1) DBNew  inner join recipeMaster on DBNew.recipeCode = recipeMaster.name  where recipeCode !='Unknown' ORDER BY destination,recipeCode asc";
+                    myConnection.reader = myConnection.comm.ExecuteReader();
+                    dt.Load(myConnection.reader);
+                    myWebService.writeLogs(myConnection.comm.CommandText, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
 
 
-                // myConnection.comm.CommandText = @"select distinct BTD.gtbarcode As BARCODE ,isnull(BTD.recipeCode,'Unknown')as  'RECIPE CODE',RM.description AS 'TIRE SIZE',RM.SAPMaterialCode AS SEPCODE,BTD.destination AS DESTINATION,convert(char(10),  BTD.dtandTime, 105) AS DATE,CONVERT(VARCHAR(8) ,  BTD.dtandTime , 108) AS [TIME],BTD.dtandtime from [BuddeScannedTyreDetail]  BTD inner join recipeMaster RM on BTD.recipeCode = RM.name where BTD.dtandtime>='" + fromDate + " 07:00:00' and BTD.dtandtime<'" + toDate + " 06:59:59' and BTD.stationNo='3' and BTD.destination not in('00','01')  order by BTD.dtandtime asc";
-                myConnection.comm.CommandText = @"SELECT gtbarcode As BARCODE,recipeCode as  'RECIPE CODE',recipeMaster.description AS 'TIRE SIZE',SAPMaterialCode AS SEPCODE,destination AS DESTINATION ,convert(char(10),  dtandTime, 105) AS DATE,CONVERT(VARCHAR(8) , dtandTime , 108) AS [TIME],dtandtime FROM ( SELECT * FROM (  SELECT gtbarcode ,destination,isnull(recipeCode,'Unknown')as recipeCode,dtandTime,
+                    myConnection.comm.CommandText = @"SELECT gtbarcode As BARCODE,recipeCode as  'RECIPE CODE',recipeMaster.description AS 'TIRE SIZE',SAPMaterialCode AS SEPCODE,destination AS DESTINATION ,convert(char(10),  dtandTime, 105) AS DATE,CONVERT(VARCHAR(8) , dtandTime , 108) AS [TIME],dtandtime FROM ( SELECT * FROM (  SELECT gtbarcode ,destination,isnull(recipeCode,'Unknown')as recipeCode,dtandTime,
                         ROW_NUMBER() OVER(PARTITION BY gtbarcode ORDER BY dtandtime asc) rn
-                    FROM [BuddeScannedTyreDetail] where dtandtime>='" + fromDate + "' and dtandtime<'" + toDate + "' and stationNo='3' and destination not in('00') ) a WHERE rn = 1) DBNew  inner join recipeMaster on DBNew.recipeCode = recipeMaster.name  where recipeCode !='Unknown' ORDER BY dtandTime";
+                    FROM [BuddeScannedTyreDetail] where dtandtime>='" + fromDate + "' and dtandtime<'" + toDate + "' and stationNo='3' and destination not in('00','11') ) a WHERE rn = 1) DBNew  inner join recipeMaster on DBNew.recipeCode = recipeMaster.name  where recipeCode !='Unknown' ORDER BY dtandTime";
              
                 
+                }
+                else if (ddlshift.SelectedItem.Text == "Technical Barcode")
+                {
+                    myConnection.comm.CommandText = @" SELECT gtbarcode,destination,recipeCode,recipeMaster.SAPMaterialCode,recipeMaster.description,dtandTime  FROM (  SELECT gtbarcode ,destination,isnull(recipeCode,'Unknown')as recipeCode,dtandTime
+                    FROM [BuddeScannedTyreDetail] where dtandtime>='" + fromDate + "' and dtandtime<'" + toDate + "' and stationNo='3' and destination in('11') and gtbarcode !='??????????') DBNew  inner join recipeMaster on DBNew.recipeCode = recipeMaster.name ORDER BY destination,recipeCode asc";
+                    myConnection.reader = myConnection.comm.ExecuteReader();
+                    dt.Load(myConnection.reader);
+                    myWebService.writeLogs(myConnection.comm.CommandText, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+
+
+                    myConnection.comm.CommandText = @"SELECT gtbarcode As BARCODE,recipeCode as  'RECIPE CODE',recipeMaster.description AS 'TIRE SIZE',SAPMaterialCode AS SEPCODE,destination AS DESTINATION ,convert(char(10),  dtandTime, 105) AS DATE,CONVERT(VARCHAR(8) , dtandTime , 108) AS [TIME],dtandtime  FROM (  SELECT gtbarcode ,destination,isnull(recipeCode,'Unknown')as recipeCode,dtandTime
+                    FROM [BuddeScannedTyreDetail] where dtandtime>='" + fromDate + "' and dtandtime<'" + toDate + "' and stationNo='3' and destination in('11') and gtbarcode !='??????????' ) DBNew  inner join recipeMaster on DBNew.recipeCode = recipeMaster.name ORDER BY dtandTime";
+                           
+                }
+
+                else if (ddlshift.SelectedItem.Text == "Unknown Barcode")
+                {
+                    myConnection.comm.CommandText = @" SELECT gtbarcode,destination,recipeCode,recipeMaster.SAPMaterialCode,recipeMaster.description,dtandTime  FROM (  SELECT gtbarcode ,destination,isnull(recipeCode,'Unknown')as recipeCode,dtandTime
+                    FROM [BuddeScannedTyreDetail] where dtandtime>='" + fromDate + "' and dtandtime<'" + toDate + "' and stationNo='3' and destination in('11') and gtbarcode ='??????????') DBNew  inner join recipeMaster on DBNew.recipeCode = recipeMaster.name ORDER BY destination,recipeCode asc";
+                    myConnection.reader = myConnection.comm.ExecuteReader();
+                    dt.Load(myConnection.reader);
+                    myWebService.writeLogs(myConnection.comm.CommandText, System.Reflection.MethodBase.GetCurrentMethod().Name, Path.GetFileName(Request.Url.AbsolutePath));
+
+
+                    myConnection.comm.CommandText = @"SELECT gtbarcode As BARCODE,recipeCode as  'RECIPE CODE',recipeMaster.description AS 'TIRE SIZE',SAPMaterialCode AS SEPCODE,destination AS DESTINATION ,convert(char(10),  dtandTime, 105) AS DATE,CONVERT(VARCHAR(8) , dtandTime , 108) AS [TIME],dtandtime  FROM (  SELECT gtbarcode ,destination,isnull(recipeCode,'Unknown')as recipeCode,dtandTime
+                    FROM [BuddeScannedTyreDetail] where dtandtime>='" + fromDate + "' and dtandtime<'" + toDate + "' and stationNo='3' and destination in('11') and gtbarcode ='??????????') DBNew  inner join recipeMaster on DBNew.recipeCode = recipeMaster.name ORDER BY dtandTime";
+
+                }
                 
                 myConnection.reader = myConnection.comm.ExecuteReader();
                 dtExport.Load(myConnection.reader);
