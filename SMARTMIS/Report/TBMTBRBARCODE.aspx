@@ -233,7 +233,7 @@
 <link href="../Style/reportMaster.css" rel="stylesheet" type="text/css" />
 <link href="../Style/master.css" rel="stylesheet" type="text/css" />
 <link href="../Style/masterPage.css" rel="stylesheet" type="text/css" />
-<table width="100%"><tr><td width="95%" align="center"><h2>TBMTBRREPORT</h2></td>
+<table width="100%"><tr><td width="95%" align="center"><h2>TBM TBR REPORT</h2></td>
 <td width="5%" align="right"><div><asp:LinkButton runat="server" ID="ExportExcel" onclick="expToExcel_Click"><img src="../Images/Excel.jpg" alt="Export To Excel" class="imag" /></asp:LinkButton></div>
 </td></tr></table>
 
@@ -361,21 +361,22 @@
                     <td style="font-weight:bold; font-family:Arial; font-size:small; width:15%" visible="true"><span class="masterLabel" >Shift :</span>          
              
                <asp:DropDownList ID="ddlshift" runat="server"  Width="100" Visible="true">
+                 <asp:ListItem Text="ALL">ALL</asp:ListItem>
                   <asp:ListItem Text="A">A</asp:ListItem>
                    <asp:ListItem Text="B">B</asp:ListItem>
                    <asp:ListItem Text="C">C</asp:ListItem>
                </asp:DropDownList>
                 
         </td> 
-         <%--<td style="font-weight:bold; font-family:Arial; font-size:small; width:15%" visible="true"><span class="masterLabel" >Status :</span>          
+         <td style="font-weight:bold; font-family:Arial; font-size:small; width:15%" visible="true"><span class="masterLabel" >Status :</span>          
              
                <asp:DropDownList ID="ddlstatus" runat="server"  Width="100" Visible="true">
+                  <asp:ListItem Text="ALL">ALL</asp:ListItem>
                   <asp:ListItem Text="OK">OK</asp:ListItem>
                    <asp:ListItem Text="HOLD">HOLD</asp:ListItem>
-                   <asp:ListItem Text="SCRAP">SCRAP</asp:ListItem>
                </asp:DropDownList>
                 
-        </td> --%>
+        </td>
             <td class="tablecolumn"></td>
 
 <td><strong><asp:Label ID="rowCountLabel" runat="server" Text="Label"></asp:Label></strong></td> 

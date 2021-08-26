@@ -124,7 +124,7 @@ convert(char(10), dtandtime, 105)  as DATE, convert(varchar(8), dtandtime, 108) 
                 else if (wcname != "ALL" && recipename == "All" && shift == "ALL")
                 {
                     myConnection.comm.CommandText = @"SELECT ROW_NUMBER() OVER(ORDER BY (SELECT 1)) AS SNo,wcName as MACHINENAME,gtbarcode AS BARCODE,recipeCode AS RECIPE ,SAPMaterialCode AS SAPCODE,
-convert(char(10), dtandtime, 105)  as DATE, convert(varchar(8), dtandtime, 108) as TIME,shift AS SHIFT ,TBMStatus AS STATUS FROM vtbmtbrwhere dtandtime>='" + nfromDate + "' and dtandtime<'" + ntoDate + "' and wcName='" + wcname + "'  order by dtandtime desc";// "select dbo.vCuringtbr.gtbarCode, dbo.vTbmtbR.recipeCode, convert(char(10), vCuringtbr.dtandtime, 105) AS Date,convert(char(10), vCuringtbr.dtandtime, 108) AS Time, dbo.vCuringtbr.wcName, dbo.vCuringtbr.shift FROM  dbo.vCuringtbr INNER JOIN dbo.vTbmtbR ON dbo.vCuringtbr.gtbarCode = dbo.vTbmtbR.gtbarCode  where dbo.vCuringtbr.dtandtime>='" + nfromDate + "' and dbo.vCuringtbr.dtandtime<'" + ntoDate + "' order by dbo.vCuringtbr.dtandtime desc";
+convert(char(10), dtandtime, 105)  as DATE, convert(varchar(8), dtandtime, 108) as TIME,shift AS SHIFT ,TBMStatus AS STATUS FROM vtbmtbr where dtandtime>='" + nfromDate + "' and dtandtime<'" + ntoDate + "' and wcName='" + wcname + "'  order by dtandtime desc";// "select dbo.vCuringtbr.gtbarCode, dbo.vTbmtbR.recipeCode, convert(char(10), vCuringtbr.dtandtime, 105) AS Date,convert(char(10), vCuringtbr.dtandtime, 108) AS Time, dbo.vCuringtbr.wcName, dbo.vCuringtbr.shift FROM  dbo.vCuringtbr INNER JOIN dbo.vTbmtbR ON dbo.vCuringtbr.gtbarCode = dbo.vTbmtbR.gtbarCode  where dbo.vCuringtbr.dtandtime>='" + nfromDate + "' and dbo.vCuringtbr.dtandtime<'" + ntoDate + "' order by dbo.vCuringtbr.dtandtime desc";
                 }
                 else if (wcname == "ALL" && recipename != "All" && shift == "ALL")
                 {
@@ -134,7 +134,7 @@ convert(char(10), dtandtime, 105)  as DATE, convert(varchar(8), dtandtime, 108) 
                 else if (wcname == "ALL" && recipename != "All" && shift != "ALL")
                 {
                     myConnection.comm.CommandText = @"SELECT ROW_NUMBER() OVER(ORDER BY (SELECT 1)) AS SNo,wcName as MACHINENAME,gtbarcode AS BARCODE,recipeCode AS RECIPE ,SAPMaterialCode AS SAPCODE,
-convert(char(10), dtandtime, 105)  as DATE, convert(varchar(8), dtandtime, 108) as TIME,shift AS SHIFT ,TBMStatus AS STATUS FROM vtbmtbrwhere dtandtime>='" + nfromDate + "' and dtandtime<'" + ntoDate + "' and recipeCode='" + recipename + "'  and shift='" + shift + "' order by dtandtime desc";// "select dbo.vCuringtbr.gtbarCode, dbo.vTbmtbR.recipeCode, convert(char(10), vCuringtbr.dtandtime, 105) AS Date,convert(char(10), vCuringtbr.dtandtime, 108) AS Time, dbo.vCuringtbr.wcName, dbo.vCuringtbr.shift FROM  dbo.vCuringtbr INNER JOIN dbo.vTbmtbR ON dbo.vCuringtbr.gtbarCode = dbo.vTbmtbR.gtbarCode  where dbo.vCuringtbr.dtandtime>='" + nfromDate + "' and dbo.vCuringtbr.dtandtime<'" + ntoDate + "' order by dbo.vCuringtbr.dtandtime desc";
+convert(char(10), dtandtime, 105)  as DATE, convert(varchar(8), dtandtime, 108) as TIME,shift AS SHIFT ,TBMStatus AS STATUS FROM vtbmtbr where dtandtime>='" + nfromDate + "' and dtandtime<'" + ntoDate + "' and recipeCode='" + recipename + "'  and shift='" + shift + "' order by dtandtime desc";// "select dbo.vCuringtbr.gtbarCode, dbo.vTbmtbR.recipeCode, convert(char(10), vCuringtbr.dtandtime, 105) AS Date,convert(char(10), vCuringtbr.dtandtime, 108) AS Time, dbo.vCuringtbr.wcName, dbo.vCuringtbr.shift FROM  dbo.vCuringtbr INNER JOIN dbo.vTbmtbR ON dbo.vCuringtbr.gtbarCode = dbo.vTbmtbR.gtbarCode  where dbo.vCuringtbr.dtandtime>='" + nfromDate + "' and dbo.vCuringtbr.dtandtime<'" + ntoDate + "' order by dbo.vCuringtbr.dtandtime desc";
                 }
                 else if (wcname == "ALL" && recipename == "All" && shift != "ALL")
                 {
@@ -148,19 +148,91 @@ convert(char(10), dtandtime, 105)  as DATE, convert(varchar(8), dtandtime, 108) 
 
                 } myConnection.reader = myConnection.comm.ExecuteReader();
                 rdt.Load(myConnection.reader);
-                if (rdt.Rows.Count > 0)
-                {
-                    grdCuringBarcode.DataSource = rdt;
-                    grdCuringBarcode.DataBind();
-                }
-                else
-                {
-                    grdCuringBarcode.DataSource = "";
-                    grdCuringBarcode.DataBind();
-                    lbltext.Text = "No Records: " + rdt.Rows.Count.ToString();
-                }
-                ViewState["dt"] = rdt;
-                rowCountLabel.Text = "Total Records: " + rdt.Rows.Count.ToString();
+
+                string status = ddlstatus.SelectedValue;
+
+                                if (status == "ALL")
+                 {
+                     if (rdt.Rows.Count > 0)
+                     {
+                         grdCuringBarcode.DataSource = rdt;
+                         grdCuringBarcode.DataBind();
+                         ViewState["dt"] = rdt;
+                         rowCountLabel.Text = "Total Records: " + rdt.Rows.Count.ToString();
+                     }
+                     else
+                     {
+                         grdCuringBarcode.DataSource = "";
+                         grdCuringBarcode.DataBind();
+                         lbltext.Text = "No Records: " + rdt.Rows.Count.ToString();
+                         ViewState["dt"] = "";
+                         rowCountLabel.Text = "Total Records: 0";
+                     }
+
+                  
+                 }
+                 else
+                 {
+
+                     if (rdt.Rows.Count > 0)
+                     {
+                         if (status == "OK")
+                         {
+                             int tblCheckOK = rdt.AsEnumerable().Where(row => row.Field<String>("STATUS") == "OK").Count();
+                             if (tblCheckOK > 0)
+                             {
+                                 DataTable tblFiltered = rdt.AsEnumerable().Where(row => row.Field<String>("STATUS") == "OK").CopyToDataTable();
+                                 grdCuringBarcode.DataSource = tblFiltered;
+                                 grdCuringBarcode.DataBind();
+                                 ViewState["dt"] = tblFiltered;
+                                 rowCountLabel.Text = "Total Records: " + tblFiltered.Rows.Count.ToString();
+                             }
+                             else
+                             {
+                                 grdCuringBarcode.DataSource = "";
+                                 grdCuringBarcode.DataBind();
+                                 ViewState["dt"] = "";
+                                 rowCountLabel.Text = "Total Records: 0";
+                             }
+
+                           
+                         }
+                         else if (status == "HOLD")
+                         {
+                             int tblCheckHOLD = rdt.AsEnumerable().Where(row => row.Field<String>("STATUS") == "HOLD").Count();
+
+                             if (tblCheckHOLD > 0)
+                             {
+                                 DataTable tblFiltered = rdt.AsEnumerable().Where(row => row.Field<String>("STATUS") == "HOLD").CopyToDataTable();
+                                 grdCuringBarcode.DataSource = tblFiltered;
+                                 grdCuringBarcode.DataBind();
+                                 ViewState["dt"] = tblFiltered;
+                                 rowCountLabel.Text = "Total Records: " + tblFiltered.Rows.Count.ToString();
+                             }
+                             else
+                             {
+                                 grdCuringBarcode.DataSource = "";
+                                 grdCuringBarcode.DataBind();
+                                 ViewState["dt"] = "";
+                                 rowCountLabel.Text = "Total Records: 0";
+                             }
+                           
+                         }
+                     }
+                     else
+                     {
+                         grdCuringBarcode.DataSource = "";
+                         grdCuringBarcode.DataBind();
+                         lbltext.Text = "No Records: " + rdt.Rows.Count.ToString();
+
+                          ViewState["dt"] = "";
+                          rowCountLabel.Text = "Total Records: 0";
+                     }
+                 }
+              
+            
+               // ViewState["dt"] = rdt;
+               // rowCountLabel.Text = "Total Records: " + rdt.Rows.Count.ToString();
 
             }
             catch (Exception ex)
@@ -206,7 +278,7 @@ convert(char(10), dtandtime, 105)  as DATE, convert(varchar(8), dtandtime, 108) 
 
             myConnection.open(ConnectionOption.SQL);
             myConnection.comm = myConnection.conn.CreateCommand();
-            myConnection.comm.CommandText = "Select DISTINCT id as rID,name from recipemaster where description != '0' and description !='' and processID = 4 order by name desc ";
+            myConnection.comm.CommandText = "Select DISTINCT id as rID,name from recipemaster where description != '0' and description !='' and processID = 4 order by name asc ";
             myConnection.reader = myConnection.comm.ExecuteReader();
             d_dt.Load(myConnection.reader);
             ddlRecipe.DataSource = d_dt;
@@ -220,39 +292,45 @@ convert(char(10), dtandtime, 105)  as DATE, convert(varchar(8), dtandtime, 108) 
         }
         protected void expToExcel_Click(object sender, EventArgs e)
         {
-            DataTable dt = (DataTable)ViewState["dt"];
-            Response.Clear();
-            Response.ClearHeaders();
-            Response.ClearContent();
-            Response.Buffer = true;
-            Response.AddHeader("content-disposition", "attachment;filename=TBMBTR.xls");
-            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 
-            ExcelPackage pck = new ExcelPackage();
-            ExcelWorksheet ws = pck.Workbook.Worksheets.Add("TBMTBRReport");
-            ws.Cells["A1"].Value = "TBMTBR Report ";
-
-            using (ExcelRange r = ws.Cells["A1:I1"])
+            if (ViewState["dt"] != null && ViewState["dt"] != "")
             {
-                r.Merge = true;
-                r.Style.Font.SetFromFont(new Font("Arial", 16, FontStyle.Italic));
-                r.Style.Font.Color.SetColor(Color.White);
-                r.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.CenterContinuous;
-                r.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
-                r.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(23, 55, 93));
+                DataTable dt = (DataTable)ViewState["dt"];
+                Response.Clear();
+                Response.ClearHeaders();
+                Response.ClearContent();
+                Response.Buffer = true;
+                Response.AddHeader("content-disposition", "attachment;filename=TBMBTR.xls");
+                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+                ExcelPackage pck = new ExcelPackage();
+                ExcelWorksheet ws = pck.Workbook.Worksheets.Add("TBMTBRReport");
+                ws.Cells["A1"].Value = "TBMTBR Report ";
+
+                using (ExcelRange r = ws.Cells["A1:I1"])
+                {
+                    r.Merge = true;
+                    r.Style.Font.SetFromFont(new Font("Arial", 16, FontStyle.Italic));
+                    r.Style.Font.Color.SetColor(Color.White);
+                    r.Style.HorizontalAlignment = OfficeOpenXml.Style.ExcelHorizontalAlignment.CenterContinuous;
+                    r.Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                    r.Style.Fill.BackgroundColor.SetColor(Color.FromArgb(23, 55, 93));
+                }
+
+
+                ws.Cells["A3"].LoadFromDataTable((DataTable)ViewState["dt"], true, OfficeOpenXml.Table.TableStyles.Light1);
+                ws.Cells.AutoFitColumns();
+
+
+                var ms = new MemoryStream();
+                pck.SaveAs(ms);
+                ms.WriteTo(Response.OutputStream);
+
+                Response.Flush();
+                Response.End();
+            
             }
-
-
-            ws.Cells["A3"].LoadFromDataTable((DataTable)ViewState["dt"], true, OfficeOpenXml.Table.TableStyles.Light1);
-            ws.Cells.AutoFitColumns();
-
-
-            var ms = new MemoryStream();
-            pck.SaveAs(ms);
-            ms.WriteTo(Response.OutputStream);
-
-            Response.Flush();
-            Response.End();
+         
 
         }
         protected void ddlRecipe_SelectedIndexChanged(object sender, EventArgs e)

@@ -206,7 +206,8 @@ namespace SmartMIS
                     int notifyIcon = 0;
 
                     if (myWebService.IsRecordExist("vCuringTBR", "gtbarCode", "WHERE gtbarCode = '" + tempgtbarcode + "'", out notifyIcon) == true)
-                        fillCuringParameter(tempgtbarcode, "vCuringTBR", "TBRCuring", 120);
+                        //fillCuringParameter(tempgtbarcode, "vCuringTBR", "TBRCuring", 120);
+                        fillCuringParameter(tempgtbarcode, "vCuringTBR", "TBRCuring", 60);
 
                     fillTBMReport(tempgtbarcode, "vTbmTBR");
                 }
@@ -220,7 +221,8 @@ namespace SmartMIS
                     int notifyIcon = 0;
 
                     if (myWebService.IsRecordExist("vCuringPCR", "gtbarCode", "WHERE gtbarCode = '" + tempgtbarcode + "'", out notifyIcon) == true)
-                        fillCuringParameter(tempgtbarcode, "vCuringPCR", "PCRCuring", 120);// fill curing graph details
+                        //fillCuringParameter(tempgtbarcode, "vCuringPCR", "PCRCuring", 120);// fill curing graph details
+                        fillCuringParameter(tempgtbarcode, "vCuringPCR", "PCRCuring", 60);
 
                     fillTBMReport(tempgtbarcode, "vTbmPCR");
                 }
