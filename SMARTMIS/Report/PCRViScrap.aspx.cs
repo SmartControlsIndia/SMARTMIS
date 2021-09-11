@@ -82,7 +82,6 @@ namespace SmartMIS.Report
         private void loadData()
         {
                       
-
                         rToDate = TotaldtformatDate(tuoReportMasterFromDateTextBox.Text, tuoReportMasterToDateTextBox.Text);
 
                         myConnection.open(ConnectionOption.SQL);
@@ -96,9 +95,6 @@ namespace SmartMIS.Report
                         myConnection.reader.Close();
                         myConnection.comm.Dispose();
                         myConnection.close(ConnectionOption.SQL);
-
-
-
 
                         myConnection.open(ConnectionOption.SQL);
                         myConnection.comm = myConnection.conn.CreateCommand();
