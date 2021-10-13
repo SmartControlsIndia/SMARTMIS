@@ -2418,8 +2418,12 @@ namespace SmartMIS
 
               //  myConnection.comm.CommandText = "Select wcName, recipeCode, SAPMaterialCode,dtandTime from " + SQLTable + " WHERE wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " ORDER BY wcID, recipeCode, dtandTime asc";
 
-                myConnection.comm.CommandText = @"SELECT * FROM ( SELECT  wcID,wcName,recipeCode, SAPMaterialCode,dtandTime, ROW_NUMBER() OVER(PARTITION BY gtbarCode ORDER BY wcName asc) rn
-                    FROM " + SQLTable + " WHERE  wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " ) a WHERE rn = 1 ORDER BY wcID,recipeCode, dtandTime asc";
+               // myConnection.comm.CommandText = @"SELECT * FROM ( SELECT  wcID,wcName,recipeCode, SAPMaterialCode,dtandTime, ROW_NUMBER() OVER(PARTITION BY gtbarCode ORDER BY wcName asc) rn
+                 //   FROM " + SQLTable + " WHERE  wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " ) a WHERE rn = 1 ORDER BY wcID,recipeCode, dtandTime asc";
+
+                myConnection.comm.CommandText = @"SELECT * FROM ( SELECT  wcID,wcName,recipeCode, SAPMaterialCode,dtandTime, ROW_NUMBER() OVER(PARTITION BY gtbarCode ORDER BY recipeCode asc) rn
+                    FROM " + SQLTable + " WHERE  wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " ) a WHERE rn = 1 ORDER BY recipeCode, dtandTime asc";
+
 
                 myConnection.comm.CommandTimeout = 60;
                 myConnection.reader = myConnection.comm.ExecuteReader();
@@ -2434,8 +2438,11 @@ namespace SmartMIS
                     myConnection.open(ConnectionOption.SQL);
                     myConnection.comm = myConnection.conn.CreateCommand();
 
-                    myConnection.comm.CommandText = @"SELECT * FROM ( SELECT  wcID,wcName,recipeCode, SAPMaterialCode,dtandTime, ROW_NUMBER() OVER(PARTITION BY gtbarCode ORDER BY wcName asc) rn
-                    FROM " + OldSQLTable + " WHERE  wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " ) a WHERE rn = 1 ORDER BY wcID,recipeCode, dtandTime asc";
+                   // myConnection.comm.CommandText = @"SELECT * FROM ( SELECT  wcID,wcName,recipeCode, SAPMaterialCode,dtandTime, ROW_NUMBER() OVER(PARTITION BY gtbarCode ORDER BY wcName asc) rn
+                   // FROM " + OldSQLTable + " WHERE  wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " ) a WHERE rn = 1 ORDER BY wcID,recipeCode, dtandTime asc";
+
+                    myConnection.comm.CommandText = @"SELECT * FROM ( SELECT  wcID,wcName,recipeCode, SAPMaterialCode,dtandTime, ROW_NUMBER() OVER(PARTITION BY gtbarCode ORDER BY recipeCode asc) rn
+                    FROM " + OldSQLTable + " WHERE  wcID IN " + wcIDInQuery.ToString() + " AND " + durationQuery + " ) a WHERE rn = 1 ORDER BY recipeCode, dtandTime asc";
 
                     myConnection.comm.CommandTimeout = 60;
                     myConnection.reader = myConnection.comm.ExecuteReader();

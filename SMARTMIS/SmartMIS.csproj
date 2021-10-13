@@ -294,6 +294,13 @@
     <Compile Include="Report\ShearographyReport.aspx.designer.cs">
       <DependentUpon>ShearographyReport.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Report\SherographyData.aspx.cs">
+      <DependentUpon>SherographyData.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report\SherographyData.aspx.designer.cs">
+      <DependentUpon>SherographyData.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Report\ShreoDefectReport.aspx.cs">
       <DependentUpon>ShreoDefectReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1652,6 +1659,7 @@
     <Content Include="Report\ReceipeExportReport.aspx" />
     <Content Include="Master\Resetbarcode.aspx" />
     <Content Include="Report\ShearographyReport.aspx" />
+    <Content Include="Report\SherographyData.aspx" />
     <Content Include="Report\ShreoDefectReport.aspx" />
     <Content Include="Report\SLI_PCRVISummaryReport.aspx" />
     <Content Include="Report\SmartFinalFinish.aspx" />
@@ -1845,7 +1853,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>65074</DevelopmentServerPort>
+          <DevelopmentServerPort>65075</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

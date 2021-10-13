@@ -118,6 +118,22 @@ namespace SmartMIS.Report
                         myConnection.comm.Dispose();
                         myConnection.close(ConnectionOption.SQL);
 
+
+            if(dt_vi.Rows.Count<=0)
+            {
+              myConnection.open(ConnectionOption.SQL);
+                        myConnection.comm = myConnection.conn.CreateCommand();
+
+                        myConnection.comm.CommandText = "select wcID, curingRecipeID, status, defectID from TBRVisualInspection09082021 where ((dtandTime>=" + rToDate + " AND wcID IN (select  ID from wcmaster where vistage=1 and processID=6)";
+                        myConnection.reader = myConnection.comm.ExecuteReader();
+                        dt_vi.Load(myConnection.reader);
+
+                        myConnection.reader.Close();
+                        myConnection.comm.Dispose();
+                        myConnection.close(ConnectionOption.SQL);
+            
+            }
+
                         myConnection.open(ConnectionOption.SQL);
                         myConnection.comm = myConnection.conn.CreateCommand();
 
@@ -898,6 +914,19 @@ namespace SmartMIS.Report
                 myConnection.comm.Dispose();
                 myConnection.reader.Close();
 
+                if (dt.Rows.Count <= 0)
+                {
+                    myConnection.open(ConnectionOption.SQL);
+                    myConnection.comm = myConnection.conn.CreateCommand();
+                    myConnection.comm.CommandText = "select wcname, description, gtbarCode AS vi_gtbarCode from vTBRVisualInspection09082021Report where status='" + status + "' AND wcID IN (select distinct wcID from TBRVisualInspection09082021 where status=1) AND dtandTime>='" + from_date + "' AND dtandTime<'" + to_date + "'" + recipecode;
+                    myConnection.reader = myConnection.comm.ExecuteReader(CommandBehavior.CloseConnection);
+                    dt.Load(myConnection.reader);
+                    myConnection.conn.Close();
+                    myConnection.comm.Dispose();
+                    myConnection.reader.Close();
+                }
+                
+
                 myConnection.open(ConnectionOption.SQL);
                 myConnection.comm = myConnection.conn.CreateCommand();
                 myConnection.comm.CommandText = "SELECT wcName, mouldNo, gtbarcode AS cur_gtbarCode FROM vCuringtbr WHERE dtandTime>='" + tempfromdate + "' AND dtandTime<'" + to_date + "'";
@@ -1060,6 +1089,26 @@ namespace SmartMIS.Report
                     myConnection.conn.Close();
                     myConnection.comm.Dispose();
                     myConnection.reader.Close();
+                    if (dt.Rows.Count <= 0)
+                    {
+                        myConnection.open(ConnectionOption.SQL);
+                        myConnection.comm = myConnection.conn.CreateCommand();
+                        myConnection.comm.CommandText = @"select wcname AS visualWCName, description AS TyreSize, gtbarCode AS BarCode,
+                    DefectStatusName AS Status, defectAreaName, defectname, remarks, 
+                    shift=(CASE WHEN convert(char(8), dtandTime, 108) >= '07:00:00 AM' AND 
+                    convert(char(8), dtandTime, 108) <= '14:59:59.999' THEN 'A' WHEN 
+                    convert(char(8), dtandTime, 108) >= '15:00:00.000' AND convert(char(8), dtandTime, 108) <= '22:59:59.999' 
+                    THEN 'B' WHEN ((convert(char(8), dtandTime, 108) >= '23:00:00.000' AND convert(char(8), dtandTime, 108) <= '23:59:59.999')
+                    or (convert(char(8), dtandTime, 108) >= '00:00:01.000' AND convert(char(8), dtandTime, 108) <= '06:59:59.999')) THEN 'C' END),firstname as InspectorName,convert(char(10), dtandTime, 110) AS VIDate, convert(char(8), dtandTime, 108) AS VITime
+                    from vTBRVisualInspection09082021Report where WCID IN (select ID from wcmaster where vistage=1 and processID=6) AND dtandTime>='" + from_date + "' AND dtandTime<'" + to_date + "' AND status<>'1'";
+                        myConnection.reader = myConnection.comm.ExecuteReader(CommandBehavior.CloseConnection);
+                        dt.Load(myConnection.reader);
+                        myConnection.conn.Close();
+                        myConnection.comm.Dispose();
+                        myConnection.reader.Close();
+                    
+                    }
+                   
                     string tempfromdt = Convert.ToDateTime(from_date).AddDays(-3).ToString();
                     myConnection.open(ConnectionOption.SQL);
                     myConnection.comm = myConnection.conn.CreateCommand();
